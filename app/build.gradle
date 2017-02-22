@@ -1,4 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.squareup.sqldelight'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.squareup.sqldelight:gradle-plugin:0.5.1'
+    }
+}
 
 android {
     compileSdkVersion 25
@@ -19,6 +30,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -30,4 +42,8 @@ dependencies {
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
 
     compile "com.google.guava:guava:$rootProject.guavaVersion"
+    compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlbriteVersion"
+
+    provided "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
+    apt "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
 }
