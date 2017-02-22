@@ -5,4 +5,5 @@ package com.example.scindapsus;
  */
 
 public interface BasePresenter {
+    void start();
 }
