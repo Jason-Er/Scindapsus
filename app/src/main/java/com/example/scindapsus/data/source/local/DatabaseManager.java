@@ -35,6 +35,10 @@ public class DatabaseManager {
         openHelper = helper;
     }
 
+    public static BriteDatabase getBriteDatabase() {
+        return database;
+    }
+
     public synchronized BriteDatabase openDatabase() {
         if (openCount.incrementAndGet() == 1) {
         }

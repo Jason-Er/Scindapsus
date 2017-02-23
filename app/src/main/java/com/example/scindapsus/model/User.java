@@ -1,9 +1,13 @@
 package com.example.scindapsus.model;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
+
+
+import rx.functions.Func1;
 
 /**
  * Created by ej on 2/22/2017.
@@ -17,5 +21,10 @@ public abstract class User implements UserModel{
         }
     });
     public static final RowMapper<User> SELECT_ALL_MAPPER = FACTORY.select_allMapper();
-    public static final Mapper<User> MAPPER = new Mapper<>(FACTORY);
+    public static final Func1<Cursor, User> RX_SELECT_ALL_MAPPER = new Func1<Cursor, User>() {
+        @Override
+        public User call(Cursor cursor) {
+            return SELECT_ALL_MAPPER.map(cursor);
+        }
+    };
 }

@@ -40,4 +40,6 @@ ext {
     espressoVersion = '2.2.2'
     sqlbriteVersion = '1.1.1'
     autoValueVersion = '1.2'
+    rxjavaVersion = '1.1.6'
+    rxandroidVersion = '1.2.1'
 }
