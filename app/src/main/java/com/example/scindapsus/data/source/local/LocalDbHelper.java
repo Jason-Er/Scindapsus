@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.scindapsus.data.model.UserModel;
+import com.example.scindapsus.data.populator.UserPopulator;
+import com.example.scindapsus.model.UserModel;
 
 /**
  * Created by ej on 2/22/2017.
@@ -12,7 +13,7 @@ import com.example.scindapsus.data.model.UserModel;
 
 public class LocalDbHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "delightful.db";
+    public static final String DB_NAME = "scindapsus.db";
     public static final int DB_VERSION = 1;
 
     private static LocalDbHelper instance;
@@ -31,6 +32,11 @@ public class LocalDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(UserModel.CREATE_TABLE);
+        populate(db);
+    }
+
+    private void populate(SQLiteDatabase db) {
+        UserPopulator.populate(db);
     }
 
     @Override

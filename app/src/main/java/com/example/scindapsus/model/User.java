@@ -1,4 +1,4 @@
-package com.example.scindapsus.data.model;
+package com.example.scindapsus.model;
 
 import android.support.annotation.NonNull;
 
@@ -17,4 +17,5 @@ public abstract class User implements UserModel{
         }
     });
     public static final RowMapper<User> SELECT_ALL_MAPPER = FACTORY.select_allMapper();
+    public static final Mapper<User> MAPPER = new Mapper<>(FACTORY);
 }
