@@ -1,7 +1,6 @@
-package com.example.scindapsus.login;
+package com.example.scindapsus.mvp.login;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.example.scindapsus.data.source.LoginRepository;
 

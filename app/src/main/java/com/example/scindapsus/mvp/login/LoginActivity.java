@@ -1,4 +1,4 @@
-package com.example.scindapsus.login;
+package com.example.scindapsus.mvp.login;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

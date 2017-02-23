@@ -1,7 +1,7 @@
-package com.example.scindapsus.login;
+package com.example.scindapsus.mvp.login;
 
-import com.example.scindapsus.BasePresenter;
-import com.example.scindapsus.BaseView;
+import com.example.scindapsus.global.BasePresenter;
+import com.example.scindapsus.global.BaseView;
 /**
  * Created by ej on 2/21/2017.
  */
