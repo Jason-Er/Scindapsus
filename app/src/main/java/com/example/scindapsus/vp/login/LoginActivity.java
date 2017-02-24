@@ -1,4 +1,4 @@
-package com.example.scindapsus.mvp.login;
+package com.example.scindapsus.vp.login;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_act);
 
+        // attach fragment to main layout
         LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
 

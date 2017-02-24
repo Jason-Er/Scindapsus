@@ -72,23 +72,6 @@ public class UserTableShould extends CustomRunner {
         assertFalse(result.isEmpty());
     }
 
-    @Test
-    public void map_cursor_with_domain_model_rx() throws Exception {
-        BriteDatabase db = givenBriteDatabase();
-
-        db.createQuery(User.TABLE_NAME, User.SELECT_ALL)
-        .mapToList(User.RX_SELECT_ALL_MAPPER)
-        .subscribe(new Action1<List<User>>() {
-            @Override
-            public void call(List<User> users) {
-                for(User user:users) {
-                    System.out.println(user.toString()+"++++++++++++++++++");
-                }
-            }
-        });
-
-    }
-
     private BriteDatabase givenBriteDatabase() {
         return DbCommon.getOpenedDatabase();
     }

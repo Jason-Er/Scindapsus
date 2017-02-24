@@ -13,7 +13,11 @@ select *
 from user
 where user.name = ?;
 
-update_user_by_id:
+update_user:
 UPDATE user
 SET name = ?, password = ?
-WHERE _id = ?;
+where user._id = ?;
+
+insert_user:
+INSERT INTO user (name, password)
+VALUES (?, ?);

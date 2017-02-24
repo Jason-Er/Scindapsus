@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".mvp.login.LoginActivity">
+    tools:context=".vp.login.LoginActivity">
 
     <FrameLayout
         android:id="@+id/contentFrame"

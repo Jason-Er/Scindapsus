@@ -1,4 +1,4 @@
-package com.example.scindapsus.mvp.login;
+package com.example.scindapsus.vp.login;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.model.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -47,7 +48,8 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         mLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.logIn();
+                // User user = new AutoValue_User();
+                // mPresenter.logIn(user);
             }
         });
 

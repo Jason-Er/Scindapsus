@@ -11,9 +11,11 @@ import com.example.scindapsus.model.UserModel;
 
 public class UserPopulator {
     public static void populate(SQLiteDatabase db) {
+        /*
         db.insert(UserModel.TABLE_NAME, null, User.FACTORY.marshal()
                 .name("J. K. Rowling")
                 .password("123456")
                 .asContentValues());
+                */
     }
 }
