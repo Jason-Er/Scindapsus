@@ -42,4 +42,5 @@ ext {
     rxjavaVersion = '1.1.6'
     rxandroidVersion = '1.2.1'
     autovaluegsonVersion = '0.4.6'
+    autovalueparcelVersion = '0.2.5'
 }

@@ -47,6 +47,7 @@ dependencies {
 
     provided "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
     apt "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
+    apt "com.ryanharter.auto.value:auto-value-parcel:$rootProject.autovalueparcelVersion"
 
     provided "com.ryanharter.auto.value:auto-value-gson:$rootProject.autovaluegsonVersion"
     apt "com.ryanharter.auto.value:auto-value-gson:$rootProject.autovaluegsonVersion"
