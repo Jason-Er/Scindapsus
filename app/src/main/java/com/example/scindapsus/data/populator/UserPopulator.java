@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.scindapsus.model.User;
 import com.example.scindapsus.model.UserModel;
+import com.example.scindapsus.service.local.UserService;
 
 /**
  * Created by ej on 2/23/2017.
@@ -11,11 +12,7 @@ import com.example.scindapsus.model.UserModel;
 
 public class UserPopulator {
     public static void populate(SQLiteDatabase db) {
-        /*
-        db.insert(UserModel.TABLE_NAME, null, User.FACTORY.marshal()
-                .name("J. K. Rowling")
-                .password("123456")
-                .asContentValues());
-                */
+        User user = User.newInstance(0, "jason", "123456");
+        UserService.Insert_user(user);
     }
 }
