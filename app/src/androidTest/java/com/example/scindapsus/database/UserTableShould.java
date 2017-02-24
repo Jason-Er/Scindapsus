@@ -10,12 +10,8 @@ import com.example.scindapsus.runner.CustomRunner;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
-import static junit.framework.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
