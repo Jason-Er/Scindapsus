@@ -1,7 +1,6 @@
 package com.example.scindapsus.data.source.local;
 
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +15,7 @@ public class DatabaseManager {
     private static AtomicInteger openCount = new AtomicInteger();
     private static DatabaseManager instance;
     private static LocalDbHelper openHelper;
-    private static BriteDatabase database;
+    private static SQLiteDatabase database;
 
     public static synchronized DatabaseManager getInstance() {
         if (null == instance) {
@@ -29,18 +28,13 @@ public class DatabaseManager {
     public static synchronized void initialize(LocalDbHelper helper) {
         if (null == instance) {
             instance = new DatabaseManager();
-            SqlBrite sqlBrite = new SqlBrite.Builder().build();
-            database = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         }
         openHelper = helper;
     }
 
-    public static BriteDatabase getBriteDatabase() {
-        return database;
-    }
-
-    public synchronized BriteDatabase openDatabase() {
+    public synchronized SQLiteDatabase openDatabase() {
         if (openCount.incrementAndGet() == 1) {
+            database = openHelper.getWritableDatabase();
         }
         return database;
     }

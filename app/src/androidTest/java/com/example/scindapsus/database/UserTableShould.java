@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.scindapsus.model.User;
 import com.example.scindapsus.model.UserModel;
 import com.example.scindapsus.runner.CustomRunner;
-import com.squareup.sqlbrite.BriteDatabase;
-
-import rx.functions.Action1;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -64,16 +62,11 @@ public class UserTableShould extends CustomRunner {
     public void map_cursor_with_domain_model() throws Exception {
         SQLiteDatabase db = givenWritableDatabase();
 
-        List<User> result = new ArrayList<>();
         Cursor cursor = db.rawQuery(UserModel.SELECT_ALL, new String[0]);
-        while (cursor.moveToNext()) {
-            result.add(User.SELECT_ALL_MAPPER.map(cursor));
-        }
-        assertFalse(result.isEmpty());
-    }
+        cursor.moveToFirst();
 
-    private BriteDatabase givenBriteDatabase() {
-        return DbCommon.getOpenedDatabase();
+//        User author = User.MAPPER.map(cursor);
+//        assertNotNull(author);
     }
 
     private SQLiteDatabase givenWritableDatabase() {

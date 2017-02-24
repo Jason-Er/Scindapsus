@@ -44,7 +44,6 @@ dependencies {
     compile "io.reactivex:rxjava:$rootProject.rxjavaVersion"
     compile "io.reactivex:rxandroid:$rootProject.rxandroidVersion"
     compile "com.google.guava:guava:$rootProject.guavaVersion"
-    compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlbriteVersion"
 
     provided "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
     apt "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
