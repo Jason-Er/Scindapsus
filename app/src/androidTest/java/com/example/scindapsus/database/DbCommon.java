@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.scindapsus.data.source.local.DatabaseManager;
 import com.example.scindapsus.data.source.local.LocalDbHelper;
-import com.squareup.sqlbrite.BriteDatabase;
 
 /**
  * Created by ej on 2/23/2017.
@@ -24,7 +23,7 @@ public class DbCommon {
         DatabaseManager.initialize(LocalDbHelper.getInstance(context));
     }
 
-    public static BriteDatabase getOpenedDatabase() {
+    public static SQLiteDatabase getOpenedDatabase() {
         return DatabaseManager.getInstance().openDatabase();
     }
 

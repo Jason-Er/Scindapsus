@@ -1,8 +1,9 @@
-package com.example.scindapsus.mvp.login;
+package com.example.scindapsus.vp.login;
 
 import android.support.annotation.NonNull;
 
 import com.example.scindapsus.data.source.LoginRepository;
+import com.example.scindapsus.model.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,7 +25,14 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void logIn() {
+    public void logIn(User user) {
+        System.out.println(user);
+
+        mLogInView.setLoadingIndicator(true);
+
+        // TO-DO something
+
+        mLogInView.setLoadingIndicator(false);
 
     }
 
