@@ -11,14 +11,14 @@ import com.google.gson.annotations.SerializedName;
 @AutoValue
 public abstract class Status {
 
-    @SerializedName("statusCode")
-    public abstract int statusCode();
+    @SerializedName("code")
+    public abstract int code();
 
-    @SerializedName("messages")
-    public abstract String messages();
+    @SerializedName("message")
+    public abstract String message();
 
-    public static Status newInstance(int statusCode, String messages) {
-        return new AutoValue_Status(statusCode, messages);
+    public static Status newInstance(int code, String message) {
+        return new AutoValue_Status(code, message);
     }
     public static TypeAdapter<Status> typeAdapter(Gson gson) {
         return new AutoValue_Status.GsonTypeAdapter(gson);
