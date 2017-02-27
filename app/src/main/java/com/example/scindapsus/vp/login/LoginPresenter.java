@@ -26,6 +26,13 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void logIn(User user) {
+        System.out.println(user);
+
+        mLogInView.setLoadingIndicator(true);
+
+        // TO-DO something
+
+        mLogInView.setLoadingIndicator(false);
 
     }
 

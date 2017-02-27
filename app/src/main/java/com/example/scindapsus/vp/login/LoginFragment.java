@@ -48,8 +48,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         mLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // User user = new AutoValue_User();
-                // mPresenter.logIn(user);
+                mPresenter.logIn(User.newInstance(0, mUserName.getText().toString(), mPassword.getText().toString()));
             }
         });
 
@@ -66,5 +65,12 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     @Override
     public void setPresenter(@NonNull LoginContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+        if (active) {
+            // show Hourglass
+        }
     }
 }
