@@ -1,5 +1,6 @@
 package com.example.scindapsus.model;
 
+import com.example.scindapsus.model.adapter.StatusAdapterFactory;
 import com.example.scindapsus.model.adapter.UserAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,6 +36,30 @@ public class UserModelTest {
         Assert.assertEquals(user.password(), "123456");
         Assert.assertEquals(user.name(), "Jason");
         Assert.assertEquals(user._id(), 0);
+
+    }
+
+    @Test
+    public void testStatusToJson() {
+        Status status = Status.newInstance(0, "Success");
+
+        String json = new Gson().toJson(status);
+        System.out.println(json);
+
+        Assert.assertEquals("{\"statusCode\":0,\"messages\":\"Success\"}", json);
+    }
+
+    @Test
+    public void testStatusParseFromJson() {
+        String json = "{\"statusCode\":0,\"messages\":\"Success\"}";
+
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(StatusAdapterFactory.create()).create();
+
+        Status status = gson.fromJson(json, Status.class);
+        System.out.println(status);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status.statusCode(), 0);
+        Assert.assertEquals(status.messages(), "Success");
 
     }
 

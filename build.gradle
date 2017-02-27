@@ -43,4 +43,5 @@ ext {
     rxandroidVersion = '1.2.1'
     autovaluegsonVersion = '0.4.6'
     autovalueparcelVersion = '0.2.5'
+    retrofitVersion = '2.2.0'
 }
