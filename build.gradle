@@ -45,4 +45,5 @@ ext {
     autovalueparcelVersion = '0.2.5'
     retrofitVersion = '2.2.0'
     adapterrxjavaVersion = '2.1.0'
+    convertergsonVersion = '2.2.0'
 }

@@ -46,6 +46,7 @@ dependencies {
     compile "com.google.guava:guava:$rootProject.guavaVersion"
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.adapterrxjavaVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.convertergsonVersion"
 
     provided "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
     apt "com.google.auto.value:auto-value:$rootProject.autoValueVersion"
