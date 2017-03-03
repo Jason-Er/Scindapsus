@@ -13,7 +13,7 @@ import rx.Subscriber;
 
 public class LoginServiceImpl implements LoginService {
     @Override
-    public void login(Subscriber<HttpResult<Token>> subscriber, String name, String password) {
+    public void login(Subscriber<HttpResult> subscriber, String name, String password) {
         HttpMethods.getInstance().login(subscriber, name, password);
     }
 }

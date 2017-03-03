@@ -22,7 +22,7 @@ public class LoginRepository implements LoginService {
     }
 
     @Override
-    public void login(Subscriber<HttpResult<Token>> subscriber, String name, String password) {
+    public void login(Subscriber<HttpResult> subscriber, String name, String password) {
 
     }
 }

@@ -1,7 +1,11 @@
 package com.example.scindapsus.data.source.remote;
 
+import com.example.scindapsus.data.source.remote.restful.Actions;
 import com.example.scindapsus.model.HttpResult;
 import com.example.scindapsus.model.Token;
+import com.example.scindapsus.model.adapter.HttpResultAdapterFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +15,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,20 +28,22 @@ public class HttpMethods {
     private static final int DEFAULT_TIMEOUT = 5;
 
     private Retrofit retrofit;
-    private HttpActions httpActions;
+    private Actions actions;
 
     private HttpMethods() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(HttpResultAdapterFactory.create()).create();
+
         retrofit = new Retrofit.Builder()
                 .client(httpClientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
 
-        httpActions = retrofit.create(HttpActions.class);
+        actions = retrofit.create(Actions.class);
     }
 
     private static class SingletonHolder{
@@ -47,8 +54,8 @@ public class HttpMethods {
         return SingletonHolder.INSTANCE;
     }
 
-    public void login(Subscriber<HttpResult<Token>> subscriber, String name, String password){
-        httpActions.login(name, password)
+    public void login(Subscriber<HttpResult> subscriber, String name, String password){
+        actions.login(name, password)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

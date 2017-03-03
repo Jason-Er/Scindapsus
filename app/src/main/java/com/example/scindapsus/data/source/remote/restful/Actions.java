@@ -1,4 +1,4 @@
-package com.example.scindapsus.data.source.remote;
+package com.example.scindapsus.data.source.remote.restful;
 
 import com.example.scindapsus.model.HttpResult;
 import com.example.scindapsus.model.Token;
@@ -11,7 +11,7 @@ import rx.Observable;
  * Created by ej on 2/28/2017.
  */
 
-public interface HttpActions {
+public interface Actions {
     @POST("actions/login")
-    Observable<HttpResult<Token>> login(@Field("name") String name, @Field("password") String password);
+    Observable<HttpResult> login(@Field("name") String name, @Field("password") String password);
 }

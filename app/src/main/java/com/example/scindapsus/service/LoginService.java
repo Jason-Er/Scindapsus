@@ -10,5 +10,5 @@ import rx.Subscriber;
  */
 
 public interface LoginService {
-    void login(Subscriber<HttpResult<Token>> subscriber, String name, String password);
+    void login(Subscriber<HttpResult> subscriber, String name, String password);
 }

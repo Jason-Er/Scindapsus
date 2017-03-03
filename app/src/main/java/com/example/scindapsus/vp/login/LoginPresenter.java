@@ -1,9 +1,14 @@
 package com.example.scindapsus.vp.login;
 
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.example.scindapsus.data.source.LoginRepository;
+import com.example.scindapsus.model.HttpResult;
+import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
+
+import rx.Subscriber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,12 +33,32 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void logIn(User user) {
         System.out.println(user);
 
+        Subscriber subscriber = new Subscriber<HttpResult>() {
+            @Override
+            public void onCompleted() {
+                // Toast.makeText(MainActivity.this, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                // resultTV.setText(e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult tokenHttpResult) {
+
+            }
+        };
+
+        mLoginRepository.login(subscriber, user.name(), user.password());
+
+        /*
         mLogInView.setLoadingIndicator(true);
 
         // TO-DO something
 
         mLogInView.setLoadingIndicator(false);
-
+        */
     }
 
     @Override
