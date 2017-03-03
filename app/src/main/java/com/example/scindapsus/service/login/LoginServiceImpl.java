@@ -1,9 +1,10 @@
-package com.example.scindapsus.service;
+package com.example.scindapsus.service.login;
 
+import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.HttpMethods;
-import com.example.scindapsus.model.HttpResult;
 import com.example.scindapsus.model.Token;
-import com.example.scindapsus.service.LoginService;
+
+import javax.inject.Inject;
 
 import rx.Subscriber;
 
@@ -12,9 +13,14 @@ import rx.Subscriber;
  */
 
 public class LoginServiceImpl implements LoginService {
+    @Inject HttpMethods httpMethods;
+
+    public LoginServiceImpl() {
+        DaggerDataSourceComponent.builder().build().inject(this);
+    }
     @Override
     public void login(Subscriber<Token> subscriber, String name, String password) {
         System.out.println("Invoke LoginServiceImpl login!");
-        //HttpMethods.getInstance().login(subscriber, name, password);
+        httpMethods.login(subscriber, name, password);
     }
 }

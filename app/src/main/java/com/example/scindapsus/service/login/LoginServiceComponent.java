@@ -1,6 +1,5 @@
-package com.example.scindapsus.service;
+package com.example.scindapsus.service.login;
 
-import com.example.scindapsus.vp.login.LoginContract;
 import com.example.scindapsus.vp.login.LoginPresenter;
 
 import javax.inject.Singleton;

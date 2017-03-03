@@ -1,6 +1,9 @@
-package com.example.scindapsus.service;
+package com.example.scindapsus.service.login;
 
+import com.example.scindapsus.data.source.remote.HttpMethods;
 import com.example.scindapsus.model.Token;
+
+import javax.inject.Inject;
 
 import rx.Subscriber;
 

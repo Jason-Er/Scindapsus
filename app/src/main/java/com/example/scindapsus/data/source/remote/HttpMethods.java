@@ -1,5 +1,7 @@
 package com.example.scindapsus.data.source.remote;
 
+import android.util.Log;
+
 import com.example.scindapsus.data.source.remote.restful.Actions;
 import com.example.scindapsus.model.HttpResult;
 import com.example.scindapsus.model.Token;
@@ -23,6 +25,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class HttpMethods {
+    final static String TAG = "HttpMethods";
     public static final String BASE_URL = "https://api.douban.com/v2/movie/";
 
     private static final int DEFAULT_TIMEOUT = 5;
@@ -30,7 +33,7 @@ public class HttpMethods {
     private Retrofit retrofit;
     private Actions actions;
 
-    private HttpMethods() {
+    public HttpMethods() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
@@ -46,19 +49,14 @@ public class HttpMethods {
         actions = retrofit.create(Actions.class);
     }
 
-    private static class SingletonHolder{
-        private static final HttpMethods INSTANCE = new HttpMethods();
-    }
-
-    public static HttpMethods getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
-
     public void login(Subscriber<Token> subscriber, String name, String password){
+        Log.i(TAG,"Invoke method login");
+        /*
         actions.login(name, password)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+                */
     }
 }

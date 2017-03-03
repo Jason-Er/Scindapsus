@@ -1,4 +1,4 @@
-package com.example.scindapsus.service;
+package com.example.scindapsus.service.login;
 
 import javax.inject.Singleton;
 

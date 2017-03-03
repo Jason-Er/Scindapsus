@@ -1,13 +1,11 @@
 package com.example.scindapsus.vp.login;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.example.scindapsus.data.source.LoginRepository;
 import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
-import com.example.scindapsus.service.DaggerLoginServiceComponent;
-import com.example.scindapsus.service.LoginService;
+import com.example.scindapsus.service.login.DaggerLoginServiceComponent;
+import com.example.scindapsus.service.login.LoginService;
 
 import javax.inject.Inject;
 
