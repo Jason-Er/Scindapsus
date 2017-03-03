@@ -30,22 +30,22 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void logIn(User user) {
+    public void login(User user) {
         System.out.println(user);
 
-        Subscriber subscriber = new Subscriber<HttpResult>() {
+        Subscriber subscriber = new Subscriber<Token>() {
             @Override
             public void onCompleted() {
-                // Toast.makeText(MainActivity.this, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onError(Throwable e) {
-                // resultTV.setText(e.getMessage());
+
             }
 
             @Override
-            public void onNext(HttpResult tokenHttpResult) {
+            public void onNext(Token token) {
 
             }
         };

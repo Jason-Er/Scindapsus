@@ -1,6 +1,5 @@
 package com.example.scindapsus.service;
 
-import com.example.scindapsus.model.HttpResult;
 import com.example.scindapsus.model.Token;
 
 import rx.Subscriber;
@@ -10,5 +9,5 @@ import rx.Subscriber;
  */
 
 public interface LoginService {
-    void login(Subscriber<HttpResult> subscriber, String name, String password);
+    void login(Subscriber<Token> subscriber, String name, String password);
 }

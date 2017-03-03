@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         mLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.logIn(User.newInstance(0, mUserName.getText().toString(), mPassword.getText().toString()));
+                mPresenter.login(User.newInstance(0, mUserName.getText().toString(), mPassword.getText().toString()));
             }
         });
 

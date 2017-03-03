@@ -54,7 +54,7 @@ public class HttpMethods {
         return SingletonHolder.INSTANCE;
     }
 
-    public void login(Subscriber<HttpResult> subscriber, String name, String password){
+    public void login(Subscriber<Token> subscriber, String name, String password){
         actions.login(name, password)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())

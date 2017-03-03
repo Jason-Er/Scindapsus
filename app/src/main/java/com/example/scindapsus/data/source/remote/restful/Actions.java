@@ -13,5 +13,5 @@ import rx.Observable;
 
 public interface Actions {
     @POST("actions/login")
-    Observable<HttpResult> login(@Field("name") String name, @Field("password") String password);
+    Observable<Token> login(@Field("name") String name, @Field("password") String password);
 }

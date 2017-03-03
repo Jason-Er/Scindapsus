@@ -1,6 +1,5 @@
 package com.example.scindapsus.data.source;
 
-import com.example.scindapsus.model.HttpResult;
 import com.example.scindapsus.model.Token;
 import com.example.scindapsus.service.LoginService;
 
@@ -13,6 +12,7 @@ import rx.Subscriber;
 public class LoginRepository implements LoginService {
 
     private static LoginRepository INSTANCE = null;
+    private static LoginService loginService; // remote.loginServiceImpl
 
     public static LoginRepository getInstance() {
         if (INSTANCE == null) {
@@ -22,7 +22,7 @@ public class LoginRepository implements LoginService {
     }
 
     @Override
-    public void login(Subscriber<HttpResult> subscriber, String name, String password) {
+    public void login(Subscriber<Token> subscriber, String name, String password) {
 
     }
 }
