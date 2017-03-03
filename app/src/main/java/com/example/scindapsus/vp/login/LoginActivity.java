@@ -26,8 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Create the presenter
-        new LoginPresenter( LoginRepository.getInstance(),
-                loginFragment);
+        new LoginPresenter(loginFragment);
 
     }
 }

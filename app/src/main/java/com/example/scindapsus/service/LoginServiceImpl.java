@@ -1,4 +1,4 @@
-package com.example.scindapsus.service.remote;
+package com.example.scindapsus.service;
 
 import com.example.scindapsus.data.source.remote.HttpMethods;
 import com.example.scindapsus.model.HttpResult;
@@ -14,6 +14,7 @@ import rx.Subscriber;
 public class LoginServiceImpl implements LoginService {
     @Override
     public void login(Subscriber<Token> subscriber, String name, String password) {
-        HttpMethods.getInstance().login(subscriber, name, password);
+        System.out.println("Invoke LoginServiceImpl login!");
+        //HttpMethods.getInstance().login(subscriber, name, password);
     }
 }
