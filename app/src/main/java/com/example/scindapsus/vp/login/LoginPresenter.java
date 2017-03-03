@@ -2,8 +2,14 @@ package com.example.scindapsus.vp.login;
 
 import android.support.annotation.NonNull;
 
-import com.example.scindapsus.data.source.LoginRepository;
+import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
+import com.example.scindapsus.service.login.DaggerLoginServiceComponent;
+import com.example.scindapsus.service.login.LoginService;
+
+import javax.inject.Inject;
+
+import rx.Subscriber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -13,27 +19,47 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
-    private final LoginRepository mLoginRepository;
     private final LoginContract.View mLogInView;
 
-    public LoginPresenter(@NonNull LoginRepository loginRepository,
-                               @NonNull LoginContract.View logInView) {
-        mLoginRepository = checkNotNull(loginRepository, "loginRepository cannot be null!");
-        mLogInView = checkNotNull(logInView, "logInView cannot be null!");
+    @Inject LoginService loginService;
 
+    public LoginPresenter(@NonNull LoginContract.View logInView) {
+        mLogInView = checkNotNull(logInView, "logInView cannot be null!");
         mLogInView.setPresenter(this);
+        DaggerLoginServiceComponent.builder().build().inject(this);
     }
 
     @Override
-    public void logIn(User user) {
+    public void login(User user) {
         System.out.println(user);
 
+        Subscriber subscriber = new Subscriber<Token>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Token token) {
+
+            }
+        };
+
+        loginService.login(subscriber, user.name(), user.password());
+        //mLoginRepository.login(subscriber, user.name(), user.password());
+
+        /*
         mLogInView.setLoadingIndicator(true);
 
         // TO-DO something
 
         mLogInView.setLoadingIndicator(false);
-
+        */
     }
 
     @Override

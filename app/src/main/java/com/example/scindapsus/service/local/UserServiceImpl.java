@@ -9,7 +9,7 @@ import com.example.scindapsus.model.UserModel;
  * Created by ej on 2/24/2017.
  */
 
-public abstract class UserService implements UserModel{
+public abstract class UserServiceImpl implements UserModel{
 
     private static SQLiteDatabase db;
 
