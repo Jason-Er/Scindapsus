@@ -4,7 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
-import com.example.scindapsus.service.login.DaggerLoginServiceComponent;
+
+import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.login.LoginService;
 
 import javax.inject.Inject;
@@ -26,7 +27,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public LoginPresenter(@NonNull LoginContract.View logInView) {
         mLogInView = checkNotNull(logInView, "logInView cannot be null!");
         mLogInView.setPresenter(this);
-        DaggerLoginServiceComponent.builder().build().inject(this);
+        DaggerServiceComponent.builder().build().inject(this);
     }
 
     @Override

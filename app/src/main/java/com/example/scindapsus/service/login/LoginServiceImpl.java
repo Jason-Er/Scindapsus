@@ -1,7 +1,9 @@
 package com.example.scindapsus.service.login;
 
+import android.util.Log;
+
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
-import com.example.scindapsus.data.source.remote.HttpMethods;
+import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
 import com.example.scindapsus.model.Token;
 
 import javax.inject.Inject;
@@ -13,14 +15,15 @@ import rx.Subscriber;
  */
 
 public class LoginServiceImpl implements LoginService {
-    @Inject HttpMethods httpMethods;
+    final String TAG = "LoginServiceImpl";
+    @Inject LoginHttpImpl loginHttpImpl;
 
     public LoginServiceImpl() {
         DaggerDataSourceComponent.builder().build().inject(this);
     }
     @Override
     public void login(Subscriber<Token> subscriber, String name, String password) {
-        System.out.println("Invoke LoginServiceImpl login!");
-        httpMethods.login(subscriber, name, password);
+        Log.i(TAG, "Invoke LoginServiceImpl login!");
+        loginHttpImpl.login(subscriber, name, password);
     }
 }
