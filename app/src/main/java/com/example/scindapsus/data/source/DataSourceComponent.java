@@ -12,5 +12,5 @@ import dagger.Component;
 @Singleton
 @Component(modules={DataSourceModule.class})
 public interface DataSourceComponent {
-    void inject(LoginServiceImpl loginService);
+    void inject(LoginServiceImpl loginServiceImpl);
 }
