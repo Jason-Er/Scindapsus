@@ -1,15 +1,14 @@
 package com.example.scindapsus.data.source;
 
 import com.example.scindapsus.service.login.LoginServiceImpl;
-
-import javax.inject.Singleton;
+import com.example.scindapsus.util.DataSourceScope;
 
 import dagger.Component;
 
 /**
  * Created by ej on 3/3/2017.
  */
-@Singleton
+@DataSourceScope
 @Component(modules={DataSourceModule.class})
 public interface DataSourceComponent {
     void inject(LoginServiceImpl loginServiceImpl);

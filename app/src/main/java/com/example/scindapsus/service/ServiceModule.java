@@ -2,8 +2,7 @@ package com.example.scindapsus.service;
 
 import com.example.scindapsus.service.login.LoginService;
 import com.example.scindapsus.service.login.LoginServiceImpl;
-
-import javax.inject.Singleton;
+import com.example.scindapsus.util.ServiceScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,7 +12,7 @@ import dagger.Provides;
  */
 @Module
 public class ServiceModule {
-    @Singleton
+    @ServiceScope
     @Provides
     public LoginService provideLoginService(){
         return new LoginServiceImpl();

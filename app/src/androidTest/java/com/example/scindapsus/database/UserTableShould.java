@@ -43,7 +43,7 @@ public class UserTableShould extends CustomRunner {
         cursor.close();
         db.close();
     }
-
+    /*
     @Test
     public void be_able_to_return_cursor_with_all_default_authors() throws Exception {
         SQLiteDatabase db = givenWritableDatabase();
@@ -64,7 +64,7 @@ public class UserTableShould extends CustomRunner {
 //        User author = User.MAPPER.map(cursor);
 //        assertNotNull(author);
     }
-
+    */
     private SQLiteDatabase givenWritableDatabase() {
         return DbCommon.givenWritableDatabase(context);
     }
