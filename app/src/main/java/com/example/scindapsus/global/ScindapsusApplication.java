@@ -15,11 +15,11 @@ public class ScindapsusApplication extends Application {
         super.onCreate();
         // DatabaseManager.initialize(LocalDbHelper.getInstance(this));
         mApplicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(getApplicationContext()))
+                .applicationModule(new ApplicationModule(this))
                 .build();
     }
 
-    public ApplicationComponent getDataSourceComponent() {
+    public ApplicationComponent getAppComponent() {
         return mApplicationComponent;
     }
 }

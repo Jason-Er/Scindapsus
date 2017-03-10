@@ -1,6 +1,6 @@
 package com.example.scindapsus.global;
 
-import android.content.Context;
+import android.app.Application;
 
 import java.util.Properties;
 
@@ -17,5 +17,5 @@ public interface ApplicationComponent {
 
     Properties getProperties();
 
-    Context getContext();
+    Application getApplication();
 }

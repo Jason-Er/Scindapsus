@@ -2,6 +2,7 @@ package com.example.scindapsus.vp.login;
 
 import android.support.annotation.NonNull;
 
+import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
 
@@ -24,10 +25,12 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Inject LoginService loginService;
 
-    public LoginPresenter(@NonNull LoginContract.View logInView) {
+    public LoginPresenter(@NonNull LoginContract.View logInView, @NonNull ApplicationComponent applicationComponent) {
         mLogInView = checkNotNull(logInView, "logInView cannot be null!");
         mLogInView.setPresenter(this);
-        DaggerServiceComponent.builder().build().inject(this);
+        DaggerServiceComponent.builder()
+                .applicationComponent(applicationComponent)
+                .build().inject(this);
     }
 
     @Override
@@ -54,13 +57,15 @@ public class LoginPresenter implements LoginContract.Presenter {
         loginService.login(subscriber, user.name(), user.password());
         //mLoginRepository.login(subscriber, user.name(), user.password());
 
-        /*
+
         mLogInView.setLoadingIndicator(true);
 
         // TO-DO something
 
         mLogInView.setLoadingIndicator(false);
-        */
+
+
+
     }
 
     @Override

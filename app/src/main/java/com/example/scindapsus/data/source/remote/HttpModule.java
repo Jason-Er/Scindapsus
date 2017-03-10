@@ -1,6 +1,6 @@
 package com.example.scindapsus.data.source.remote;
 
-import com.example.scindapsus.util.DataSourceFuncModel;
+import com.example.scindapsus.util.DataSourceFuncModelScope;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -19,13 +19,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class HttpModule {
-    @DataSourceFuncModel
+    @DataSourceFuncModelScope
     @Provides
-    public Retrofit provideRetrofit(){ //Properties properties
-        //String BASE_URL = properties.getProperty("BASE_URL");
-        //int DEFAULT_TIMEOUT = Integer.parseInt(properties.getProperty("DEFAULT_TIMEOUT"));
-        String BASE_URL = "http://192.1.112.31:8448/";
-        int DEFAULT_TIMEOUT =5;
+    public Retrofit provideRetrofit(Properties properties){
+        String BASE_URL = properties.getProperty("BASE_URL");
+        int DEFAULT_TIMEOUT = Integer.parseInt(properties.getProperty("DEFAULT_TIMEOUT"));
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return new Retrofit.Builder()

@@ -1,7 +1,12 @@
 package com.example.scindapsus.data.source;
 
+import android.app.Application;
+
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
+import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.util.DataSourceScope;
+
+import java.util.Properties;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,7 +18,7 @@ import dagger.Provides;
 public class DataSourceModule {
     @DataSourceScope
     @Provides
-    public LoginHttpImpl provideLoginHttpImpl(){
-        return new LoginHttpImpl();
+    public LoginHttpImpl provideLoginHttpImpl(ApplicationComponent applicationComponent){
+        return new LoginHttpImpl(applicationComponent);
     }
 }

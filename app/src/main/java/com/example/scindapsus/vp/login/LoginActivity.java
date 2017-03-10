@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.global.ScindapsusApplication;
 import com.example.scindapsus.util.ActivityUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Create the presenter
-        new LoginPresenter(loginFragment);
+        new LoginPresenter(loginFragment, ((ScindapsusApplication)getApplication()).getAppComponent());
 
     }
 }

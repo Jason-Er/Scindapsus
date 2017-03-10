@@ -1,14 +1,11 @@
 package com.example.scindapsus.global;
 
-import android.content.Context;
+import android.app.Application;
 import com.example.scindapsus.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,28 +15,28 @@ import dagger.Provides;
  */
 @Module
 public final class ApplicationModule {
-    private final Context mContext;
-    private final Properties mProperties;
+    private final Application application;
+    private final Properties properties;
 
-    ApplicationModule(Context context) {
-        this.mContext = context;
-        this.mProperties = new Properties();
-        InputStream is = context.getResources().openRawResource(R.raw.config);
+    ApplicationModule(Application application) {
+        this.application = application;
+        this.properties = new Properties();
+        InputStream is = application.getResources().openRawResource(R.raw.config);
         try {
-            mProperties.load(is);
+            properties.load(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Provides
-    public Context provideContext() {
-        return mContext;
+    public Application provideApplication() {
+        return application;
     }
 
     @Provides
     public Properties provideProperties(){
-        return mProperties;
+        return properties;
     }
 
 }
