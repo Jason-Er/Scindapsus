@@ -1,13 +1,11 @@
 package com.example.scindapsus.data.source.remote.login;
 
-import android.app.Application;
 import android.util.Log;
 
 import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Auth;
 import com.example.scindapsus.model.Token;
-
-import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -35,7 +33,7 @@ public class LoginHttpImpl {
 
     public void login(Subscriber<Token> subscriber, String name, String password){
         Log.i(TAG,"Invoke method login");
-        loginHttp.login(name, password)
+        loginHttp.login(Auth.newInstance(name, password))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
