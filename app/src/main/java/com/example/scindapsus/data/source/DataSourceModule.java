@@ -1,8 +1,13 @@
 package com.example.scindapsus.data.source;
 
-import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
+import android.app.Application;
 
-import javax.inject.Singleton;
+import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
+import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.util.DataSourceScope;
+
+import java.util.Properties;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -11,9 +16,9 @@ import dagger.Provides;
  */
 @Module
 public class DataSourceModule {
-    @Singleton
+    @DataSourceScope
     @Provides
-    public LoginHttpImpl provideHttpMethods(){
-        return new LoginHttpImpl();
+    public LoginHttpImpl provideLoginHttpImpl(ApplicationComponent applicationComponent){
+        return new LoginHttpImpl(applicationComponent);
     }
 }

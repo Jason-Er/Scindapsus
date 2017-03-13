@@ -1,32 +1,39 @@
 package com.example.scindapsus.data.source.remote;
 
-import java.util.concurrent.TimeUnit;
+import com.example.scindapsus.model.adapter.AuthAdapterFactory;
+import com.example.scindapsus.util.DataSourceFuncModelScope;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import javax.inject.Singleton;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
 import dagger.Provides;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * Created by ej on 3/6/2017.
  */
 @Module
 public class HttpModule {
-    public static final String BASE_URL = "https://localhost/";
-    private static final int DEFAULT_TIMEOUT = 5;
-
-    @Singleton
+    @DataSourceFuncModelScope
     @Provides
-    public Retrofit provideRetrofit(){
+    public Retrofit provideRetrofit(Properties properties){
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(AuthAdapterFactory.create()).create();
+
+        String BASE_URL = properties.getProperty("BASE_URL");
+        int DEFAULT_TIMEOUT = Integer.parseInt(properties.getProperty("DEFAULT_TIMEOUT"));
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return new Retrofit.Builder()
                 .client(httpClientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();

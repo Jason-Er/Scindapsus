@@ -3,6 +3,8 @@ package com.example.scindapsus.data.source.remote.login;
 import android.util.Log;
 
 import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
+import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Auth;
 import com.example.scindapsus.model.Token;
 
 import javax.inject.Inject;
@@ -22,15 +24,17 @@ public class LoginHttpImpl {
     @Inject Retrofit retrofit;
     private LoginHttp loginHttp;
 
-    public LoginHttpImpl() {
-        DaggerHttpComponent.builder().build().inject(this);
+    public LoginHttpImpl(ApplicationComponent applicationComponent) {
+        DaggerHttpComponent.builder()
+                .applicationComponent(applicationComponent)
+                .build().inject(this);
         loginHttp = retrofit.create(LoginHttp.class);
     }
 
     public void login(Subscriber<Token> subscriber, String name, String password){
         Log.i(TAG,"Invoke method login");
-        loginHttp.login(name, password)
-                .subscribeOn(Schedulers.computation())
+        loginHttp.login(Auth.newInstance(name, password))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }

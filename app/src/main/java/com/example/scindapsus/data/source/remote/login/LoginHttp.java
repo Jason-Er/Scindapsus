@@ -1,9 +1,13 @@
 package com.example.scindapsus.data.source.remote.login;
 
+import com.example.scindapsus.model.Auth;
 import com.example.scindapsus.model.Token;
 
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -12,7 +16,26 @@ import rx.Observable;
  */
 
 public interface LoginHttp {
-    @FormUrlEncoded
+
+    @Headers({"Content-Type: application/json"})
     @POST("actions/login")
-    Observable<Token> login(@Field("name") String name, @Field("password") String password);
+    Observable<Token> login(@Body Auth auth);
+
+    /*
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("server?")
+    Observable<GetLoginJson> Login(@Body RequestBody body);
+
+    @GET("driver/v1/driver")
+    Call<Driver> getAuthorizedDriver(@Header("authorization") String token,
+                                 @Header("driver_id") Integer id);
+
+    @POST("/api/v1/user/controller")
+    void registerController(
+            @Body MyBundleObject registrationBundle,
+            @Header("x-company-device-token") String companyDeviceToken,
+            @Header("x-company-device-guid") String companyDeviceGuid,
+            Callback<ResponseObject> cb);
+            */
 }
