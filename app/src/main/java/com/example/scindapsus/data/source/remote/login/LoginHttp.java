@@ -4,6 +4,7 @@ import com.example.scindapsus.model.Auth;
 import com.example.scindapsus.model.Token;
 
 import okhttp3.RequestBody;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -19,7 +20,7 @@ public interface LoginHttp {
 
     @Headers({"Content-Type: application/json"})
     @POST("actions/login")
-    Observable<Token> login(@Body Auth auth);
+    Observable<Response<Void>> login(@Body Auth auth);
 
     /*
 
