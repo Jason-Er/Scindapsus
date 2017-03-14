@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
+import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,7 @@ import rx.schedulers.Schedulers;
 public class LoginHttpImpl {
     final static String TAG = "LoginHttpImpl";
 
+    @Inject Properties properties;
     @Inject RetrofitUtil retrofitUtil;
     private LoginHttp loginHttp;
 
@@ -58,8 +60,11 @@ public class LoginHttpImpl {
 
                     @Override
                     public void onNext(Response<Void> response) {
-                        String token = response.headers().get("Authorization");
-                        Token.newInstance(token);
+                        String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
+                        String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
+                        String token = response.headers().get(authHeaderKey);
+                        String[] arr = token.split(tokenPrefix+" ");
+                        Token.newInstance(arr[1]);
                         Log.i(TAG,"Invoke method login token:"+token);
                     }
                 });
