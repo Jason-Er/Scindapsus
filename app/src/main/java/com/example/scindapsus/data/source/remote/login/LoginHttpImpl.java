@@ -11,7 +11,11 @@ import com.example.scindapsus.model.adapter.AuthAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 import javax.inject.Inject;
+
+import retrofit2.Response;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,6 +36,7 @@ public class LoginHttpImpl {
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(AuthAdapterFactory.create()).create();
+        //Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
@@ -40,6 +45,23 @@ public class LoginHttpImpl {
         loginHttp.login(Auth.newInstance(name, password))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(new Subscriber<Response<Void>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.i(TAG,"Invoke method login token");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG,"Invoke method login token:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Response<Void> response) {
+                        String token = response.headers().get("Authorization");
+                        Token.newInstance(token);
+                        Log.i(TAG,"Invoke method login token:"+token);
+                    }
+                });
     }
 }
