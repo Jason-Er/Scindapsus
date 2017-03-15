@@ -20,6 +20,7 @@ import retrofit2.Response;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -29,8 +30,10 @@ import rx.schedulers.Schedulers;
 public class LoginHttpImpl {
     final static String TAG = "LoginHttpImpl";
 
-    @Inject Properties properties;
-    @Inject RetrofitUtil retrofitUtil;
+    @Inject
+    Properties properties;
+    @Inject
+    RetrofitUtil retrofitUtil;
     private LoginHttp loginHttp;
 
     public LoginHttpImpl(ApplicationComponent applicationComponent) {
@@ -42,31 +45,21 @@ public class LoginHttpImpl {
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public void login(Subscriber<Token> subscriber, String name, String password){
-        Log.i(TAG,"Invoke method login");
+    public void login(Subscriber<Token> subscriber, String name, String password) {
+        Log.i(TAG, "Invoke method login");
         loginHttp.login(Auth.newInstance(name, password))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Response<Void>>() {
+                .map(new Func1<Response<Void>, Token>() {
                     @Override
-                    public void onCompleted() {
-                        Log.i(TAG,"Invoke method login token");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG,"Invoke method login token:"+e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Response<Void> response) {
+                    public Token call(Response<Void> voidResponse) {
                         String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
                         String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
-                        String token = response.headers().get(authHeaderKey);
-                        String[] arr = token.split(tokenPrefix+" ");
-                        Token.newInstance(arr[1]);
-                        Log.i(TAG,"Invoke method login token:"+token);
+                        String token = voidResponse.headers().get(authHeaderKey);
+                        String[] arr = token.split(tokenPrefix + " ");
+                        return Token.newInstance(arr[1]);
                     }
-                });
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
     }
 }
