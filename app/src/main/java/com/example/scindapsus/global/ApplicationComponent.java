@@ -1,6 +1,7 @@
 package com.example.scindapsus.global;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import java.util.Properties;
 
@@ -18,4 +19,6 @@ public interface ApplicationComponent {
     Properties getProperties();
 
     Application getApplication();
+
+    SharedPreferences getSharedPreferences();
 }

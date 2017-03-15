@@ -1,6 +1,8 @@
 package com.example.scindapsus.global;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+
 import com.example.scindapsus.R;
 
 import java.io.IOException;
@@ -37,6 +39,11 @@ public final class ApplicationModule {
     @Provides
     public Properties provideProperties(){
         return properties;
+    }
+
+    @Provides
+    public SharedPreferences provideSharedPreferences() {
+        return application.getSharedPreferences("scindapsus", application.MODE_PRIVATE);
     }
 
 }
