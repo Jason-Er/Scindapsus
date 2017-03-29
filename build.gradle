@@ -47,4 +47,11 @@ ext {
     adapterrxjavaVersion = '2.1.0'
     convertergsonVersion = '2.2.0'
     daggerVersion = '2.7'
+
+    appcompatv7Version = '25.3.1'
+    constraintlayoutVersion = '1.0.0-alpha8'
+    supportv4Version = '25.3.1'
+    javaxannotationVersion = '10.0-b28'
+    recyclerviewv7Version = '25.3.1'
+
 }

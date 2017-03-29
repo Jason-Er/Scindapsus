@@ -16,13 +16,13 @@ public class LoginActivity extends AppCompatActivity {
 
         // attach fragment to main layout
         LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.contentFrame);
+                .findFragmentById(R.id.login_frame);
 
         if (loginFragment == null) {
             loginFragment = new LoginFragment();
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    loginFragment, R.id.contentFrame);
+                    loginFragment, R.id.login_frame);
         }
 
         // Create the presenter

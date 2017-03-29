@@ -58,9 +58,9 @@ dependencies {
     provided "com.ryanharter.auto.value:auto-value-gson:$rootProject.autovaluegsonVersion"
     apt "com.ryanharter.auto.value:auto-value-gson:$rootProject.autovaluegsonVersion"
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
-    compile 'com.android.support:support-v4:25.3.1'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile "com.android.support:appcompat-v7:$rootProject.appcompatv7Version"
+    compile "com.android.support.constraint:constraint-layout:$rootProject.constraintlayoutVersion"
+    compile "com.android.support:support-v4:$rootProject.supportv4Version"
+    provided "org.glassfish:javax.annotation:$rootProject.javaxannotationVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.recyclerviewv7Version"
 }

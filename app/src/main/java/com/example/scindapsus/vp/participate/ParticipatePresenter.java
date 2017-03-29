@@ -1,4 +1,4 @@
-package com.example.scindapsus.vp.browse;
+package com.example.scindapsus.vp.participate;
 
 
 import android.support.annotation.NonNull;
@@ -12,18 +12,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by ej on 3/29/2017.
  */
 
-public class BrowsePresenter implements BrowseContract.Presenter{
+public class ParticipatePresenter implements ParticipateContract.Presenter{
 
-    private final BrowseContract.View mBrowseView;
+    private final ParticipateContract.View mParticipateView;
 
     @Override
     public void start() {
 
     }
 
-    public BrowsePresenter(@NonNull BrowseContract.View browseView, @NonNull ApplicationComponent applicationComponent) {
-        mBrowseView = checkNotNull(browseView, "browseView cannot be null!");
-        mBrowseView.setPresenter(this);
+    public ParticipatePresenter(@NonNull ParticipateContract.View participateView, @NonNull ApplicationComponent applicationComponent) {
+        mParticipateView = checkNotNull(participateView, "participateView cannot be null!");
+        mParticipateView.setPresenter(this);
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
