@@ -1,5 +1,7 @@
 package com.example.scindapsus.vp.browse;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -8,6 +10,11 @@ import com.example.scindapsus.global.ScindapsusApplication;
 import com.example.scindapsus.util.ActivityUtils;
 
 public class BrowseActivity extends AppCompatActivity {
+
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, BrowseActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

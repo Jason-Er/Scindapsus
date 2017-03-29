@@ -1,5 +1,7 @@
 package com.example.scindapsus.vp.participate;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,6 +10,10 @@ import com.example.scindapsus.global.ScindapsusApplication;
 import com.example.scindapsus.util.ActivityUtils;
 
 public class ParticipateActivity extends AppCompatActivity {
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, ParticipateActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
