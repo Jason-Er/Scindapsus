@@ -1,5 +1,7 @@
 package com.example.scindapsus.model;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by ej on 3/13/2017.
  */
 @AutoValue
-public abstract class Auth {
+public abstract class Auth implements Parcelable {
     @SerializedName("username")
     public abstract String username();
 

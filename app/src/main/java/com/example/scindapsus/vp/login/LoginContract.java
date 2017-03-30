@@ -1,5 +1,7 @@
 package com.example.scindapsus.vp.login;
 
+import android.os.Parcelable;
+
 import com.example.scindapsus.global.BasePresenter;
 import com.example.scindapsus.global.BaseView;
 import com.example.scindapsus.model.User;
@@ -14,13 +16,13 @@ public interface LoginContract {
 
         void setLoadingIndicator(boolean active);
 
-        void navigateToBrowse();
+        void navigateToBrowse(Parcelable parcelable);
 
     }
 
     interface Presenter extends BasePresenter {
 
-        void login(User user);
+        void login(final User user);
 
         void logUp();
     }
