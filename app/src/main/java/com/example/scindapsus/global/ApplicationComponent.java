@@ -17,8 +17,9 @@ import dagger.Component;
 public interface ApplicationComponent {
 
     Properties getProperties();
-
     Application getApplication();
-
     SharedPreferences getSharedPreferences();
+
+    void inject(BaseActivity baseActivity);
+
 }

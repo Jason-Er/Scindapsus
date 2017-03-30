@@ -14,6 +14,8 @@ public interface LoginContract {
 
         void setLoadingIndicator(boolean active);
 
+        void navigateToBrowse();
+
     }
 
     interface Presenter extends BasePresenter {

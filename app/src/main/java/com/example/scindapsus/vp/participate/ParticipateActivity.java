@@ -3,13 +3,12 @@ package com.example.scindapsus.vp.participate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.global.BaseActivity;
 import com.example.scindapsus.global.ScindapsusApplication;
-import com.example.scindapsus.util.ActivityUtils;
 
-public class ParticipateActivity extends AppCompatActivity {
+public class ParticipateActivity extends BaseActivity {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, ParticipateActivity.class);
@@ -27,8 +26,7 @@ public class ParticipateActivity extends AppCompatActivity {
         if (participateFragment == null) {
             participateFragment = new ParticipateFragment();
 
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    participateFragment, R.id.participate_frame);
+            addFragment(R.id.participate_frame, participateFragment);
         }
 
         // Create the presenter

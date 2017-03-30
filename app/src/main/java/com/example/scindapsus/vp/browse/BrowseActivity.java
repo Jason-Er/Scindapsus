@@ -2,15 +2,13 @@ package com.example.scindapsus.vp.browse;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.global.BaseActivity;
 import com.example.scindapsus.global.ScindapsusApplication;
-import com.example.scindapsus.util.ActivityUtils;
 
-public class BrowseActivity extends AppCompatActivity {
-
+public class BrowseActivity extends BaseActivity {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, BrowseActivity.class);
@@ -28,8 +26,7 @@ public class BrowseActivity extends AppCompatActivity {
         if (browseFragment == null) {
             browseFragment = new BrowseFragment();
 
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    browseFragment, R.id.browse_frame);
+            addFragment(R.id.browse_frame, browseFragment);
         }
 
         // Create the presenter

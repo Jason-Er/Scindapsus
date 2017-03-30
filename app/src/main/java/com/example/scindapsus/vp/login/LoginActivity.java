@@ -1,13 +1,12 @@
 package com.example.scindapsus.vp.login;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.global.BaseActivity;
 import com.example.scindapsus.global.ScindapsusApplication;
-import com.example.scindapsus.util.ActivityUtils;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +20,7 @@ public class LoginActivity extends AppCompatActivity {
         if (loginFragment == null) {
             loginFragment = new LoginFragment();
 
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    loginFragment, R.id.login_frame);
+            addFragment(R.id.login_frame, loginFragment);
         }
 
         // Create the presenter
