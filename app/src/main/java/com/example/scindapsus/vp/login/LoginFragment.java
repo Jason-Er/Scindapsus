@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.global.BaseActivity;
 import com.example.scindapsus.model.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -72,5 +73,10 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         if (active) {
             // show Hourglass
         }
+    }
+
+    @Override
+    public void navigateToBrowse() {
+        ((BaseActivity)getActivity()).getNavigator().navigateToBrowse(getContext());
     }
 }

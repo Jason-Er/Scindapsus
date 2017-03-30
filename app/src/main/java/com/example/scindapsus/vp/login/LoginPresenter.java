@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
-    private final String TAG = "LoginPresenter";
+    private final String TAG = LoginPresenter.class.getName();
     private final LoginContract.View mLogInView;
 
     @Inject
@@ -56,9 +56,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onNext(Token token) {
-                sharedService.saveToken(token.token());
-                String mtoken = sharedService.getToken();
                 Log.i(TAG, "onNext");
+                sharedService.saveToken(token.token());
+                mLogInView.navigateToBrowse();
             }
         };
 
