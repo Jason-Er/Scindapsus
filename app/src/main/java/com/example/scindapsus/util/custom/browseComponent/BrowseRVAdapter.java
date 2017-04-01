@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.scindapsus.R;
 
@@ -26,9 +25,9 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVViewHolder> {
     public BrowseRVViewHolder onCreateViewHolder(ViewGroup parent,
                                                          int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, parent, false);
 
-        BrowseRVViewHolder vh = new BrowseRVViewHolder((TextView)v);
+        BrowseRVViewHolder vh = new BrowseRVViewHolder(v);
         return vh;
     }
 
@@ -37,7 +36,7 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVViewHolder> {
     public void onBindViewHolder(BrowseRVViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.setText(mDataset[position]);
+        holder.populate(mDataset[position]);
 
     }
 

@@ -63,4 +63,6 @@ dependencies {
     compile "com.android.support:support-v4:$rootProject.supportv4Version"
     provided "org.glassfish:javax.annotation:$rootProject.javaxannotationVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.recyclerviewv7Version"
+    compile "com.android.support:cardview-v7:$rootProject.recyclerviewv7Version"
+
 }
