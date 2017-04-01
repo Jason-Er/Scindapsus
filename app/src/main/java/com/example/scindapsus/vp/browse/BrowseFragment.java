@@ -38,7 +38,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(root.getContext()); //new BrowseRVLayoutManager();
+        mLayoutManager = new BrowseRVLayoutManager();
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         RecyclerView.ItemDecoration itemDecoration =
