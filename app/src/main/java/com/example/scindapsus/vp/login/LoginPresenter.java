@@ -42,8 +42,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(final User user) {
-        System.out.println(user);
-
+        /*
         Subscriber subscriber = new Subscriber<Token>() {
             @Override
             public void onCompleted() {
@@ -72,7 +71,8 @@ public class LoginPresenter implements LoginContract.Presenter {
         // TO-DO something
 
         mLogInView.setLoadingIndicator(false);
-
+        */
+        mLogInView.navigateToBrowse(user);
 
     }
 

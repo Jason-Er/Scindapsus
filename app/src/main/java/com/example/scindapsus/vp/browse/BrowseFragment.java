@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.scindapsus.R;
-import com.example.scindapsus.vp.common.Adapter.MyAdapter;
+import com.example.scindapsus.util.custom.browseComponent.BrowseRVAdapter;
 
 /**
  * Created by ej on 3/29/2017.
@@ -40,7 +40,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(mDataset);
+        mAdapter = new BrowseRVAdapter(mDataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return root;
