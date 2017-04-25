@@ -37,10 +37,15 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mRecyclerView.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.scrollToPosition(0);
+        mRecyclerView.setLayoutManager(layoutManager);
+        /*
         // use a linear layout manager
         mLayoutManager = new BrowseRVLayoutManager();
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        */
         RecyclerView.ItemDecoration itemDecoration =
                 new DividerItemDecoration(root.getContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
