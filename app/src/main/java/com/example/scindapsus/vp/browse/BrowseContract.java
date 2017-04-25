@@ -11,11 +11,11 @@ public interface BrowseContract {
 
     interface View extends BaseView<BrowseContract.Presenter> {
 
+        void setLoadingIndicator(boolean active);
 
     }
 
     interface Presenter extends BasePresenter {
-
-
+        void loadPlaysInfo(boolean forceUpdate);
     }
 }

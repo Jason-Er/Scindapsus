@@ -16,7 +16,7 @@ import rx.Subscriber;
  */
 
 public class LoginServiceImpl implements LoginService {
-    final String TAG = "LoginServiceImpl";
+    final String TAG = LoginServiceImpl.class.getName();
     @Inject LoginHttpImpl loginHttpImpl;
 
     public LoginServiceImpl(ApplicationComponent applicationComponent) {

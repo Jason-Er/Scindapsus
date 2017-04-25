@@ -16,17 +16,22 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
 
     private final ParticipateContract.View mParticipateView;
 
-    @Override
-    public void start() {
-
-    }
-
     public ParticipatePresenter(@NonNull ParticipateContract.View participateView, @NonNull ApplicationComponent applicationComponent) {
         mParticipateView = checkNotNull(participateView, "participateView cannot be null!");
         mParticipateView.setPresenter(this);
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
+
+    }
+
+    @Override
+    public void subscribe() {
+
+    }
+
+    @Override
+    public void unsubscribe() {
 
     }
 }
