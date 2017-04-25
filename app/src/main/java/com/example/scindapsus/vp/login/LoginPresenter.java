@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Auth;
 import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
 
@@ -40,9 +41,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void login(User user) {
-        System.out.println(user);
-
+    public void login(final User user) {
+        /*
         Subscriber subscriber = new Subscriber<Token>() {
             @Override
             public void onCompleted() {
@@ -58,7 +58,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             public void onNext(Token token) {
                 Log.i(TAG, "onNext");
                 sharedService.saveToken(token.token());
-                mLogInView.navigateToBrowse();
+                mLogInView.navigateToBrowse(user);
             }
         };
 
@@ -71,7 +71,8 @@ public class LoginPresenter implements LoginContract.Presenter {
         // TO-DO something
 
         mLogInView.setLoadingIndicator(false);
-
+        */
+        mLogInView.navigateToBrowse(user);
 
     }
 
