@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.http.PageResult;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.shared.SharedService;
@@ -64,7 +65,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             mBrowseView.setLoadingIndicator(true);
         }
 
-        Subscriber subscriber = new Subscriber<List<PlayInfo>>() {
+        Subscriber subscriber = new Subscriber<PageResult<List<PlayInfo>>>() {
             @Override
             public void onCompleted() {
                 Log.i(TAG, "onCompleted");
@@ -77,7 +78,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             }
 
             @Override
-            public void onNext(List<PlayInfo> subjects) {
+            public void onNext(PageResult<List<PlayInfo>> pageResult) {
                 Log.i(TAG, "onNext");
 
             }

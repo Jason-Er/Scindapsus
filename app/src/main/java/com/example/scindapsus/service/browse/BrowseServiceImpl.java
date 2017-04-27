@@ -4,6 +4,7 @@ import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.http.PageResult;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class BrowseServiceImpl implements BrowseService {
                 .build().inject(this);
     }
     @Override
-    public void loadPlaysInfo(String token, Subscriber<List<PlayInfo>> subscriber, int page) {
+    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page) {
         browseHttpImpl.loadPlaysInfo(token, subscriber,page);
     }
 }

@@ -40,22 +40,16 @@ public class BrowseHttpImpl {
         browseHttp = retrofitUtil.createApi(BrowseHttp.class);
     }
 
-    public void loadPlaysInfo(String token, Subscriber<List<PlayInfo>> subscriber, int page, int size) {
+    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page, int size) {
         //String token = sharedService.getToken();
         //String token = "";
-        browseHttp.loadPlaysInfo(token) //loadPlaysInfo(token, page, size)
-                .map(new Func1<PageResult<List<PlayInfo>>, List<PlayInfo>>() {
-                    @Override
-                    public List<PlayInfo> call(PageResult<List<PlayInfo>> pageResult) {
-                        return pageResult.getContent();
-                    }
-                })
+        browseHttp.loadPlaysInfo(token, page, size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
 
-    public void loadPlaysInfo(String token, Subscriber<List<PlayInfo>> subscriber, int page) {
+    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page) {
         loadPlaysInfo(token, subscriber, page, Integer.parseInt(properties.getProperty("DEFAULT_PAGE_SIZE")));
     }
 }
