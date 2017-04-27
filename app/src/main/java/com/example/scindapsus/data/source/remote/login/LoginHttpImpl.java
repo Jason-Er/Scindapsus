@@ -11,7 +11,6 @@ import com.example.scindapsus.model.adapter.AuthAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -28,12 +27,13 @@ import rx.schedulers.Schedulers;
  */
 
 public class LoginHttpImpl {
-    final static String TAG = "LoginHttpImpl";
+    final static String TAG = LoginHttpImpl.class.getName();
 
     @Inject
     Properties properties;
     @Inject
     RetrofitUtil retrofitUtil;
+
     private LoginHttp loginHttp;
 
     public LoginHttpImpl(ApplicationComponent applicationComponent) {
@@ -41,7 +41,6 @@ public class LoginHttpImpl {
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(AuthAdapterFactory.create()).create();
-        //Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 

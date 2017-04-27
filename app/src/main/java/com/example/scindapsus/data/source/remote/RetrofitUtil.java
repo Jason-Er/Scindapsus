@@ -21,6 +21,20 @@ public class RetrofitUtil {
     public RetrofitUtil(@NonNull Properties properties) {
         RetrofitUtil.properties = properties;
     }
+
+    public static <T> T createApi(@NonNull Class<T> tClass) {
+        String BASE_URL = properties.getProperty("BASE_URL");
+        int DEFAULT_TIMEOUT = Integer.parseInt(properties.getProperty("DEFAULT_TIMEOUT"));
+        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+        httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+        return new Retrofit.Builder()
+                .client(httpClientBuilder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl(BASE_URL)
+                .build()
+                .create(tClass);
+    }
     public static <T> T createApi(@NonNull Class<T> tClass, Gson gson) {
         String BASE_URL = properties.getProperty("BASE_URL");
         int DEFAULT_TIMEOUT = Integer.parseInt(properties.getProperty("DEFAULT_TIMEOUT"));

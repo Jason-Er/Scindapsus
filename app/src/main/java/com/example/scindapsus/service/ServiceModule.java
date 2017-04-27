@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.service.browse.BrowseService;
+import com.example.scindapsus.service.browse.BrowseServiceImpl;
 import com.example.scindapsus.service.login.LoginService;
 import com.example.scindapsus.service.login.LoginServiceImpl;
 import com.example.scindapsus.service.shared.SharedService;
@@ -23,6 +25,12 @@ public class ServiceModule {
     @Provides
     public LoginService provideLoginService(ApplicationComponent applicationComponent){
         return new LoginServiceImpl(applicationComponent);
+    }
+
+    @ServiceScope
+    @Provides
+    public BrowseService provideBrowseService(ApplicationComponent applicationComponent){
+        return new BrowseServiceImpl(applicationComponent);
     }
 
     @ServiceScope

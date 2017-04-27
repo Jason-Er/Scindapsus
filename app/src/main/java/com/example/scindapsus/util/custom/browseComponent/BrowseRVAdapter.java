@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.scindapsus.R;
 
@@ -22,14 +23,16 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView mTextView;
         // each data item is just a string in this case
         public ViewHolder(View v) {
             super(v);
+            mTextView = (TextView)v.findViewById(R.id.info_text);
 
         }
 
         public void populate(String s) {
-
+            mTextView.setText(s);
         }
     }
 

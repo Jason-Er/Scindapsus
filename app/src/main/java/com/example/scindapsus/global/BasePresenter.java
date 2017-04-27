@@ -5,5 +5,6 @@ package com.example.scindapsus.global;
  */
 
 public interface BasePresenter {
-    void start();
+    void subscribe();
+    void unsubscribe();
 }
