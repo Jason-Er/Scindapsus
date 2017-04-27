@@ -12,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.util.custom.browseComponent.BrowseRVAdapter;
 import com.example.scindapsus.util.custom.browseComponent.BrowseRVLayoutManager;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -80,6 +83,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
 
     @Override
     public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showPlaysInfo(List<PlayInfo> playsInfo) {
 
     }
 }

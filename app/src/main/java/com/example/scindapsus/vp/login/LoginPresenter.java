@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.Auth;
+
 import com.example.scindapsus.model.Token;
 import com.example.scindapsus.model.User;
 
@@ -42,7 +42,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(final User user) {
-        /*
+
         Subscriber subscriber = new Subscriber<Token>() {
             @Override
             public void onCompleted() {
@@ -51,6 +51,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
+                Log.i(TAG, "onError");
 
             }
 
@@ -63,16 +64,14 @@ public class LoginPresenter implements LoginContract.Presenter {
         };
 
         loginService.login(subscriber, user.name(), user.password());
-        //mLoginRepository.login(subscriber, user.name(), user.password());
-
 
         mLogInView.setLoadingIndicator(true);
 
         // TO-DO something
 
         mLogInView.setLoadingIndicator(false);
-        */
-        mLogInView.navigateToBrowse(user);
+
+        // mLogInView.navigateToBrowse(user);
 
     }
 

@@ -19,7 +19,7 @@ import rx.Observable;
 public interface LoginHttp {
 
     @Headers({"Content-Type: application/json"})
-    @POST("actions/login")
+    @POST("/login")
     Observable<Response<Void>> login(@Body Auth auth);
 
     /*

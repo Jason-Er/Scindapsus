@@ -1,11 +1,15 @@
 package com.example.scindapsus.data.source.remote.browse;
 
-import com.example.scindapsus.model.Auth;
+import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.http.PageResult;
 
-import retrofit2.Response;
-import retrofit2.http.Body;
+import java.util.List;
+
+
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -13,7 +17,8 @@ import rx.Observable;
  */
 
 public interface BrowseHttp {
-    @Headers({"Content-Type: application/json"})
-    @POST("actions/login")
-    Observable<Response<Void>> loadPlaysInfo(@Body Auth auth);
+    @GET("/v1/model/playsInfo")
+    Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size);
+    @GET("/v1/model/playsInfo")
+    Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token);
 }

@@ -1,6 +1,8 @@
 package com.example.scindapsus.service.browse;
 
-import com.example.scindapsus.model.Token;
+import com.example.scindapsus.model.PlayInfo;
+
+import java.util.List;
 
 import rx.Subscriber;
 
@@ -9,5 +11,5 @@ import rx.Subscriber;
  */
 
 public interface BrowseService {
-    void loadPlaysInfo(Subscriber<Token> subscriber, int page);
+    void loadPlaysInfo(String token, Subscriber<List<PlayInfo>> subscriber, int page);
 }
