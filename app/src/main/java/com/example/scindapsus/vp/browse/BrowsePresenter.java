@@ -80,6 +80,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             @Override
             public void onNext(PageResult<List<PlayInfo>> pageResult) {
                 Log.i(TAG, "onNext");
+                processPlaysInfo(pageResult);
 
             }
 
@@ -89,7 +90,8 @@ public class BrowsePresenter implements BrowseContract.Presenter{
         browseService.loadPlaysInfo(token, subscriber, 0);
     }
 
-    private void processPlaysInfo(@NonNull List<PlayInfo> playsInfo) {
+    private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {
+        List<PlayInfo> playsInfo = pageResult.getContent();
         if (playsInfo.isEmpty()) {
             // Show a message indicating there are no tasks for that filter type.
             processEmptyPlaysInfo();

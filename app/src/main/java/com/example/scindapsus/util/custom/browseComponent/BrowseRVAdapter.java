@@ -1,12 +1,17 @@
 package com.example.scindapsus.util.custom.browseComponent;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.model.PlayInfo;
+
+import java.util.List;
 
 /**
  * Created by ej on 3/31/2017.
@@ -14,13 +19,12 @@ import com.example.scindapsus.R;
 
 public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHolder> {
 
-    private String[] dataset;
+    private final static String TAG = BrowseRVAdapter.class.getName();
+    private List<PlayInfo> dataset;
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public BrowseRVAdapter(String[] myDataset) {
+    public BrowseRVAdapter(List<PlayInfo> myDataset) {
         dataset = myDataset;
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
@@ -31,13 +35,15 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
 
         }
 
-        public void populate(String s) {
-            mTextView.setText(s);
+        public void populate(PlayInfo s) {
+            mTextView.setText(s.getExtract());
         }
     }
 
-    public void setDataset(String[] dataset) {
+    public void setDataset(@NonNull List<PlayInfo> dataset) {
+        Log.i(TAG, "setDataset");
         this.dataset = dataset;
+        notifyDataSetChanged();
     }
 
     // Create new views (invoked by the layout manager)
@@ -56,14 +62,15 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.populate(dataset[position]);
+        holder.populate(dataset.get(position));
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return dataset.length;
+        Log.i(TAG, "getItemCount size: "+dataset.size());
+        return dataset.size();
     }
 
 }
