@@ -27,16 +27,18 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public TextView extractView;
+        public TextView nameView;
         // each data item is just a string in this case
         public ViewHolder(View v) {
             super(v);
-            mTextView = (TextView)v.findViewById(R.id.info_text);
-
+            extractView = (TextView)v.findViewById(R.id.card_view_extract);
+            nameView = (TextView)v.findViewById(R.id.card_view_name);
         }
 
         public void populate(PlayInfo s) {
-            mTextView.setText(s.getExtract());
+            nameView.setText(s.getName());
+            extractView.setText(s.getExtract());
         }
     }
 
