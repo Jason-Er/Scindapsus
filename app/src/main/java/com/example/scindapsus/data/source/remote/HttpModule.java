@@ -1,6 +1,6 @@
 package com.example.scindapsus.data.source.remote;
 
-import com.example.scindapsus.util.DataSourceFuncModelScope;
+import com.example.scindapsus.util.label.DataSourceFuncModelScope;
 
 import java.util.Properties;
 

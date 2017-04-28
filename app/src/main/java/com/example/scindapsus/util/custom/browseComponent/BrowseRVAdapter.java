@@ -6,10 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.scindapsus.R;
-import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.PlayInfoEx;
 
 import java.util.List;
 
@@ -20,29 +21,33 @@ import java.util.List;
 public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHolder> {
 
     private final static String TAG = BrowseRVAdapter.class.getName();
-    private List<PlayInfo> dataset;
 
-    public BrowseRVAdapter(List<PlayInfo> myDataset) {
+    private List<PlayInfoEx> dataset;
+
+    public BrowseRVAdapter(List<PlayInfoEx> myDataset) {
         dataset = myDataset;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView extractView;
-        public TextView nameView;
+        private TextView extractView;
+        private TextView nameView;
+        private ImageView stillView;
         // each data item is just a string in this case
         public ViewHolder(View v) {
             super(v);
             extractView = (TextView)v.findViewById(R.id.card_view_extract);
             nameView = (TextView)v.findViewById(R.id.card_view_name);
+            stillView = (ImageView)v.findViewById(R.id.card_view_still);
         }
 
-        public void populate(PlayInfo s) {
+        public void populate(PlayInfoEx s) {
             nameView.setText(s.getName());
             extractView.setText(s.getExtract());
+            // stillView.setImageBitmap(s.getStill());
         }
     }
 
-    public void setDataset(@NonNull List<PlayInfo> dataset) {
+    public void setDataset(@NonNull List<PlayInfoEx> dataset) {
         Log.i(TAG, "setDataset");
         this.dataset = dataset;
         notifyDataSetChanged();

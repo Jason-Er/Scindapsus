@@ -1,13 +1,10 @@
 package com.example.scindapsus.data.source;
 
-import android.app.Application;
-
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
+import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.util.DataSourceScope;
-
-import java.util.Properties;
+import com.example.scindapsus.util.label.DataSourceScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,5 +23,10 @@ public class DataSourceModule {
     @Provides
     public BrowseHttpImpl provideBrowseHttpImpl(ApplicationComponent applicationComponent){
         return new BrowseHttpImpl(applicationComponent);
+    }
+    @DataSourceScope
+    @Provides
+    public ImageHttpImpl provideImageHttpImpl(ApplicationComponent applicationComponent){
+        return new ImageHttpImpl(applicationComponent);
     }
 }
