@@ -32,12 +32,13 @@ import okhttp3.Response;
  * Created by ej on 3/31/2017.
  */
 
-public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHolder> {
+public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHolder> implements View.OnClickListener {
 
     private final static String TAG = BrowseRVAdapter.class.getName();
 
     private List<PlayInfo> dataset;
     private Context context;
+    private OnItemClickListener mOnItemClickListener = null;
 
     @Inject
     SharedService sharedService;
@@ -50,11 +51,27 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
                 .build().inject(this);
     }
 
+
+    public static interface OnItemClickListener {
+        void onItemClick(View view , int position);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (mOnItemClickListener != null) {
+            mOnItemClickListener.onItemClick(view, (int)view.getTag());
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView extractView;
         private TextView nameView;
         private ImageView stillView;
-        // each data item is just a string in this case
+
         public ViewHolder(View v) {
             super(v);
             extractView = (TextView)v.findViewById(R.id.card_view_extract);
@@ -78,11 +95,14 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
     public BrowseRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                          int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, parent, false);
-        return new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v);
+        v.setOnClickListener(this);
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.itemView.setTag(position);
         holder.populate(dataset.get(position));
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -105,7 +125,6 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
         picasso.load(dataset.get(position).getStillUrl()).into(holder.stillView);
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         Log.i(TAG, "getItemCount size: "+dataset.size());

@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -28,6 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BrowseFragment extends Fragment implements BrowseContract.View{
 
+    private static final String TAG = BrowseFragment.class.getName();
     private BrowseContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
     private BrowseRVAdapter mAdapter;
@@ -60,6 +63,12 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
         mAdapter = new BrowseRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new ArrayList<PlayInfo>());
         mRecyclerView.setAdapter(mAdapter);
 
+        mAdapter.setOnItemClickListener(new BrowseRVAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.i(TAG, "position: "+position );
+            }
+        });
         return root;
     }
 
