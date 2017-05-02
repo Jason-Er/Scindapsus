@@ -15,6 +15,7 @@ import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.shared.SharedService;
+import com.example.scindapsus.util.bus.RxBus;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -60,6 +61,7 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
     public void onClick(View view) {
         if (mOnItemClickListener != null) {
             mOnItemClickListener.onItemClick(view, (int)view.getTag());
+            RxBus.getDefault().post(dataset.get((int)view.getTag()));
         }
     }
 

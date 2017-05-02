@@ -91,6 +91,12 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
+
+    @Override
     public void setLoadingIndicator(boolean active) {
 
     }
