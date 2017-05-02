@@ -18,32 +18,36 @@
             android:id="@+id/card_view_still"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:srcCompat="@mipmap/ic_launcher"
-            tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="156dp" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            android:visibility="visible"
+            card_view:layout_constraintLeft_toLeftOf="parent"
+            card_view:layout_constraintRight_toRightOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:srcCompat="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/card_view_extract"
             android:layout_width="44dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:text="extract"
             android:visibility="visible"
-            tools:layout_editor_absoluteX="158dp"
-            android:layout_marginTop="0dp"
-            card_view:layout_constraintTop_toBottomOf="@+id/card_view_still" />
+            card_view:layout_constraintTop_toBottomOf="@+id/card_view_still"
+            tools:layout_editor_absoluteX="158dp" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
-            android:layout_marginTop="8dp"
 
-            android:layout_marginLeft="8dp"
-            card_view:layout_constraintLeft_toLeftOf="parent"
-            card_view:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="8dp"
-            android:id="@+id/textView3"
-            card_view:layout_constraintTop_toBottomOf="@+id/card_view_extract" />
+            android:layout_marginLeft="8dp"
+            android:text="Name"
+            android:visibility="visible"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:id="@+id/card_view_name"
@@ -54,6 +58,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="240dp"
             android:text="TextView"
+            android:visibility="visible"
             card_view:layout_constraintBottom_toBottomOf="@+id/textView3"
             card_view:layout_constraintLeft_toRightOf="@+id/textView3"
             card_view:layout_constraintRight_toRightOf="parent" />
