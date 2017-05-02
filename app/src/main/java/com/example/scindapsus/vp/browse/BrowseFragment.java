@@ -1,12 +1,14 @@
 package com.example.scindapsus.vp.browse;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BrowseFragment extends Fragment implements BrowseContract.View{
 
+    private static final String TAG = BrowseFragment.class.getName();
     private BrowseContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
     private BrowseRVAdapter mAdapter;
@@ -60,6 +63,13 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
         mAdapter = new BrowseRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new ArrayList<PlayInfo>());
         mRecyclerView.setAdapter(mAdapter);
 
+        mAdapter.setOnItemClickListener(new BrowseRVAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.i(TAG, "position: "+position );
+                mPresenter.recyclerViewItemClick(view, position);
+            }
+        });
         return root;
     }
 
@@ -88,5 +98,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
     @Override
     public void showPlaysInfo(List<PlayInfo> playsInfo) {
         mAdapter.setDataset(playsInfo);
+    }
+
+    @Override
+    public void navigateToParticipate(@NonNull Parcelable parcelable) {
+        Log.i(TAG, "navigate to Browse");
+        ((BaseActivity)getActivity()).getNavigator().navigateToParticipate(getContext(), parcelable);
     }
 }

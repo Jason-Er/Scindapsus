@@ -1,5 +1,7 @@
 package com.example.scindapsus.vp.browse;
 
+import android.os.Parcelable;
+
 import com.example.scindapsus.global.BasePresenter;
 import com.example.scindapsus.global.BaseView;
 import com.example.scindapsus.model.PlayInfo;
@@ -16,10 +18,12 @@ public interface BrowseContract {
 
         void setLoadingIndicator(boolean active);
         void showPlaysInfo(List<PlayInfo> playsInfo);
+        void navigateToParticipate(Parcelable parcelable);
 
     }
 
     interface Presenter extends BasePresenter {
         void loadPlaysInfo(boolean forceUpdate);
+        void recyclerViewItemClick(android.view.View view, int position);
     }
 }
