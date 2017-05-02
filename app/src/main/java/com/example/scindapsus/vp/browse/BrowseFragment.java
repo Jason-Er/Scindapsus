@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.global.BaseActivity;
+import com.example.scindapsus.global.ScindapsusApplication;
 import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.util.custom.browseComponent.BrowseRVAdapter;
-import com.example.scindapsus.util.custom.browseComponent.BrowseRVLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -28,11 +30,8 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
 
     private BrowseContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private BrowseRVAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
-
-    String[] mDataset = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
 
     @Nullable
     @Override
@@ -58,7 +57,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
         mRecyclerView.addItemDecoration(itemDecoration);
 
         // specify an adapter (see also next example)
-        mAdapter = new BrowseRVAdapter(mDataset);
+        mAdapter = new BrowseRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new ArrayList<PlayInfo>());
         mRecyclerView.setAdapter(mAdapter);
 
         return root;
@@ -88,6 +87,6 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
 
     @Override
     public void showPlaysInfo(List<PlayInfo> playsInfo) {
-
+        mAdapter.setDataset(playsInfo);
     }
 }

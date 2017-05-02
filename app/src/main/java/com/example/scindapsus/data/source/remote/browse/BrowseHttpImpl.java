@@ -43,7 +43,7 @@ public class BrowseHttpImpl {
     public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page, int size) {
         //String token = sharedService.getToken();
         //String token = "";
-        browseHttp.loadPlaysInfo(token, page, size)
+        browseHttp.loadPlaysInfo(token)//loadPlaysInfo(token, page, size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);

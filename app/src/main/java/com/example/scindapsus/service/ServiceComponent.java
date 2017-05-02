@@ -1,7 +1,8 @@
 package com.example.scindapsus.service;
 
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.util.ServiceScope;
+import com.example.scindapsus.util.custom.browseComponent.BrowseRVAdapter;
+import com.example.scindapsus.util.label.ServiceScope;
 import com.example.scindapsus.vp.browse.BrowsePresenter;
 import com.example.scindapsus.vp.login.LoginPresenter;
 import com.example.scindapsus.vp.participate.ParticipatePresenter;
@@ -17,4 +18,6 @@ public interface ServiceComponent {
     void inject(LoginPresenter presenter);
     void inject(BrowsePresenter presenter);
     void inject(ParticipatePresenter presenter);
+
+    void inject(BrowseRVAdapter browseRVAdapter);
 }

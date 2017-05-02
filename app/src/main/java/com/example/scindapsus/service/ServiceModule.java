@@ -1,17 +1,17 @@
 package com.example.scindapsus.service;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.browse.BrowseServiceImpl;
+import com.example.scindapsus.service.image.ImageService;
+import com.example.scindapsus.service.image.ImageServiceImpl;
 import com.example.scindapsus.service.login.LoginService;
 import com.example.scindapsus.service.login.LoginServiceImpl;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.service.shared.SharedServiceImpl;
-import com.example.scindapsus.util.ServiceScope;
+import com.example.scindapsus.util.label.ServiceScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -37,5 +37,11 @@ public class ServiceModule {
     @Provides
     public SharedService provideSharedService(SharedPreferences sharedPreferences){
         return new SharedServiceImpl(sharedPreferences);
+    }
+
+    @ServiceScope
+    @Provides
+    public ImageService provideImageService(ApplicationComponent applicationComponent){
+        return new ImageServiceImpl(applicationComponent);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.scindapsus.vp.browse;
 
-
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -9,6 +8,7 @@ import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.model.http.PageResult;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.browse.BrowseService;
+import com.example.scindapsus.service.image.ImageService;
 import com.example.scindapsus.service.shared.SharedService;
 
 import java.util.List;
@@ -33,6 +33,8 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Inject
     BrowseService browseService;
+    @Inject
+    ImageService imageService;
     @Inject
     SharedService sharedService;
 
@@ -80,21 +82,21 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             @Override
             public void onNext(PageResult<List<PlayInfo>> pageResult) {
                 Log.i(TAG, "onNext");
+                processPlaysInfo(pageResult);
 
             }
 
         };
 
-        String token = sharedService.getToken();
-        browseService.loadPlaysInfo(token, subscriber, 0);
+        browseService.loadPlaysInfo(sharedService.getToken(), subscriber, 0);
     }
 
-    private void processPlaysInfo(@NonNull List<PlayInfo> playsInfo) {
+    private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {
+        List<PlayInfo> playsInfo = pageResult.getContent();
         if (playsInfo.isEmpty()) {
             // Show a message indicating there are no tasks for that filter type.
             processEmptyPlaysInfo();
         } else {
-            // Show the list of tasks
             mBrowseView.showPlaysInfo(playsInfo);
         }
     }

@@ -1,9 +1,10 @@
 package com.example.scindapsus.data.source.remote;
 
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
+import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.util.DataSourceFuncModelScope;
+import com.example.scindapsus.util.label.DataSourceFuncModelScope;
 
 import dagger.Component;
 
@@ -15,4 +16,5 @@ import dagger.Component;
 public interface HttpComponent {
     void inject(LoginHttpImpl loginHttp);
     void inject(BrowseHttpImpl browseHttp);
+    void inject(ImageHttpImpl imageHttp);
 }

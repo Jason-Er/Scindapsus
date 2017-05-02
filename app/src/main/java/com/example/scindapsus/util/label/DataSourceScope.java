@@ -1,4 +1,4 @@
-package com.example.scindapsus.util;
+package com.example.scindapsus.util.label;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
