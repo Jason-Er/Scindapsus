@@ -53,5 +53,6 @@ ext {
     supportv4Version = '25.3.1'
     javaxannotationVersion = '10.0-b28'
     recyclerviewv7Version = '25.3.1'
+    picassoVersion = '2.5.2'
 
 }
