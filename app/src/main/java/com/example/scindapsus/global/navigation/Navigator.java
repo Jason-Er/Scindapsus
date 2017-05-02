@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.example.scindapsus.vp.browse.BrowseActivity;
 import com.example.scindapsus.vp.participate.ParticipateActivity;
@@ -22,20 +23,23 @@ public class Navigator {
         //empty
     }
 
-    public void navigateToBrowse(Context context, Parcelable parcelable) {
-        if (context != null) {
-            Intent intentToLaunch = BrowseActivity.getCallingIntent(context);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(PARA_MACRO, parcelable);
-            intentToLaunch.putExtras(bundle);
-            context.startActivity(intentToLaunch);
-        }
+    public void navigateToBrowse(@NonNull Context context, Parcelable parcelable) {
+
+        Intent intentToLaunch = BrowseActivity.getCallingIntent(context);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PARA_MACRO, parcelable);
+        intentToLaunch.putExtras(bundle);
+        context.startActivity(intentToLaunch);
+
     }
 
-    public void navigateToParticipate(Context context) {
-        if (context != null) {
-            Intent intentToLaunch = ParticipateActivity.getCallingIntent(context);
-            context.startActivity(intentToLaunch);
-        }
+    public void navigateToParticipate(@NonNull Context context, Parcelable parcelable) {
+
+        Intent intentToLaunch = ParticipateActivity.getCallingIntent(context);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PARA_MACRO, parcelable);
+        intentToLaunch.putExtras(bundle);
+        context.startActivity(intentToLaunch);
+
     }
 }

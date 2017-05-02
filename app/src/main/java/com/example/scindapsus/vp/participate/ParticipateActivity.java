@@ -3,14 +3,20 @@ package com.example.scindapsus.vp.participate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
 import com.example.scindapsus.global.ScindapsusApplication;
+import com.example.scindapsus.global.navigation.Navigator;
+import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.User;
 
 public class ParticipateActivity extends BaseActivity {
 
-    public static Intent getCallingIntent(Context context) {
+    private static String TAG = ParticipateActivity.class.getName();
+    public static Intent getCallingIntent(@NonNull Context context) {
         return new Intent(context, ParticipateActivity.class);
     }
 
@@ -31,5 +37,8 @@ public class ParticipateActivity extends BaseActivity {
 
         // Create the presenter
         new ParticipatePresenter(participateFragment, ((ScindapsusApplication)getApplication()).getAppComponent());
+
+        PlayInfo playInfo = (PlayInfo) getIntent().getParcelableExtra(Navigator.PARA_MACRO);
+
     }
 }

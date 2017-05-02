@@ -2,7 +2,7 @@ package com.example.scindapsus.vp.browse;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
+import android.view.View;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.model.http.PageResult;
@@ -60,6 +60,14 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     public void loadPlaysInfo(boolean forceUpdate) {
         loadPlaysInfo(forceUpdate || mFirstLoad, true);
         mFirstLoad = false;
+    }
+
+    @Override
+    public void recyclerViewItemClick(View view, int position) {
+        PlayInfo playInfo = new PlayInfo();
+        playInfo.setName("hello");
+        playInfo.setId(0);
+        mBrowseView.navigateToParticipate(playInfo);
     }
 
     private void loadPlaysInfo(final boolean forceUpdate, final boolean showLoadingUI) {

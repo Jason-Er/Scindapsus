@@ -1,6 +1,7 @@
 package com.example.scindapsus.vp.browse;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -67,6 +67,7 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
             @Override
             public void onItemClick(View view, int position) {
                 Log.i(TAG, "position: "+position );
+                mPresenter.recyclerViewItemClick(view, position);
             }
         });
         return root;
@@ -97,5 +98,11 @@ public class BrowseFragment extends Fragment implements BrowseContract.View{
     @Override
     public void showPlaysInfo(List<PlayInfo> playsInfo) {
         mAdapter.setDataset(playsInfo);
+    }
+
+    @Override
+    public void navigateToParticipate(@NonNull Parcelable parcelable) {
+        Log.i(TAG, "navigate to Browse");
+        ((BaseActivity)getActivity()).getNavigator().navigateToParticipate(getContext(), parcelable);
     }
 }
