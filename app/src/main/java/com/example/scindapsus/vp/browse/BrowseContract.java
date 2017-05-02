@@ -2,7 +2,7 @@ package com.example.scindapsus.vp.browse;
 
 import com.example.scindapsus.global.BasePresenter;
 import com.example.scindapsus.global.BaseView;
-import com.example.scindapsus.model.PlayInfoEx;
+import com.example.scindapsus.model.PlayInfo;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface BrowseContract {
     interface View extends BaseView<BrowseContract.Presenter> {
 
         void setLoadingIndicator(boolean active);
-        void showPlaysInfo(List<PlayInfoEx> playsInfo);
+        void showPlaysInfo(List<PlayInfo> playsInfo);
 
     }
 

@@ -1,27 +1,21 @@
 package com.example.scindapsus.vp.browse;
 
-
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
-import com.example.scindapsus.model.PlayInfoEx;
 import com.example.scindapsus.model.http.PageResult;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.image.ImageService;
 import com.example.scindapsus.service.shared.SharedService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Subscriber;
-import rx.functions.Action;
-import rx.functions.Action1;
 
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -99,42 +93,11 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {
         List<PlayInfo> playsInfo = pageResult.getContent();
-        List<PlayInfoEx> playsInfoEx = new ArrayList<>();
         if (playsInfo.isEmpty()) {
             // Show a message indicating there are no tasks for that filter type.
             processEmptyPlaysInfo();
         } else {
-            // Show the list of tasks
-            for(PlayInfo playInfo: playsInfo) {
-                PlayInfoEx playInfoEx = new PlayInfoEx();
-                playInfoEx.setId(playInfo.getId());
-                playInfoEx.setExtract(playInfo.getExtract());
-                playInfoEx.setName(playInfo.getName());
-
-
-
-                Subscriber subscriber = new Subscriber<Bitmap>() {
-
-                    @Override
-                    public void onCompleted() {
-                        Log.i(TAG, "onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "onError");
-                    }
-
-                    @Override
-                    public void onNext(Bitmap bitmap) {
-                        Log.i(TAG, "onNext");
-                    }
-                };
-                imageService.getImage(sharedService.getToken(), subscriber, playInfo.getStillUrl());
-
-                playsInfoEx.add(playInfoEx);
-            }
-            mBrowseView.showPlaysInfo(playsInfoEx);
+            mBrowseView.showPlaysInfo(playsInfo);
         }
     }
 
