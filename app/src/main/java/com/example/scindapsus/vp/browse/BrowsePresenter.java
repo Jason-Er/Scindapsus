@@ -13,14 +13,13 @@ import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.util.bus.RxBus;
 
 import java.util.List;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
-
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,7 +34,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     private final BrowseContract.View mBrowseView;
     private boolean mFirstLoad = true;
     private Subscription rxSubscription;
-    private PlayInfo playInfoOnClick;
+    final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>(true);
 
     @Inject
     BrowseService browseService;
@@ -56,7 +55,11 @@ public class BrowsePresenter implements BrowseContract.Presenter{
                                @Override
                                public void call(PlayInfo playInfo) {
                                    Log.i(TAG, "playInfo.name: "+playInfo.getName());
-                                   playInfoOnClick = playInfo;
+                                   try {
+                                       synchronousQueue.put(playInfo);
+                                   } catch (InterruptedException e) {
+                                       e.printStackTrace();
+                                   }
                                }
                            },
                         new Action1<Throwable>() {
@@ -92,9 +95,17 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void recyclerViewItemClick(View view, int position) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mBrowseView.navigateToParticipate(synchronousQueue.take());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-        mBrowseView.navigateToParticipate(playInfoOnClick);
-
+            }
+        }).start();
     }
 
     private void loadPlaysInfo(final boolean forceUpdate, final boolean showLoadingUI) {
