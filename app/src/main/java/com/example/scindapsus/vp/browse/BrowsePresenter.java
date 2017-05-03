@@ -10,13 +10,16 @@ import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.image.ImageService;
 import com.example.scindapsus.service.shared.SharedService;
+import com.example.scindapsus.util.bus.RxBus;
 
 import java.util.List;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.inject.Inject;
 
 import rx.Subscriber;
-
+import rx.Subscription;
+import rx.functions.Action1;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,6 +33,8 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     private final BrowseContract.View mBrowseView;
     private boolean mFirstLoad = true;
+    private Subscription rxSubscription;
+    final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>(true);
 
     @Inject
     BrowseService browseService;
@@ -44,6 +49,25 @@ public class BrowsePresenter implements BrowseContract.Presenter{
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
+
+        rxSubscription = RxBus.getDefault().toObservable(PlayInfo.class)
+                .subscribe(new Action1<PlayInfo>() {
+                               @Override
+                               public void call(PlayInfo playInfo) {
+                                   Log.i(TAG, "playInfo.name: "+playInfo.getName());
+                                   try {
+                                       synchronousQueue.put(playInfo);
+                                   } catch (InterruptedException e) {
+                                       e.printStackTrace();
+                                   }
+                               }
+                           },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                // exception
+                            }
+                        });
     }
 
     @Override
@@ -57,6 +81,13 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     }
 
     @Override
+    public void onDestroy() {
+        if(!rxSubscription.isUnsubscribed()) {
+            rxSubscription.unsubscribe();
+        }
+    }
+
+    @Override
     public void loadPlaysInfo(boolean forceUpdate) {
         loadPlaysInfo(forceUpdate || mFirstLoad, true);
         mFirstLoad = false;
@@ -64,10 +95,17 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void recyclerViewItemClick(View view, int position) {
-        PlayInfo playInfo = new PlayInfo();
-        playInfo.setName("hello");
-        playInfo.setId(0);
-        mBrowseView.navigateToParticipate(playInfo);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mBrowseView.navigateToParticipate(synchronousQueue.take());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
     private void loadPlaysInfo(final boolean forceUpdate, final boolean showLoadingUI) {
