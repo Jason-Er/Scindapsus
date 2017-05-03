@@ -23,7 +23,8 @@ public interface BrowseContract {
     }
 
     interface Presenter extends BasePresenter {
-        void onDestroy();
+        void onStart();
+        void onStop();
         void loadPlaysInfo(boolean forceUpdate);
         void recyclerViewItemClick(android.view.View view, int position);
     }

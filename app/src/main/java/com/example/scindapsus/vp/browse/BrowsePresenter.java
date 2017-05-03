@@ -33,8 +33,8 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     private final BrowseContract.View mBrowseView;
     private boolean mFirstLoad = true;
-    private Subscription rxSubscription;
-    final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>(true);
+    private Subscription rxSubscription = null;
+    final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>();
 
     @Inject
     BrowseService browseService;
@@ -49,7 +49,20 @@ public class BrowsePresenter implements BrowseContract.Presenter{
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
+    }
 
+    @Override
+    public void subscribe() {
+        loadPlaysInfo(false);
+    }
+
+    @Override
+    public void unsubscribe() {
+
+    }
+
+    @Override
+    public void onStart() {
         rxSubscription = RxBus.getDefault().toObservable(PlayInfo.class)
                 .subscribe(new Action1<PlayInfo>() {
                                @Override
@@ -71,19 +84,10 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     }
 
     @Override
-    public void subscribe() {
-        loadPlaysInfo(false);
-    }
-
-    @Override
-    public void unsubscribe() {
-
-    }
-
-    @Override
-    public void onDestroy() {
+    public void onStop() {
         if(!rxSubscription.isUnsubscribed()) {
             rxSubscription.unsubscribe();
+            rxSubscription = null;
         }
     }
 
