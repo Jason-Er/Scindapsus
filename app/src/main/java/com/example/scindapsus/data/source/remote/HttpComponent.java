@@ -3,6 +3,7 @@ package com.example.scindapsus.data.source.remote;
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
 import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
+import com.example.scindapsus.data.source.remote.participate.ParticipateHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.util.label.DataSourceFuncModelScope;
 
@@ -17,4 +18,5 @@ public interface HttpComponent {
     void inject(LoginHttpImpl loginHttp);
     void inject(BrowseHttpImpl browseHttp);
     void inject(ImageHttpImpl imageHttp);
+    void inject(ParticipateHttpImpl participateHttp);
 }

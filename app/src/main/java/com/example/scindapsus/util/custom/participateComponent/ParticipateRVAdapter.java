@@ -1,4 +1,4 @@
-package com.example.scindapsus.util.custom.browseComponent;
+package com.example.scindapsus.util.custom.participateComponent;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.Play;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.util.bus.RxBus;
@@ -33,18 +33,18 @@ import okhttp3.Response;
  * Created by ej on 3/31/2017.
  */
 
-public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHolder> implements View.OnClickListener {
+public class ParticipateRVAdapter extends RecyclerView.Adapter<ParticipateRVAdapter.ViewHolder> implements View.OnClickListener {
 
-    private final static String TAG = BrowseRVAdapter.class.getName();
+    private final static String TAG = ParticipateRVAdapter.class.getName();
 
-    private List<PlayInfo> dataset;
+    private List<Play> dataset;
     private Context context;
     private OnItemClickListener mOnItemClickListener = null;
 
     @Inject
     SharedService sharedService;
 
-    public BrowseRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, List<PlayInfo> dataset) {
+    public ParticipateRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, List<Play> dataset) {
         this.context = context;
         this.dataset = dataset;
         DaggerServiceComponent.builder()
@@ -52,9 +52,8 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
                 .build().inject(this);
     }
 
-
     public static interface OnItemClickListener {
-        void onItemClick(View view , int position);
+        void onItemClick(View view, int position);
     }
 
     @Override
@@ -81,21 +80,21 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
             stillView = (ImageView)v.findViewById(R.id.card_view_still);
         }
 
-        public void populate(PlayInfo s) {
-            nameView.setText(s.getName());
-            extractView.setText(s.getExtract());
+        public void populate(Play s) {
+            //nameView.setText(s.getName());
+            //extractView.setText(s.getExtract());
         }
     }
 
-    public void setDataset(@NonNull List<PlayInfo> dataset) {
+    public void setDataset(@NonNull List<Play> dataset) {
         Log.i(TAG, "setDataset");
         this.dataset = dataset;
         notifyDataSetChanged();
     }
 
     @Override
-    public BrowseRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+    public ParticipateRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                              int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.playinfo_card_view, parent, false);
         ViewHolder vh = new ViewHolder(v);
         v.setOnClickListener(this);
@@ -120,11 +119,7 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
                 })
                 .build();
 
-        Picasso picasso = new Picasso.Builder(context)
-                .downloader(new OkHttp3Downloader(client))
-                .build();
 
-        picasso.load(dataset.get(position).getStillUrl()).into(holder.stillView);
     }
 
     @Override

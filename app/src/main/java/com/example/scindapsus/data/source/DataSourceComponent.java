@@ -4,6 +4,7 @@ import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.service.browse.BrowseServiceImpl;
 import com.example.scindapsus.service.image.ImageServiceImpl;
 import com.example.scindapsus.service.login.LoginServiceImpl;
+import com.example.scindapsus.service.participate.ParticipateServiceImpl;
 import com.example.scindapsus.util.label.DataSourceScope;
 
 import dagger.Component;
@@ -17,4 +18,5 @@ public interface DataSourceComponent {
     void inject(LoginServiceImpl loginServiceImpl);
     void inject(BrowseServiceImpl browseServiceImpl);
     void inject(ImageServiceImpl imageServiceImpl);
+    void inject(ParticipateServiceImpl participateServiceImpl);
 }

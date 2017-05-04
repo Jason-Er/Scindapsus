@@ -1,0 +1,17 @@
+package com.example.scindapsus.data.source.remote.participate;
+
+import com.example.scindapsus.model.Play;
+
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Path;
+import rx.Observable;
+
+/**
+ * Created by ej on 5/3/2017.
+ */
+
+public interface ParticipateHttp {
+    @GET("/v1/model/play/{id}")
+    Observable<Play> loadPlay(@Header("Authorization") String token, @Path("id") int id);
+}
