@@ -7,6 +7,7 @@ import com.example.scindapsus.util.label.ServiceScope;
 import com.example.scindapsus.vp.browse.BrowsePresenter;
 import com.example.scindapsus.vp.login.LoginPresenter;
 import com.example.scindapsus.vp.participate.ParticipatePresenter;
+import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
 import dagger.Component;
 
@@ -19,6 +20,7 @@ public interface ServiceComponent {
     void inject(LoginPresenter presenter);
     void inject(BrowsePresenter presenter);
     void inject(ParticipatePresenter presenter);
+    void inject(ScenePresenter scenePresenter);
 
     void inject(BrowseRVAdapter browseRVAdapter);
     void inject(SceneRVAdapter sceneRVAdapter);

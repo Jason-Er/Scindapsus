@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Line;
 import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.service.DaggerServiceComponent;
@@ -38,46 +39,46 @@ public class SceneRVAdapter extends RecyclerView.Adapter<SceneRVAdapter.ViewHold
 
     private final static String TAG = SceneRVAdapter.class.getName();
 
-    private Scene scene;
+    private List<Line> lines;
     private Context context;
 
     @Inject
     SharedService sharedService;
 
-    public SceneRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, Scene scene) {
+    public SceneRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, List<Line> lines) {
         this.context = context;
-        this.scene = scene;
+        this.lines = lines;
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView extractView;
-        private TextView nameView;
-        private ImageView stillView;
+        private TextView lineView;
+        private ImageView roleView;
 
         public ViewHolder(View v) {
             super(v);
-
+            lineView = (TextView)v.findViewById(R.id.line_cv_text);
+            roleView = (ImageView)v.findViewById(R.id.line_cv_role);
         }
 
-        public void populate(Play s) {
-            //nameView.setText(s.getName());
+        public void populate(Line line) {
+            lineView.setText(line.getAudioURL());
             //extractView.setText(s.getExtract());
         }
     }
 
-    public void setDataset(@NonNull Scene scene) {
+    public void setDataset(@NonNull List<Line> lines) {
         Log.i(TAG, "setDataset");
-        this.scene = scene;
+        this.lines = lines;
         notifyDataSetChanged();
     }
 
     @Override
     public SceneRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                               int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.playinfo_card_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.line_card_view, parent, false);
         ViewHolder vh = new ViewHolder(v);
 
         return vh;
@@ -86,25 +87,12 @@ public class SceneRVAdapter extends RecyclerView.Adapter<SceneRVAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemView.setTag(position);
-
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request newRequest = chain.request().newBuilder()
-                                .addHeader("Authorization", sharedService.getToken())
-                                .build();
-                        return chain.proceed(newRequest);
-                    }
-                })
-                .build();
+        holder.populate(lines.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return lines.size();
     }
 
 }

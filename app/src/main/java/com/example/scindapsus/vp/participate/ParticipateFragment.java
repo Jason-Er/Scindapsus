@@ -6,9 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +17,7 @@ import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.vp.participate.scene.SceneFragment;
+import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
 import java.util.ArrayList;
 
@@ -54,6 +52,9 @@ public class ParticipateFragment extends Fragment implements ParticipateContract
             transaction.commit();
         }
 
+        // Create the presenter
+        ScenePresenter scenePresenter = new ScenePresenter(sceneFragment, ((ScindapsusApplication)getActivity().getApplication()).getAppComponent());
+        mPresenter.setScenePresenter(scenePresenter);
         playInfo = (PlayInfo) getActivity().getIntent().getParcelableExtra(Navigator.PARA_MACRO);
         return root;
     }

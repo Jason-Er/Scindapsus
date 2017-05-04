@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.ScindapsusApplication;
-import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.model.Line;
 import com.example.scindapsus.util.custom.sceneComponent.SceneRVAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ej on 5/4/2017.
@@ -22,8 +25,9 @@ import com.example.scindapsus.util.custom.sceneComponent.SceneRVAdapter;
 
 public class SceneFragment extends Fragment implements SceneContract.View {
 
-    private RecyclerView mRecyclerView;
     private SceneContract.Presenter mPresenter;
+    private RecyclerView mRecyclerView;
+    private SceneRVAdapter mAdapter;
 
     @Nullable
     @Override
@@ -40,7 +44,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
                 new DividerItemDecoration(root.getContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        SceneRVAdapter mAdapter = new SceneRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new Scene());
+        mAdapter = new SceneRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new ArrayList<Line>());
         mRecyclerView.setAdapter(mAdapter);
 
         return root;
@@ -51,4 +55,8 @@ public class SceneFragment extends Fragment implements SceneContract.View {
         mPresenter = presenter;
     }
 
+    @Override
+    public void showLines(List<Line> lines) {
+        mAdapter.setDataset(lines);
+    }
 }

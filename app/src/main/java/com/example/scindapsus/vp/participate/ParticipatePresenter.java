@@ -10,6 +10,7 @@ import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.participate.ParticipateService;
 import com.example.scindapsus.service.shared.SharedService;
+import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,8 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
     private static String TAG = ParticipatePresenter.class.getName();
     private final ParticipateContract.View mParticipateView;
     private boolean mFirstLoad = true;
+    private ScenePresenter scenePresenter;
+    private int currentScene = 0;
 
     @Inject
     ParticipateService participateService;
@@ -81,11 +84,20 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             @Override
             public void onNext(Play play) {
                 Log.i(TAG, "onNext");
-
+                scenePresenter.setScene(play.getScenes().get(currentScene));
 
             }
         };
 
         participateService.loadPlay(sharedService.getToken(), subscriber, id);
+    }
+
+    public ScenePresenter getScenePresenter() {
+        return scenePresenter;
+    }
+
+    @Override
+    public void setScenePresenter(ScenePresenter scenePresenter) {
+        this.scenePresenter = scenePresenter;
     }
 }

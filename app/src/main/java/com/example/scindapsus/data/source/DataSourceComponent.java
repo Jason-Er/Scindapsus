@@ -5,6 +5,7 @@ import com.example.scindapsus.service.browse.BrowseServiceImpl;
 import com.example.scindapsus.service.image.ImageServiceImpl;
 import com.example.scindapsus.service.login.LoginServiceImpl;
 import com.example.scindapsus.service.participate.ParticipateServiceImpl;
+import com.example.scindapsus.service.scene.SceneServiceImpl;
 import com.example.scindapsus.util.label.DataSourceScope;
 
 import dagger.Component;
@@ -15,8 +16,9 @@ import dagger.Component;
 @DataSourceScope
 @Component(modules = {DataSourceModule.class},dependencies = ApplicationComponent.class)
 public interface DataSourceComponent {
-    void inject(LoginServiceImpl loginServiceImpl);
-    void inject(BrowseServiceImpl browseServiceImpl);
-    void inject(ImageServiceImpl imageServiceImpl);
-    void inject(ParticipateServiceImpl participateServiceImpl);
+    void inject(LoginServiceImpl loginService);
+    void inject(BrowseServiceImpl browseService);
+    void inject(ImageServiceImpl imageService);
+    void inject(ParticipateServiceImpl participateService);
+    void inject(SceneServiceImpl sceneService);
 }

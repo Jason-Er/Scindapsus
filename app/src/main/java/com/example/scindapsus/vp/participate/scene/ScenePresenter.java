@@ -1,6 +1,14 @@
 package com.example.scindapsus.vp.participate.scene;
 
+import android.support.annotation.NonNull;
+
+import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.service.DaggerServiceComponent;
+import com.example.scindapsus.service.scene.SceneService;
+import com.example.scindapsus.service.shared.SharedService;
+
+import javax.inject.Inject;
 
 /**
  * Created by ej on 5/4/2017.
@@ -9,9 +17,20 @@ import com.example.scindapsus.model.Scene;
 public class ScenePresenter implements SceneContract.Presenter {
 
     private Scene mScene;
+    private final SceneContract.View mSceneView;
 
-    public ScenePresenter(Scene mScene) {
-        this.mScene = mScene;
+    @Inject
+    SceneService sceneService;
+    @Inject
+    SharedService sharedService;
+
+    public ScenePresenter(@NonNull SceneContract.View view, @NonNull ApplicationComponent applicationComponent) {
+        mSceneView = view;
+        mSceneView.setPresenter(this);
+
+        DaggerServiceComponent.builder()
+                .applicationComponent(applicationComponent)
+                .build().inject(this);
     }
 
     public Scene getScene() {
@@ -20,6 +39,7 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     public void setScene(Scene scene) {
         this.mScene = scene;
+        mSceneView.showLines(scene.getLines());
     }
 
     @Override
