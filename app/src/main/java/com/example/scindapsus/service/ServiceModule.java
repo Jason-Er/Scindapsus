@@ -3,6 +3,7 @@ package com.example.scindapsus.service;
 import android.content.SharedPreferences;
 
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.browse.BrowseServiceImpl;
 import com.example.scindapsus.service.image.ImageService;
@@ -11,6 +12,8 @@ import com.example.scindapsus.service.login.LoginService;
 import com.example.scindapsus.service.login.LoginServiceImpl;
 import com.example.scindapsus.service.participate.ParticipateService;
 import com.example.scindapsus.service.participate.ParticipateServiceImpl;
+import com.example.scindapsus.service.scene.SceneService;
+import com.example.scindapsus.service.scene.SceneServiceImpl;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.service.shared.SharedServiceImpl;
 import com.example.scindapsus.util.label.ServiceScope;
@@ -51,5 +54,11 @@ public class ServiceModule {
     @Provides
     public ParticipateService provideParticipateService(ApplicationComponent applicationComponent){
         return new ParticipateServiceImpl(applicationComponent);
+    }
+
+    @ServiceScope
+    @Provides
+    public SceneService provideSceneService(ApplicationComponent applicationComponent){
+        return new SceneServiceImpl(applicationComponent);
     }
 }
