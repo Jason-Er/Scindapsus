@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,8 @@ import com.example.scindapsus.global.ScindapsusApplication;
 import com.example.scindapsus.global.navigation.Navigator;
 import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.PlayInfo;
-import com.example.scindapsus.util.custom.participateComponent.ParticipateRVAdapter;
+import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.vp.participate.scene.SceneFragment;
 
 import java.util.ArrayList;
 
@@ -30,32 +33,25 @@ public class ParticipateFragment extends Fragment implements ParticipateContract
 
     private static final String TAG = ParticipateFragment.class.getName();
 
-    private RecyclerView mRecyclerView;
     private ParticipateContract.Presenter mPresenter;
-    private ParticipateRVAdapter mAdapter;
     private PlayInfo playInfo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root =  inflater.inflate(R.layout.participate_frag, container, false);
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.participate_frag_recycler);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        // attach fragment to main layout
+        SceneFragment sceneFragment = (SceneFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.participate_frag_frame);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mRecyclerView.getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        layoutManager.scrollToPosition(0);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerItemDecoration(root.getContext(), DividerItemDecoration.VERTICAL);
-        mRecyclerView.addItemDecoration(itemDecoration);
-
-        mAdapter = new ParticipateRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new ArrayList<Play>());
-        mRecyclerView.setAdapter(mAdapter);
+        if(sceneFragment == null) {
+            sceneFragment = new SceneFragment();
+            FragmentManager manager = getChildFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.participate_frag_frame, sceneFragment);
+            transaction.commit();
+        }
 
         playInfo = (PlayInfo) getActivity().getIntent().getParcelableExtra(Navigator.PARA_MACRO);
         return root;

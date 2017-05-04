@@ -1,4 +1,4 @@
-package com.example.scindapsus.util.custom.participateComponent;
+package com.example.scindapsus.util.custom.sceneComponent;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Play;
+import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.util.bus.RxBus;
@@ -33,39 +34,22 @@ import okhttp3.Response;
  * Created by ej on 3/31/2017.
  */
 
-public class ParticipateRVAdapter extends RecyclerView.Adapter<ParticipateRVAdapter.ViewHolder> implements View.OnClickListener {
+public class SceneRVAdapter extends RecyclerView.Adapter<SceneRVAdapter.ViewHolder> {
 
-    private final static String TAG = ParticipateRVAdapter.class.getName();
+    private final static String TAG = SceneRVAdapter.class.getName();
 
-    private List<Play> dataset;
+    private Scene scene;
     private Context context;
-    private OnItemClickListener mOnItemClickListener = null;
 
     @Inject
     SharedService sharedService;
 
-    public ParticipateRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, List<Play> dataset) {
+    public SceneRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, Scene scene) {
         this.context = context;
-        this.dataset = dataset;
+        this.scene = scene;
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
-    }
-
-    public static interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(view, (int)view.getTag());
-            RxBus.getDefault().post(dataset.get((int)view.getTag()));
-        }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mOnItemClickListener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,9 +59,7 @@ public class ParticipateRVAdapter extends RecyclerView.Adapter<ParticipateRVAdap
 
         public ViewHolder(View v) {
             super(v);
-            extractView = (TextView)v.findViewById(R.id.card_view_extract);
-            nameView = (TextView)v.findViewById(R.id.card_view_name);
-            stillView = (ImageView)v.findViewById(R.id.card_view_still);
+
         }
 
         public void populate(Play s) {
@@ -86,25 +68,25 @@ public class ParticipateRVAdapter extends RecyclerView.Adapter<ParticipateRVAdap
         }
     }
 
-    public void setDataset(@NonNull List<Play> dataset) {
+    public void setDataset(@NonNull Scene scene) {
         Log.i(TAG, "setDataset");
-        this.dataset = dataset;
+        this.scene = scene;
         notifyDataSetChanged();
     }
 
     @Override
-    public ParticipateRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public SceneRVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                               int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.playinfo_card_view, parent, false);
         ViewHolder vh = new ViewHolder(v);
-        v.setOnClickListener(this);
+
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemView.setTag(position);
-        holder.populate(dataset.get(position));
+
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
@@ -118,14 +100,11 @@ public class ParticipateRVAdapter extends RecyclerView.Adapter<ParticipateRVAdap
                     }
                 })
                 .build();
-
-
     }
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount size: "+dataset.size());
-        return dataset.size();
+        return 1;
     }
 
 }

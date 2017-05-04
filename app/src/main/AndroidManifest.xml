@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".vp.browse.BrowseActivity"></activity>
-        <activity android:name=".vp.participate.ParticipateActivity"></activity>
+        <activity android:name=".vp.participate.ParticipateActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
