@@ -41,6 +41,7 @@ public class ParticipateFragment extends Fragment implements ParticipateContract
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root =  inflater.inflate(R.layout.participate_frag, container, false);
 
+
         // attach fragment to main layout
         SceneFragment sceneFragment = (SceneFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.participate_frag_frame);

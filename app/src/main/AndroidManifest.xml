@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".vp.browse.BrowseActivity"></activity>
         <activity android:name=".vp.participate.ParticipateActivity"
+            android:theme="@style/Fullscreen"
             android:screenOrientation="landscape"></activity>
     </application>
 
