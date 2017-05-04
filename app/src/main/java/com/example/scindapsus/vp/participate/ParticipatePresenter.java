@@ -5,15 +5,15 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.service.DaggerServiceComponent;
-import com.example.scindapsus.util.bus.RxBus;
+import com.example.scindapsus.service.participate.ParticipateService;
+import com.example.scindapsus.service.shared.SharedService;
 
-import java.util.concurrent.RunnableFuture;
-import java.util.concurrent.SynchronousQueue;
+import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.functions.Action1;
+import rx.Subscriber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,6 +26,11 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
     private static String TAG = ParticipatePresenter.class.getName();
     private final ParticipateContract.View mParticipateView;
     private boolean mFirstLoad = true;
+
+    @Inject
+    ParticipateService participateService;
+    @Inject
+    SharedService sharedService;
 
     public ParticipatePresenter(@NonNull ParticipateContract.View participateView, @NonNull ApplicationComponent applicationComponent) {
         mParticipateView = checkNotNull(participateView, "participateView cannot be null!");
@@ -60,5 +65,27 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
         if (showLoadingUI) {
             mParticipateView.setLoadingIndicator(true);
         }
+
+        Subscriber subscriber = new Subscriber<Play>() {
+            @Override
+            public void onCompleted() {
+                Log.i(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i(TAG, "onError");
+
+            }
+
+            @Override
+            public void onNext(Play play) {
+                Log.i(TAG, "onNext");
+
+
+            }
+        };
+
+        participateService.loadPlay(sharedService.getToken(), subscriber, id);
     }
 }

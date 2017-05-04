@@ -3,6 +3,7 @@ package com.example.scindapsus.data.source;
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
 import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
+import com.example.scindapsus.data.source.remote.participate.ParticipateHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.util.label.DataSourceScope;
 
@@ -28,5 +29,10 @@ public class DataSourceModule {
     @Provides
     public ImageHttpImpl provideImageHttpImpl(ApplicationComponent applicationComponent){
         return new ImageHttpImpl(applicationComponent);
+    }
+    @DataSourceScope
+    @Provides
+    public ParticipateHttpImpl provideParticipateHttpImpl(ApplicationComponent applicationComponent){
+        return new ParticipateHttpImpl(applicationComponent);
     }
 }
