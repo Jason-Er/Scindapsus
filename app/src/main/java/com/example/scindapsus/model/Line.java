@@ -8,6 +8,7 @@ public class Line {
     private int id;
 
     private String audioURL;
+    private String text;
 
     private int ordinal;
 
@@ -22,6 +23,12 @@ public class Line {
     }
     public String getAudioURL(){
         return this.audioURL;
+    }
+    public String getText() {
+        return text;
+    }
+    public void setText(String text) {
+        this.text = text;
     }
     public void setOrdinal(int ordinal){
         this.ordinal = ordinal;

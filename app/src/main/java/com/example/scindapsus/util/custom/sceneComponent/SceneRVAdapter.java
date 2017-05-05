@@ -64,7 +64,7 @@ public class SceneRVAdapter extends RecyclerView.Adapter<SceneRVAdapter.ViewHold
         }
 
         public void populate(Line line) {
-            lineView.setText(line.getAudioURL());
+            lineView.setText(line.getText());
             //extractView.setText(s.getExtract());
         }
     }
