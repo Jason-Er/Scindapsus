@@ -44,7 +44,7 @@ ext {
     autovaluegsonVersion = '0.4.6'
     autovalueparcelVersion = '0.2.5'
     retrofitVersion = '2.2.0'
-    adapterrxjavaVersion = '2.1.0'
+    adapterrxjava2Version = '2.2.0'
     convertergsonVersion = '2.2.0'
     daggerVersion = '2.7'
 
