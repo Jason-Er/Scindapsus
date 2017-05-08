@@ -1,34 +1,44 @@
 package com.example.scindapsus.util.bus;
 
-import rx.Observable;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
+
+import io.reactivex.Flowable;
+import io.reactivex.processors.FlowableProcessor;
+import io.reactivex.processors.PublishProcessor;
+import io.reactivex.subscribers.SerializedSubscriber;
 
 /**
  * Created by ej on 5/2/2017.
  */
 
 public class RxBus {
-    private static volatile RxBus defaultInstance;
-    private final Subject<Object, Object> bus;
-    public RxBus() {
-        bus = new SerializedSubject<>(PublishSubject.create());
+
+    private final FlowableProcessor<Object> mBus;
+    private static volatile RxBus sRxBus = null;
+
+    private RxBus() {
+        mBus = PublishProcessor.create().toSerialized();
     }
-    public static RxBus getDefault() {
-        if (defaultInstance == null) {
+
+    public static synchronized RxBus getDefault() {
+        if (sRxBus == null) {
             synchronized (RxBus.class) {
-                if (defaultInstance == null) {
-                    defaultInstance = new RxBus();
+                if (sRxBus == null) {
+                    sRxBus = new RxBus();
                 }
             }
         }
-        return defaultInstance ;
+        return sRxBus;
     }
-    public void post (Object o) {
-        bus.onNext(o);
+
+    public void post(Object o) {
+        new SerializedSubscriber<>(mBus).onNext(o);
     }
-    public <T> Observable<T> toObservable (Class<T> eventType) {
-        return bus.ofType(eventType);
+
+    public <T> Flowable<T> toFlowable(Class<T> aClass) {
+        return mBus.ofType(aClass);
+    }
+
+    public boolean hasSubscribers() {
+        return mBus.hasSubscribers();
     }
 }
