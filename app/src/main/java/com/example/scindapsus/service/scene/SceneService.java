@@ -1,8 +1,8 @@
 package com.example.scindapsus.service.scene;
 
-import org.reactivestreams.Subscriber;
-
 import java.io.InputStream;
+
+import io.reactivex.Observer;
 
 
 /**
@@ -10,6 +10,6 @@ import java.io.InputStream;
  */
 
 public interface SceneService {
-    void loadAudio(String token, Subscriber<InputStream> subscriber, String Url);
+    void loadAudio(String token, Observer<InputStream> subscriber, String Url);
     InputStream loadAudio(String token, String Url);
 }

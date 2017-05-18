@@ -4,11 +4,11 @@ import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 
-import org.reactivestreams.Subscriber;
-
 import java.io.InputStream;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observer;
 
 
 /**
@@ -25,7 +25,7 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public void loadAudio(String token, Subscriber<InputStream> subscriber, String Url) {
+    public void loadAudio(String token, Observer<InputStream> subscriber, String Url) {
         fileHttp.getFile(token, subscriber, Url);
     }
 

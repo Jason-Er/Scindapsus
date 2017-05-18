@@ -12,10 +12,10 @@ import com.example.scindapsus.service.participate.ParticipateService;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import javax.inject.Inject;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -70,7 +70,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             mParticipateView.setLoadingIndicator(true);
         }
 
-        Subscriber observer = new Subscriber<Play>() {
+        Observer observer = new Observer<Play>() {
             @Override
             public void onComplete() {
                 Log.i(TAG, "onCompleted");
@@ -83,7 +83,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             }
 
             @Override
-            public void onSubscribe(Subscription s) {
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 

@@ -12,9 +12,6 @@ import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.login.LoginService;
 import com.example.scindapsus.service.shared.SharedService;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
@@ -47,10 +44,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login(final User user) {
 
-        Subscriber subscriber = new Subscriber<Token>() {
+        Observer subscriber = new Observer<Token>() {
 
             @Override
-            public void onSubscribe(Subscription s) {
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
@@ -64,7 +61,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onError(Throwable t) {
-
+                Log.i(TAG, "onError");
             }
 
             @Override

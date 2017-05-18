@@ -7,7 +7,6 @@ import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.model.http.PageResult;
 import com.example.scindapsus.service.shared.SharedService;
 
-import org.reactivestreams.Subscriber;
 
 import java.util.List;
 import java.util.Properties;
@@ -41,16 +40,16 @@ public class BrowseHttpImpl {
         browseHttp = retrofitUtil.createApi(BrowseHttp.class);
     }
 
-    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> observer, int page, int size) {
+    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page, int size) {
         //String token = sharedService.getToken();
         //String token = "";
         browseHttp.loadPlaysInfo(token)//loadPlaysInfo(token, page, size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+                .subscribeWith(observer);
     }
 
-    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> observer, int page) {
+    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page) {
         loadPlaysInfo(token, observer, page, Integer.parseInt(properties.getProperty("DEFAULT_PAGE_SIZE")));
     }
 }

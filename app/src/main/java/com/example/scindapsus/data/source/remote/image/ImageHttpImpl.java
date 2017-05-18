@@ -7,17 +7,15 @@ import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
 
-import org.reactivestreams.Subscriber;
-
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.inject.Inject;
 
 
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -40,7 +38,7 @@ public class ImageHttpImpl {
         imageHttp = retrofitUtil.createApi(ImageHttp.class);
     }
 
-    public void getImage(String token, Subscriber<Bitmap> observer, String url) {
+    public void getImage(String token, Observer<Bitmap> observer, String url) {
         imageHttp.getImage(token, url)
                 .map(new Function<ResponseBody, Bitmap>() {
                     @Override

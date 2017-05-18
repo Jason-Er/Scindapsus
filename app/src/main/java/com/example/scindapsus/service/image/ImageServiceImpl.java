@@ -10,6 +10,8 @@ import org.reactivestreams.Subscriber;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+
 /**
  * Created by ej on 4/28/2017.
  */
@@ -24,7 +26,7 @@ public class ImageServiceImpl implements ImageService{
                 .build().inject(this);
     }
     @Override
-    public void getImage(String token, Subscriber<Bitmap> observer, String url) {
+    public void getImage(String token, Observer<Bitmap> observer, String url) {
         imageHttpImpl.getImage(token, observer, url);
     }
 }

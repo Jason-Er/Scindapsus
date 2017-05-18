@@ -2,7 +2,7 @@ package com.example.scindapsus.data.source.remote.participate;
 
 import com.example.scindapsus.model.Play;
 
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -13,5 +13,5 @@ import retrofit2.http.Path;
 
 public interface ParticipateHttp {
     @GET("/v1/model/play/{id}")
-    Flowable<Play> loadPlay(@Header("Authorization") String token, @Path("id") int id);
+    Observable<Play> loadPlay(@Header("Authorization") String token, @Path("id") int id);
 }

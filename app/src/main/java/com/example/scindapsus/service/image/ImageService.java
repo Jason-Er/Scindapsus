@@ -2,7 +2,7 @@ package com.example.scindapsus.service.image;
 
 import android.graphics.Bitmap;
 
-import org.reactivestreams.Subscriber;
+import io.reactivex.Observer;
 
 
 /**
@@ -10,5 +10,5 @@ import org.reactivestreams.Subscriber;
  */
 
 public interface ImageService {
-    void getImage(String token, Subscriber<Bitmap> observer, String url);
+    void getImage(String token, Observer<Bitmap> observer, String url);
 }

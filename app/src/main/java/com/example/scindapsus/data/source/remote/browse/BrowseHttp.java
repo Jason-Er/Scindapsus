@@ -5,8 +5,7 @@ import com.example.scindapsus.model.http.PageResult;
 
 import java.util.List;
 
-
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
@@ -18,7 +17,7 @@ import retrofit2.http.Query;
 
 public interface BrowseHttp {
     @GET("/v1/model/playsInfo")
-    Flowable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size);
+    Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size);
     @GET("/v1/model/playsInfo")
-    Flowable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token);
+    Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token);
 }

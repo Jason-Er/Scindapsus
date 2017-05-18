@@ -4,12 +4,11 @@ import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
 
-import org.reactivestreams.Subscriber;
-
 import java.io.InputStream;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -35,7 +34,7 @@ public class FileHttpImpl {
         fileHttp = retrofitUtil.createApi(FileHttp.class);
     }
 
-    public void getFile(String token, Subscriber<InputStream> subscriber, String url) {
+    public void getFile(String token, Observer<InputStream> subscriber, String url) {
         fileHttp.getFile(token, url)
                 .map(new Function<ResponseBody, InputStream>() {
                     @Override

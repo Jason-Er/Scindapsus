@@ -105,7 +105,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             mBrowseView.setLoadingIndicator(true);
         }
 
-        Subscriber subscriber = new Subscriber<PageResult<List<PlayInfo>>>() {
+        Observer observer = new Observer<PageResult<List<PlayInfo>>>() {
             @Override
             public void onComplete() {
                 Log.i(TAG, "onCompleted");
@@ -118,7 +118,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             }
 
             @Override
-            public void onSubscribe(Subscription s) {
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
@@ -131,7 +131,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
         };
 
-        browseService.loadPlaysInfo(sharedService.getToken(), subscriber, 0);
+        browseService.loadPlaysInfo(sharedService.getToken(), observer, 0);
     }
 
     private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {

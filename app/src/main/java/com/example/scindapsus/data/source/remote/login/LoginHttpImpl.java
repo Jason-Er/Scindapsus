@@ -11,12 +11,12 @@ import com.example.scindapsus.model.adapter.AuthAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.reactivestreams.Subscriber;
-
 import java.util.Properties;
 
 import javax.inject.Inject;
 
+
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -46,8 +46,48 @@ public class LoginHttpImpl {
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public void login(Subscriber<Token> observer, String name, String password) {
+    public void login(Observer<Token> observer, String name, String password) {
         Log.i(TAG, "Invoke method login");
+
+        loginHttp.login(Auth.newInstance(name, password))
+                .subscribeOn(Schedulers.io())
+                .map(new Function<Response<Void>, Token>() {
+                    @Override
+                    public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
+                        String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
+                        String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
+                        String token = voidResponse.headers().get(authHeaderKey);
+                        String[] arr = token.split(tokenPrefix + " ");
+                        return Token.newInstance(arr[1]);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(observer);
+
+        /*
+        Subscriber subscriber = new Subscriber<Token>() {
+
+            @Override
+            public void onSubscribe(Subscription s) {
+                Log.i(TAG, "onSubscribe");
+            }
+
+            @Override
+            public void onNext(Token token) {
+                Log.i(TAG, "onNext"+token.token());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.i(TAG, "onError"+t.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "onComplete");
+            }
+        };
+
         loginHttp.login(Auth.newInstance(name, password))
                 .map(new Function<Response<Void>, Token>() {
                     @Override
@@ -61,6 +101,7 @@ public class LoginHttpImpl {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+                .subscribeWith(subscriber);
+                */
     }
 }

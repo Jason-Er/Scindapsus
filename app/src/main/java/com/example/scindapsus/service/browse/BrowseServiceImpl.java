@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+
 /**
  * Created by ej on 4/25/2017.
  */
@@ -26,7 +28,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     @Override
-    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> observer, int page) {
+    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page) {
         browseHttpImpl.loadPlaysInfo(token, observer, page);
     }
 }

@@ -5,8 +5,6 @@ import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Play;
 
-import org.reactivestreams.Subscriber;
-
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -38,7 +36,7 @@ public class ParticipateHttpImpl {
         participateHttp = retrofitUtil.createApi(ParticipateHttp.class);
     }
 
-    public void loadPlay(String token, Subscriber<Play> observer, int id) {
+    public void loadPlay(String token, Observer<Play> observer, int id) {
         participateHttp.loadPlay(token, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

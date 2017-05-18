@@ -5,9 +5,9 @@ import com.example.scindapsus.data.source.remote.participate.ParticipateHttpImpl
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Play;
 
-import org.reactivestreams.Subscriber;
-
 import javax.inject.Inject;
+
+import io.reactivex.Observer;
 
 /**
  * Created by ej on 5/3/2017.
@@ -23,7 +23,7 @@ public class ParticipateServiceImpl implements ParticipateService {
                 .build().inject(this);
     }
     @Override
-    public void loadPlay(String token, Subscriber<Play> observer, int id) {
+    public void loadPlay(String token, Observer<Play> observer, int id) {
         participateHttpImpl.loadPlay(token, observer, id);
     }
 }
