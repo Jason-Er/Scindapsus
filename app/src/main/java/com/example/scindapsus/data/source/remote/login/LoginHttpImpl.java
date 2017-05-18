@@ -11,16 +11,18 @@ import com.example.scindapsus.model.adapter.AuthAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.reactivestreams.Subscriber;
+
 import java.util.Properties;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ej on 3/6/2017.
@@ -44,12 +46,12 @@ public class LoginHttpImpl {
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public void login(Subscriber<Token> subscriber, String name, String password) {
+    public void login(Subscriber<Token> observer, String name, String password) {
         Log.i(TAG, "Invoke method login");
         loginHttp.login(Auth.newInstance(name, password))
-                .map(new Func1<Response<Void>, Token>() {
+                .map(new Function<Response<Void>, Token>() {
                     @Override
-                    public Token call(Response<Void> voidResponse) {
+                    public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
                         String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
                         String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
                         String token = voidResponse.headers().get(authHeaderKey);
@@ -59,6 +61,6 @@ public class LoginHttpImpl {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(observer);
     }
 }

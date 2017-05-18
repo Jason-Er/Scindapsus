@@ -6,9 +6,9 @@ import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 
-import javax.inject.Inject;
+import org.reactivestreams.Subscriber;
 
-import rx.Subscriber;
+import javax.inject.Inject;
 
 /**
  * Created by ej on 4/28/2017.
@@ -24,7 +24,7 @@ public class ImageServiceImpl implements ImageService{
                 .build().inject(this);
     }
     @Override
-    public void getImage(String token, Subscriber<Bitmap> subscriber, String url) {
-        imageHttpImpl.getImage(token, subscriber, url);
+    public void getImage(String token, Subscriber<Bitmap> observer, String url) {
+        imageHttpImpl.getImage(token, observer, url);
     }
 }

@@ -61,4 +61,5 @@ public class ServiceModule {
     public SceneService provideSceneService(ApplicationComponent applicationComponent){
         return new SceneServiceImpl(applicationComponent);
     }
+
 }

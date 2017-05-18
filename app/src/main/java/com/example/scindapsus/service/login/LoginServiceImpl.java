@@ -7,9 +7,9 @@ import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Token;
 
-import javax.inject.Inject;
+import org.reactivestreams.Subscriber;
 
-import rx.Subscriber;
+import javax.inject.Inject;
 
 /**
  * Created by ej on 2/28/2017.
@@ -25,8 +25,8 @@ public class LoginServiceImpl implements LoginService {
                 .build().inject(this);
     }
     @Override
-    public void login(Subscriber<Token> subscriber, String name, String password) {
+    public void login(Subscriber<Token> observer, String name, String password) {
         Log.i(TAG, "Invoke LoginServiceImpl login!");
-        loginHttpImpl.login(subscriber, name, password);
+        loginHttpImpl.login(observer, name, password);
     }
 }

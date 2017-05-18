@@ -12,14 +12,17 @@ import com.example.scindapsus.service.image.ImageService;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.util.bus.RxBus;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -33,7 +36,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     private final BrowseContract.View mBrowseView;
     private boolean mFirstLoad = true;
-    private Subscription rxSubscription = null;
+
     final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>();
 
     @Inject
@@ -63,32 +66,17 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void onStart() {
-        rxSubscription = RxBus.getDefault().toObservable(PlayInfo.class)
-                .subscribe(new Action1<PlayInfo>() {
-                               @Override
-                               public void call(PlayInfo playInfo) {
-                                   Log.i(TAG, "playInfo.name: "+playInfo.getName());
-                                   try {
-                                       synchronousQueue.put(playInfo);
-                                   } catch (InterruptedException e) {
-                                       e.printStackTrace();
-                                   }
-                               }
-                           },
-                        new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                // exception
-                            }
-                        });
+        RxBus.getDefault().toFlowable(PlayInfo.class)
+                .subscribe(new Consumer<PlayInfo>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull PlayInfo playInfo) throws Exception {
+                        synchronousQueue.put(playInfo);
+                    }});
     }
 
     @Override
     public void onStop() {
-        if(!rxSubscription.isUnsubscribed()) {
-            rxSubscription.unsubscribe();
-            rxSubscription = null;
-        }
+
     }
 
     @Override
@@ -119,13 +107,18 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
         Subscriber subscriber = new Subscriber<PageResult<List<PlayInfo>>>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
                 Log.i(TAG, "onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.i(TAG, "onError");
+
+            }
+
+            @Override
+            public void onSubscribe(Subscription s) {
 
             }
 

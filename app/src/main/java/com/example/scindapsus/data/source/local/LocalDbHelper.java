@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.scindapsus.data.populator.UserPopulator;
-import com.example.scindapsus.model.UserModel;
 
 /**
  * Created by ej on 2/22/2017.
@@ -31,7 +30,7 @@ public class LocalDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(UserModel.CREATE_TABLE);
+        // db.execSQL(UserModel.CREATE_TABLE);
         populate(db);
     }
 

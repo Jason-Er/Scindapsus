@@ -12,9 +12,10 @@ import com.example.scindapsus.service.participate.ParticipateService;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
-import javax.inject.Inject;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
-import rx.Subscriber;
+import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -69,15 +70,20 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             mParticipateView.setLoadingIndicator(true);
         }
 
-        Subscriber subscriber = new Subscriber<Play>() {
+        Subscriber observer = new Subscriber<Play>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
                 Log.i(TAG, "onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.i(TAG, "onError");
+
+            }
+
+            @Override
+            public void onSubscribe(Subscription s) {
 
             }
 
@@ -89,7 +95,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             }
         };
 
-        participateService.loadPlay(sharedService.getToken(), subscriber, id);
+        participateService.loadPlay(sharedService.getToken(), observer, id);
     }
 
     public ScenePresenter getScenePresenter() {
