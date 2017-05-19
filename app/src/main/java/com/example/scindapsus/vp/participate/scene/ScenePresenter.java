@@ -10,6 +10,10 @@ import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
 import com.example.scindapsus.service.shared.SharedService;
+import com.example.scindapsus.util.custom.LinesAudioDownloader;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +22,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
+
 /**
  * Created by ej on 5/4/2017.
  */
@@ -25,6 +31,7 @@ import javax.inject.Inject;
 public class ScenePresenter implements SceneContract.Presenter {
 
     final static String TAG = ScenePresenter.class.getName();
+
     private Scene mScene;
     private final SceneContract.View mSceneView;
 
@@ -73,19 +80,6 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     private void loadLinesAudio(List<Line> lines) {
         final String token = sharedService.getToken();
-
-
-
-        /*
-        Observable.from(lines)
-                .map(new Func1<Line, InputAndLine>() {
-                    @Override
-                    public InputAndLine call(Line line) {
-                        InputStream is = sceneService.loadAudio(token, line.getAudioURL());
-                        return new InputAndLine(line, is);
-                    }
-                })
-                .toList();
-        */
+        List<Line> local = sceneService.loadAudio(token, lines);
     }
 }

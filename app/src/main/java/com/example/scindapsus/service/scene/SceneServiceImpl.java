@@ -3,8 +3,11 @@ package com.example.scindapsus.service.scene;
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Line;
+import com.example.scindapsus.util.custom.LinesAudioDownloader;
 
 import java.io.InputStream;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,6 +34,13 @@ public class SceneServiceImpl implements SceneService {
 
     @Override
     public InputStream loadAudio(String token, String Url) {
+        return null;
+    }
+
+    @Override
+    public List<Line> loadAudio(String token, List<Line> lines) {
+        LinesAudioDownloader linesAudioDownloader = new LinesAudioDownloader(this, token, lines);
+        linesAudioDownloader.startDownload();
         return null;
     }
 

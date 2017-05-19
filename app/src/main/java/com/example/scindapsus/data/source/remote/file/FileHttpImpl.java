@@ -9,6 +9,7 @@ import java.io.InputStream;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -39,12 +40,11 @@ public class FileHttpImpl {
                 .map(new Function<ResponseBody, InputStream>() {
                     @Override
                     public InputStream apply(@NonNull ResponseBody responseBody) throws Exception {
-                        InputStream is = responseBody.byteStream();
-                        return is;
+                        return responseBody.byteStream();
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
 
