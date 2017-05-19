@@ -2,10 +2,10 @@ package com.example.scindapsus.data.source.remote.participate;
 
 import com.example.scindapsus.model.Play;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
-import rx.Observable;
 
 /**
  * Created by ej on 5/3/2017.

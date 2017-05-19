@@ -6,25 +6,29 @@ import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.model.http.PageResult;
 
+import org.reactivestreams.Subscriber;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
+import io.reactivex.Observer;
 
 /**
  * Created by ej on 4/25/2017.
  */
 
 public class BrowseServiceImpl implements BrowseService {
-    @Inject BrowseHttpImpl browseHttpImpl;
+    @Inject
+    BrowseHttpImpl browseHttpImpl;
     public BrowseServiceImpl(ApplicationComponent applicationComponent) {
         DaggerDataSourceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
     }
+
     @Override
-    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page) {
-        browseHttpImpl.loadPlaysInfo(token, subscriber,page);
+    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page) {
+        browseHttpImpl.loadPlaysInfo(token, observer, page);
     }
 }

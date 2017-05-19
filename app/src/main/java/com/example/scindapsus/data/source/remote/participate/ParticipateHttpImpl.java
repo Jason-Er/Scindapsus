@@ -9,9 +9,10 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by ej on 5/3/2017.
@@ -35,11 +36,11 @@ public class ParticipateHttpImpl {
         participateHttp = retrofitUtil.createApi(ParticipateHttp.class);
     }
 
-    public void loadPlay(String token, Subscriber<Play> subscriber, int id) {
+    public void loadPlay(String token, Observer<Play> observer, int id) {
         participateHttp.loadPlay(token, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(observer);
     }
 
 }

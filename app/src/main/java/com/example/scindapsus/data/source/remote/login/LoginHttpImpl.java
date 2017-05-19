@@ -15,12 +15,14 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ej on 3/6/2017.
@@ -44,12 +46,52 @@ public class LoginHttpImpl {
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public void login(Subscriber<Token> subscriber, String name, String password) {
+    public void login(Observer<Token> observer, String name, String password) {
         Log.i(TAG, "Invoke method login");
+
         loginHttp.login(Auth.newInstance(name, password))
-                .map(new Func1<Response<Void>, Token>() {
+                .subscribeOn(Schedulers.io())
+                .map(new Function<Response<Void>, Token>() {
                     @Override
-                    public Token call(Response<Void> voidResponse) {
+                    public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
+                        String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
+                        String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
+                        String token = voidResponse.headers().get(authHeaderKey);
+                        String[] arr = token.split(tokenPrefix + " ");
+                        return Token.newInstance(arr[1]);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(observer);
+
+        /*
+        Subscriber subscriber = new Subscriber<Token>() {
+
+            @Override
+            public void onSubscribe(Subscription s) {
+                Log.i(TAG, "onSubscribe");
+            }
+
+            @Override
+            public void onNext(Token token) {
+                Log.i(TAG, "onNext"+token.token());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.i(TAG, "onError"+t.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "onComplete");
+            }
+        };
+
+        loginHttp.login(Auth.newInstance(name, password))
+                .map(new Function<Response<Void>, Token>() {
+                    @Override
+                    public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
                         String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
                         String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
                         String token = voidResponse.headers().get(authHeaderKey);
@@ -59,6 +101,7 @@ public class LoginHttpImpl {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribeWith(subscriber);
+                */
     }
 }

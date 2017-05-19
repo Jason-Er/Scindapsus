@@ -14,7 +14,8 @@ import com.example.scindapsus.service.shared.SharedService;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -43,15 +44,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login(final User user) {
 
-        Subscriber subscriber = new Subscriber<Token>() {
-            @Override
-            public void onCompleted() {
-                Log.i(TAG, "onCompleted");
-            }
+        Observer subscriber = new Observer<Token>() {
 
             @Override
-            public void onError(Throwable e) {
-                Log.i(TAG, "onError");
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
@@ -61,9 +57,20 @@ public class LoginPresenter implements LoginContract.Presenter {
                 sharedService.saveToken(token.token());
                 mLogInView.navigateToBrowse(user);
             }
+
+
+            @Override
+            public void onError(Throwable t) {
+                Log.i(TAG, "onError");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "onCompleted");
+            }
         };
 
-        loginService.login(subscriber, user.name(), user.password());
+        loginService.login(subscriber, user.getUsername(), user.getPassword());
 
         mLogInView.setLoadingIndicator(true);
 

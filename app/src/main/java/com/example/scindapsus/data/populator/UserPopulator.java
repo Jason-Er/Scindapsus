@@ -11,7 +11,9 @@ import com.example.scindapsus.service.local.UserServiceImpl;
 
 public class UserPopulator {
     public static void populate(SQLiteDatabase db) {
+        /*
         User user = User.newInstance(0, "jason", "123456");
         UserServiceImpl.Insert_user(user);
+        */
     }
 }

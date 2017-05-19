@@ -3,12 +3,11 @@ package com.example.scindapsus.service.local;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.scindapsus.model.User;
-import com.example.scindapsus.model.UserModel;
 
 /**
  * Created by ej on 2/24/2017.
  */
-
+/*
 public abstract class UserServiceImpl implements UserModel{
 
     private static SQLiteDatabase db;
@@ -18,4 +17,9 @@ public abstract class UserServiceImpl implements UserModel{
         insert.bind(user.name(), user.password());
         return insert.program.executeInsert();
     }
+}
+*/
+
+public abstract class UserServiceImpl {
+    
 }

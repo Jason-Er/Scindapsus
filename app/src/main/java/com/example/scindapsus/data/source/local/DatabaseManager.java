@@ -4,8 +4,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import rx.schedulers.Schedulers;
-
 /**
  * Created by ej on 2/23/2017.
  */

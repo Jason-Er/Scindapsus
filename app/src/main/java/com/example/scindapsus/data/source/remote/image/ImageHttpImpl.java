@@ -12,11 +12,13 @@ import java.io.InputStream;
 
 import javax.inject.Inject;
 
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ej on 4/28/2017.
@@ -36,11 +38,11 @@ public class ImageHttpImpl {
         imageHttp = retrofitUtil.createApi(ImageHttp.class);
     }
 
-    public void getImage(String token, Subscriber<Bitmap> subscriber, String url) {
+    public void getImage(String token, Observer<Bitmap> observer, String url) {
         imageHttp.getImage(token, url)
-                .map(new Func1<ResponseBody, Bitmap>() {
+                .map(new Function<ResponseBody, Bitmap>() {
                     @Override
-                    public Bitmap call(ResponseBody responseBody) {
+                    public Bitmap apply(@NonNull ResponseBody responseBody) {
                         try(InputStream is = responseBody.byteStream()) {
                             return BitmapFactory.decodeStream(is);
                         } catch (IOException e) {
@@ -51,7 +53,7 @@ public class ImageHttpImpl {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(observer);
     }
 
 }

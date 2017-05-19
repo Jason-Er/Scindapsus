@@ -7,15 +7,15 @@ import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.model.http.PageResult;
 import com.example.scindapsus.service.shared.SharedService;
 
+
 import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by ej on 4/25/2017.
@@ -40,16 +40,16 @@ public class BrowseHttpImpl {
         browseHttp = retrofitUtil.createApi(BrowseHttp.class);
     }
 
-    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page, int size) {
+    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page, int size) {
         //String token = sharedService.getToken();
         //String token = "";
         browseHttp.loadPlaysInfo(token)//loadPlaysInfo(token, page, size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribeWith(observer);
     }
 
-    public void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page) {
-        loadPlaysInfo(token, subscriber, page, Integer.parseInt(properties.getProperty("DEFAULT_PAGE_SIZE")));
+    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page) {
+        loadPlaysInfo(token, observer, page, Integer.parseInt(properties.getProperty("DEFAULT_PAGE_SIZE")));
     }
 }

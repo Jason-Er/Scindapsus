@@ -5,12 +5,11 @@ import com.example.scindapsus.model.http.PageResult;
 
 import java.util.List;
 
-
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.Query;
-import rx.Observable;
+
 
 /**
  * Created by ej on 4/25/2017.

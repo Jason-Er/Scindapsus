@@ -5,12 +5,12 @@ import com.example.scindapsus.model.http.PageResult;
 
 import java.util.List;
 
-import rx.Subscriber;
+import io.reactivex.Observer;
 
 /**
  * Created by ej on 4/25/2017.
  */
 
 public interface BrowseService {
-    void loadPlaysInfo(String token, Subscriber<PageResult<List<PlayInfo>>> subscriber, int page);
+    void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page);
 }

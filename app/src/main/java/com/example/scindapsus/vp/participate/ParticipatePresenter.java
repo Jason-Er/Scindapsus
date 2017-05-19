@@ -14,7 +14,8 @@ import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -69,15 +70,20 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             mParticipateView.setLoadingIndicator(true);
         }
 
-        Subscriber subscriber = new Subscriber<Play>() {
+        Observer observer = new Observer<Play>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
                 Log.i(TAG, "onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.i(TAG, "onError");
+
+            }
+
+            @Override
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
@@ -89,7 +95,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             }
         };
 
-        participateService.loadPlay(sharedService.getToken(), subscriber, id);
+        participateService.loadPlay(sharedService.getToken(), observer, id);
     }
 
     public ScenePresenter getScenePresenter() {
