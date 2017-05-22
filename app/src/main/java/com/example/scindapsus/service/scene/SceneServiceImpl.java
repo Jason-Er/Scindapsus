@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 
 /**
@@ -29,7 +30,7 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public void loadAudio(String token, Observer<ResponseBody> observer, String Url) {
+    public void loadAudio(String token, Observer<Response<ResponseBody>> observer, String Url) {
         fileHttp.getFile(token, observer, Url);
     }
 

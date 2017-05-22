@@ -7,6 +7,7 @@ import java.util.List;
 
 import io.reactivex.Observer;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 
 /**
@@ -14,7 +15,7 @@ import okhttp3.ResponseBody;
  */
 
 public interface SceneService {
-    void loadAudio(String token, Observer<ResponseBody> subscriber, String Url);
+    void loadAudio(String token, Observer<Response<ResponseBody>> subscriber, String Url);
     InputStream loadAudio(String token, String Url);
     List<Line> loadAudio(String token, List<Line> lines);
 }
