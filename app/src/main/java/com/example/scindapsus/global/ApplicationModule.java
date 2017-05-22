@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.example.scindapsus.R;
+import com.example.scindapsus.util.https.CustomCertificate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,4 +47,8 @@ public final class ApplicationModule {
         return application.getSharedPreferences("scindapsus", application.MODE_PRIVATE);
     }
 
+    @Provides
+    public CustomCertificate provideCustomTrust() {
+        return new CustomCertificate(application.getBaseContext(), R.raw.trust);
+    }
 }

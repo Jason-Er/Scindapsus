@@ -2,6 +2,7 @@ package com.example.scindapsus.data.source.remote;
 
 import android.support.annotation.NonNull;
 
+import com.example.scindapsus.util.https.CustomCertificate;
 import com.google.gson.Gson;
 
 import java.util.Properties;
@@ -18,17 +19,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitUtil {
     static Properties properties;
-    public RetrofitUtil(@NonNull Properties properties) {
+    static OkHttpClient client;
+    public RetrofitUtil(@NonNull Properties properties, @NonNull CustomCertificate customTrust) {
         RetrofitUtil.properties = properties;
+        RetrofitUtil.client = new OkHttpClient.Builder()
+                .sslSocketFactory(customTrust.getSslSocketFactory(), customTrust.getTrustManager())
+                .build();
     }
-
     public static <T> T createApi(@NonNull Class<T> tClass) {
         String BASE_URL = properties.getProperty("BASE_URL");
         int DEFAULT_TIMEOUT = Integer.parseInt(properties.getProperty("DEFAULT_TIMEOUT"));
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return new Retrofit.Builder()
-                .client(httpClientBuilder.build())
+                .client(client)
+                //.client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(BASE_URL)
@@ -41,7 +46,8 @@ public class RetrofitUtil {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return new Retrofit.Builder()
-                .client(httpClientBuilder.build())
+                .client(client)
+                //.client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(BASE_URL)
