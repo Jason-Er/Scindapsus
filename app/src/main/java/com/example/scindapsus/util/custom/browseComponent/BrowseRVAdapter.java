@@ -16,6 +16,7 @@ import com.example.scindapsus.model.PlayInfo;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.shared.SharedService;
 import com.example.scindapsus.util.bus.RxBus;
+import com.example.scindapsus.util.https.CustomCertificate;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -43,6 +44,9 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
 
     @Inject
     SharedService sharedService;
+
+    @Inject
+    CustomCertificate customCertificate;
 
     public BrowseRVAdapter(@NonNull Context context, @NonNull ApplicationComponent applicationComponent, List<PlayInfo> dataset) {
         this.context = context;
@@ -108,6 +112,7 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
         holder.populate(dataset.get(position));
 
         OkHttpClient client = new OkHttpClient.Builder()
+                .sslSocketFactory(customCertificate.getSslSocketFactory(), customCertificate.getTrustManager())
                 .addInterceptor(new Interceptor() {
 
                     @Override
