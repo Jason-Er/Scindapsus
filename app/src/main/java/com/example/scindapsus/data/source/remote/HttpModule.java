@@ -1,5 +1,6 @@
 package com.example.scindapsus.data.source.remote;
 
+import com.example.scindapsus.util.https.CustomCertificate;
 import com.example.scindapsus.util.label.DataSourceFuncModelScope;
 
 import java.util.Properties;
@@ -14,7 +15,7 @@ import dagger.Provides;
 public class HttpModule {
     @DataSourceFuncModelScope
     @Provides
-    public RetrofitUtil provideRetrofitUtil(Properties properties) {
-        return new RetrofitUtil(properties);
+    public RetrofitUtil provideRetrofitUtil(Properties properties, CustomCertificate customCertificate) {
+        return new RetrofitUtil(properties, customCertificate);
     }
 }

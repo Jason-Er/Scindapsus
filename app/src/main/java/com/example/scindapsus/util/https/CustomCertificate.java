@@ -23,12 +23,12 @@ import javax.net.ssl.X509TrustManager;
  * Created by ej on 5/22/2017.
  */
 
-public class CustomTrust {
+public class CustomCertificate {
 
     private X509TrustManager trustManager;
     private SSLSocketFactory sslSocketFactory;
 
-    public CustomTrust(@NonNull Context context, @NonNull int resourceId) {
+    public CustomCertificate(@NonNull Context context, @NonNull int resourceId) {
         try {
             InputStream certStream = context.getResources().openRawResource(resourceId);
             trustManager = trustManagerForCertificates(certStream);
