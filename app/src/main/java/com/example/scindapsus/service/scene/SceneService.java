@@ -17,5 +17,5 @@ import retrofit2.Response;
 public interface SceneService {
     void loadAudio(String token, Observer<Response<ResponseBody>> subscriber, String Url);
     InputStream loadAudio(String token, String Url);
-    List<Line> loadAudio(String token, List<Line> lines);
+    List<Line> loadAudio(String token, List<Line> lines, String path);
 }

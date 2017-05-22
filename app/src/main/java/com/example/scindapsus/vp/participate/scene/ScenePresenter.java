@@ -1,5 +1,6 @@
 package com.example.scindapsus.vp.participate.scene;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.scindapsus.global.ApplicationComponent;
@@ -9,7 +10,6 @@ import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
 import com.example.scindapsus.service.shared.SharedService;
 
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -24,6 +24,7 @@ public class ScenePresenter implements SceneContract.Presenter {
     final static String TAG = ScenePresenter.class.getName();
 
     private Scene mScene;
+    private Context context;
     private final SceneContract.View mSceneView;
 
     @Inject
@@ -35,6 +36,7 @@ public class ScenePresenter implements SceneContract.Presenter {
         mSceneView = view;
         mSceneView.setPresenter(this);
 
+        context = applicationComponent.getApplication().getBaseContext();
         DaggerServiceComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
@@ -60,17 +62,10 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     }
 
-    class InputAndLine {
-        Line line;
-        InputStream inputStream;
-        public InputAndLine(Line line, InputStream inputStream) {
-            this.line = line;
-            this.inputStream = inputStream;
-        }
-    }
-
     private void loadLinesAudio(List<Line> lines) {
+        // TODO: 5/22/2017 path4Save need refactoring according to the user login
+        String path4Save = context.getFilesDir().getAbsolutePath();
         final String token = sharedService.getToken();
-        List<Line> local = sceneService.loadAudio(token, lines);
+        List<Line> local = sceneService.loadAudio(token, lines, path4Save);
     }
 }

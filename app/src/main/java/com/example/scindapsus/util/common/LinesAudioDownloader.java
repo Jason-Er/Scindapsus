@@ -31,7 +31,7 @@ public class LinesAudioDownloader {
     private final int DOWNLOAD_AUDIO_NUM = 1;
     private final SceneService sceneService;
     private final String token;
-    private final String path = "/data/data/";
+    private final String path;
 
     final Observer<File> fileObserver = new Observer<File>() {
         @Override
@@ -110,7 +110,8 @@ public class LinesAudioDownloader {
         }
     };
 
-    public LinesAudioDownloader(@NonNull SceneService sceneService, @NonNull String token, @NonNull final List<Line> lines) {
+    public LinesAudioDownloader(@NonNull SceneService sceneService, @NonNull String token, @NonNull final List<Line> lines, @NonNull String path) {
+        this.path = path;
         this.token = token;
         this.sceneService = sceneService;
         flowable = Flowable.fromIterable(lines);

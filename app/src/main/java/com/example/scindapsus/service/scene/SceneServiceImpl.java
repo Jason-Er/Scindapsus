@@ -40,8 +40,8 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public List<Line> loadAudio(String token, List<Line> lines) {
-        LinesAudioDownloader linesAudioDownloader = new LinesAudioDownloader(this, token, lines);
+    public List<Line> loadAudio(String token, List<Line> lines, String path) {
+        LinesAudioDownloader linesAudioDownloader = new LinesAudioDownloader(this, token, lines, path);
         linesAudioDownloader.startDownload();
         return null;
     }
