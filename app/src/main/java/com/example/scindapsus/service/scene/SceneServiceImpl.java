@@ -4,7 +4,7 @@ import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
-import com.example.scindapsus.util.custom.LinesAudioDownloader;
+import com.example.scindapsus.util.common.LinesAudioDownloader;
 
 import java.io.InputStream;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -28,8 +29,8 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public void loadAudio(String token, Observer<InputStream> subscriber, String Url) {
-        fileHttp.getFile(token, subscriber, Url);
+    public void loadAudio(String token, Observer<ResponseBody> observer, String Url) {
+        fileHttp.getFile(token, observer, Url);
     }
 
     @Override

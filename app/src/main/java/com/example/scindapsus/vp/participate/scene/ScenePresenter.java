@@ -1,28 +1,19 @@
 package com.example.scindapsus.vp.participate.scene;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
 import com.example.scindapsus.service.shared.SharedService;
-import com.example.scindapsus.util.custom.LinesAudioDownloader;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 
 import javax.inject.Inject;
-
-import io.reactivex.Flowable;
 
 /**
  * Created by ej on 5/4/2017.

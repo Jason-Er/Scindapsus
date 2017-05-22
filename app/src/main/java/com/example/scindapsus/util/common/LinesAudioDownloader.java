@@ -1,4 +1,4 @@
-package com.example.scindapsus.util.custom;
+package com.example.scindapsus.util.common;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -9,12 +9,12 @@ import com.example.scindapsus.service.scene.SceneService;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-import java.io.InputStream;
 import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by ej on 5/19/2017.
@@ -28,14 +28,14 @@ public class LinesAudioDownloader {
     private final SceneService sceneService;
     private final String token;
 
-    final Observer<InputStream> observer = new Observer<InputStream>() {
+    final Observer<ResponseBody> observer = new Observer<ResponseBody>() {
         @Override
         public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
             Log.i(TAG, "onSubscribe");
         }
 
         @Override
-        public void onNext(@io.reactivex.annotations.NonNull InputStream inputStream) {
+        public void onNext(@io.reactivex.annotations.NonNull ResponseBody responseBody) {
             // TODO: 5/19/2017 save inputStream to local disk
 
             Log.i(TAG, "onNext");

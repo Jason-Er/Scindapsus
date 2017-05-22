@@ -35,17 +35,11 @@ public class FileHttpImpl {
         fileHttp = retrofitUtil.createApi(FileHttp.class);
     }
 
-    public void getFile(String token, Observer<InputStream> subscriber, String url) {
+    public void getFile(String token, Observer<ResponseBody> observer, String url) {
         fileHttp.getFile(token, url)
-                .map(new Function<ResponseBody, InputStream>() {
-                    @Override
-                    public InputStream apply(@NonNull ResponseBody responseBody) throws Exception {
-                        return responseBody.byteStream();
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(observer);
     }
 
     public InputStream getFile(String token, String url) {
