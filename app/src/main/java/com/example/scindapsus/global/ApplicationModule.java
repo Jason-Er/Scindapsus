@@ -1,6 +1,7 @@
 package com.example.scindapsus.global;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.scindapsus.R;
@@ -50,5 +51,10 @@ public final class ApplicationModule {
     @Provides
     public CustomCertificate provideCustomTrust() {
         return new CustomCertificate(application.getBaseContext(), R.raw.trust);
+    }
+
+    @Provides
+    public Context provideContext() {
+        return application.getApplicationContext();
     }
 }

@@ -5,41 +5,39 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.scindapsus.data.populator.UserPopulator;
+import com.example.scindapsus.model.LineModel;
+import com.example.scindapsus.model.PlayModel;
+import com.example.scindapsus.model.SceneModel;
 
 /**
  * Created by ej on 2/22/2017.
  */
 
-public class LocalDbHelper extends SQLiteOpenHelper {
+public class DelightfulOpenHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "scindapsus.db";
+    public static final String DB_NAME = "apricot.db";
     public static final int DB_VERSION = 1;
 
-    private static LocalDbHelper instance;
-
-    public static LocalDbHelper getInstance(Context context) {
-        if (null == instance) {
-            instance = new LocalDbHelper(context);
-        }
-        return instance;
-    }
-
-    private LocalDbHelper(Context context) {
+    public DelightfulOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // db.execSQL(UserModel.CREATE_TABLE);
-        populate(db);
+        db.execSQL(PlayModel.CREATE_TABLE);
+        db.execSQL(SceneModel.CREATE_TABLE);
+        db.execSQL(LineModel.CREATE_TABLE);
+        // populate(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+
     }
 
     private void populate(SQLiteDatabase db) {
         UserPopulator.populate(db);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-
-    }
 }
