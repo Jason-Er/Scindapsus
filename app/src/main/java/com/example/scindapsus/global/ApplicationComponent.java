@@ -1,6 +1,7 @@
 package com.example.scindapsus.global;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.scindapsus.util.https.CustomCertificate;
@@ -22,6 +23,7 @@ public interface ApplicationComponent {
     Application getApplication();
     SharedPreferences getSharedPreferences();
     CustomCertificate getCustomCertificate();
+    Context getContext();
 
     void inject(BaseActivity baseActivity);
 
