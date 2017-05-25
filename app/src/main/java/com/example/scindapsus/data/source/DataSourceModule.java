@@ -1,8 +1,6 @@
 package com.example.scindapsus.data.source;
 
-import android.content.Context;
-
-import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
+import com.example.scindapsus.data.source.local.participate.ParticipateImpl;
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
@@ -19,11 +17,7 @@ import dagger.Provides;
  */
 @Module
 public class DataSourceModule {
-    @DataSourceScope
-    @Provides
-    public DelightfulOpenHelper provideDelightfulOpenHelper(Context context) {
-        return new DelightfulOpenHelper(context);
-    }
+    // http impl
     @DataSourceScope
     @Provides
     public LoginHttpImpl provideLoginHttpImpl(ApplicationComponent applicationComponent){
@@ -48,5 +42,12 @@ public class DataSourceModule {
     @Provides
     public FileHttpImpl provideFileHttpImpl(ApplicationComponent applicationComponent){
         return new FileHttpImpl(applicationComponent);
+    }
+
+    // local impl
+    @DataSourceScope
+    @Provides
+    public ParticipateImpl provideParticipateImpl(ApplicationComponent applicationComponent){
+        return new ParticipateImpl(applicationComponent);
     }
 }

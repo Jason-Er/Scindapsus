@@ -15,8 +15,8 @@ import com.example.scindapsus.model.SceneModel;
 
 public class DelightfulOpenHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "apricot.db";
-    public static final int DB_VERSION = 1;
+    private static final String DB_NAME = "apricot.db";
+    private static final int DB_VERSION = 1;
 
     public DelightfulOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
