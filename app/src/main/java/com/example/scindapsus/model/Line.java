@@ -15,7 +15,7 @@ public class Line {
     public void setId(int id){
         this.id = id;
     }
-    public int getId(){
+    public long getId(){
         return this.id;
     }
     public void setAudioURL(String audioURL){
@@ -33,7 +33,7 @@ public class Line {
     public void setOrdinal(int ordinal){
         this.ordinal = ordinal;
     }
-    public int getOrdinal(){
+    public long getOrdinal(){
         return this.ordinal;
     }
 }

@@ -36,7 +36,7 @@ public class Scene {
     public void setOrdinal(int ordinal){
         this.ordinal = ordinal;
     }
-    public int getOrdinal(){
+    public long getOrdinal(){
         return this.ordinal;
     }
 }
