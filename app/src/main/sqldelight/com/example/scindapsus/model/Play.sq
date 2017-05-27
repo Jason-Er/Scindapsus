@@ -1,14 +1,14 @@
 CREATE TABLE play (
-	still_url TEXT NULL ,
-	extract TEXT NULL ,
 	id INTEGER NOT NULL  PRIMARY KEY ,
-	name TEXT NOT NULL
+	name TEXT NOT NULL,
+	extract TEXT NULL,
+	still_url TEXT NULL
 );
 
 select_by_id:
-select *
-from play
-where play.id = ?;
+SELECT *
+FROM play
+WHERE play.id = ?;
 
 insertOnePlay:
 INSERT INTO play(id, name, extract, still_url)

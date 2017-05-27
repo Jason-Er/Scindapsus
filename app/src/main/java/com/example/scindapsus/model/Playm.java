@@ -12,8 +12,8 @@ import com.google.auto.value.AutoValue;
 public abstract class PlayM implements PlayModel{
     public static final Factory<PlayM> FACTORY = new Factory<>(new Creator<PlayM>() {
         @Override
-        public PlayM create(@Nullable String still_url, @Nullable String extract, long id, @NonNull String name) {
-            return new AutoValue_PlayM(still_url, extract, id, name);
+        public PlayM create(long id, @NonNull String name, @Nullable String extract, @Nullable String still_url) {
+            return new AutoValue_PlayM(id, name, extract, still_url);
         }
     });
 }

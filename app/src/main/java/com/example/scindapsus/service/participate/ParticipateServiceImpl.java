@@ -35,7 +35,9 @@ public class ParticipateServiceImpl implements ParticipateService {
     }
     @Override
     public Observable<Play> loadPlay(String token, int id) {
-        // participateImpl.loadPlay(id);
+        return participateImpl.loadPlay(id);
+
+/*
         return participateHttpImpl.loadPlay(token, id)
                 .flatMap(new Function<Play, ObservableSource<Play>>() {
                     @Override
@@ -44,5 +46,6 @@ public class ParticipateServiceImpl implements ParticipateService {
                     }
                 });
 
+*/
     }
 }

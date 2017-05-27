@@ -5,14 +5,14 @@ package com.example.scindapsus.model;
  */
 
 public class Line {
-    private int id;
+    private long id;
 
     private String audioURL;
     private String text;
 
-    private int ordinal;
+    private long ordinal;
 
-    public void setId(int id){
+    public void setId(long id){
         this.id = id;
     }
     public long getId(){
@@ -30,7 +30,7 @@ public class Line {
     public void setText(String text) {
         this.text = text;
     }
-    public void setOrdinal(int ordinal){
+    public void setOrdinal(long ordinal){
         this.ordinal = ordinal;
     }
     public long getOrdinal(){
