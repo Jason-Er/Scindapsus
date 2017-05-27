@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -43,4 +44,7 @@ public class ParticipateHttpImpl {
                 .subscribe(observer);
     }
 
+    public Observable<Play> loadPlay(String token, int id) {
+        return participateHttp.loadPlay(token, id);
+    }
 }

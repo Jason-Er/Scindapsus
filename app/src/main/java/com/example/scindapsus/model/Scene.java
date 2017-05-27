@@ -7,18 +7,18 @@ import java.util.List;
  */
 
 public class Scene {
-    private int id;
+    private long id;
 
     private List<Line> lines ;
 
     private String name;
 
-    private int ordinal;
+    private long ordinal;
 
-    public void setId(int id){
+    public void setId(long id){
         this.id = id;
     }
-    public int getId(){
+    public long getId(){
         return this.id;
     }
     public void setLines(List<Line> lines){
@@ -33,10 +33,10 @@ public class Scene {
     public String getName(){
         return this.name;
     }
-    public void setOrdinal(int ordinal){
+    public void setOrdinal(long ordinal){
         this.ordinal = ordinal;
     }
-    public int getOrdinal(){
+    public long getOrdinal(){
         return this.ordinal;
     }
 }

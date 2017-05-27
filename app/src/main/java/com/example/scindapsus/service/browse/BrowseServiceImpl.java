@@ -1,6 +1,7 @@
 package com.example.scindapsus.service.browse;
 
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
+import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
@@ -19,8 +20,10 @@ import io.reactivex.Observer;
  */
 
 public class BrowseServiceImpl implements BrowseService {
+
     @Inject
     BrowseHttpImpl browseHttpImpl;
+
     public BrowseServiceImpl(ApplicationComponent applicationComponent) {
         DaggerDataSourceComponent.builder()
                 .applicationComponent(applicationComponent)

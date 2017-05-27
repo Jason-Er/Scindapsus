@@ -1,8 +1,28 @@
 CREATE TABLE line (
-    ordinal TEXT NULL ,
-    audiourl TEXT NULL ,
-    scene_id TEXT NOT NULL ,
-    id TEXT NOT NULL  PRIMARY KEY ,
+    id INTEGER NOT NULL  PRIMARY KEY ,
     text TEXT NOT NULL ,
+    audiourl TEXT NULL ,
+    ordinal INTEGER NULL ,
+    scene_id INTEGER NOT NULL ,
     FOREIGN KEY (scene_id) REFERENCES scene (id)
 );
+
+select_by_id:
+SELECT *
+FROM line
+WHERE line.id = ?;
+
+select_by_scene_id:
+SELECT *
+FROM line
+WHERE line.scene_id = ?
+ORDER BY line.ordinal;
+
+insertOneLine:
+INSERT INTO line(id, text, ordinal, audiourl, scene_id)
+VALUES (?, ?, ?, ?, ?);
+
+updateOneLine:
+UPDATE line
+SET text = ?, ordinal = ?, audiourl = ?, scene_id = ?
+WHERE id = ?;

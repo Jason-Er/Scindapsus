@@ -7,20 +7,20 @@ import java.util.List;
  */
 
 public class Play {
-    private int id;
+    private long id = 0;
 
     private List<Scene> scenes ;
 
-    private String name;
+    private String name = "";
 
-    private String stillUrl;
+    private String stillUrl = "";
 
-    private String extract;
+    private String extract = "";
 
-    public void setId(int id){
+    public void setId(long id){
         this.id = id;
     }
-    public int getId(){
+    public long getId(){
         return this.id;
     }
     public void setScenes(List<Scene> scenes){

@@ -1,7 +1,27 @@
 CREATE TABLE scene (
-    ordinal TEXT NULL ,
-    play_id TEXT NOT NULL ,
-    id TEXT NOT NULL  PRIMARY KEY ,
+    id INTEGER NOT NULL  PRIMARY KEY ,
     name TEXT NULL ,
+    ordinal INTEGER NULL ,
+    play_id INTEGER NOT NULL ,
     FOREIGN KEY (play_id) REFERENCES play (id)
 );
+
+select_by_id:
+SELECT *
+FROM scene
+WHERE scene.id = ?;
+
+select_by_play_id:
+SELECT *
+FROM scene
+WHERE scene.play_id = ?
+ORDER BY scene.ordinal ASC;
+
+insertOneScene:
+INSERT INTO scene(id, name, ordinal, play_id)
+VALUES (?, ?, ?, ?);
+
+updateOneScene:
+UPDATE scene
+SET name = ?, ordinal = ?, play_id = ?
+WHERE id = ?;
