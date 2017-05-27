@@ -9,3 +9,12 @@ select_by_id:
 select *
 from play
 where play.id = ?;
+
+insertOnePlay:
+INSERT INTO play(id, name, extract, still_url)
+VALUES (?, ?, ?, ?);
+
+updateOnePlay:
+UPDATE play
+SET name = ?, extract = ?, still_url = ?
+WHERE id = ?;

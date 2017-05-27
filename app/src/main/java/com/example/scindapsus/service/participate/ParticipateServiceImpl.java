@@ -8,7 +8,13 @@ import com.example.scindapsus.model.Play;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by ej on 5/3/2017.
@@ -28,8 +34,15 @@ public class ParticipateServiceImpl implements ParticipateService {
                 .build().inject(this);
     }
     @Override
-    public void loadPlay(String token, Observer<Play> observer, int id) {
-        participateImpl.loadPlay(id);
-        participateHttpImpl.loadPlay(token, observer, id);
+    public Observable<Play> loadPlay(String token, int id) {
+        // participateImpl.loadPlay(id);
+        return participateHttpImpl.loadPlay(token, id)
+                .flatMap(new Function<Play, ObservableSource<Play>>() {
+                    @Override
+                    public ObservableSource<Play> apply(@NonNull Play play) throws Exception {
+                        return participateImpl.savePlay(play);
+                    }
+                });
+
     }
 }

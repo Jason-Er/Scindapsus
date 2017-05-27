@@ -15,7 +15,9 @@ import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -95,7 +97,10 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             }
         };
 
-        participateService.loadPlay(sharedService.getToken(), observer, id);
+        participateService.loadPlay(sharedService.getToken(), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 
     public ScenePresenter getScenePresenter() {

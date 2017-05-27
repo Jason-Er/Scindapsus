@@ -10,4 +10,5 @@ import io.reactivex.Observable;
 
 public interface Participate {
     Observable<Play> loadPlay(int id);
+    Observable<Play> savePlay(Play play);
 }
