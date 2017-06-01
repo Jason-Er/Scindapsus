@@ -1,6 +1,7 @@
 package com.example.scindapsus.service.scene;
 
 import com.example.scindapsus.model.Line;
+import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.UploadAudioUrl;
 
 import java.io.InputStream;
@@ -19,8 +20,7 @@ import retrofit2.Response;
  */
 
 public interface SceneService {
-    void loadAudio(String token, Observer<Response<ResponseBody>> subscriber, String Url);
+    Observable<Response<ResponseBody>> loadAudio(String token, String Url);
     Observable<UploadAudioUrl> uploadAudio(String token, RequestBody description, MultipartBody.Part body);
-    InputStream loadAudio(String token, String Url);
-    List<Line> loadAudio(String token, List<Line> lines, String path);
+    List<LineM> loadAudio(String token, List<Line> lines, String path);
 }

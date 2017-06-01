@@ -36,11 +36,8 @@ public class FileHttpImpl {
         fileHttp = retrofitUtil.createApi(FileHttp.class);
     }
 
-    public void getFile(String token, Observer<Response<ResponseBody>> observer, String url) {
-        fileHttp.getFile(token, url)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+    public Observable<Response<ResponseBody>> getFile(String token, String url) {
+        return fileHttp.getFile(token, url);
     }
 
     public Observable<UploadAudioUrl> uploadFile(String token, RequestBody description, MultipartBody.Part body) {
