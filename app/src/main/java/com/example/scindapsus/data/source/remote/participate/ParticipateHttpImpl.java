@@ -1,5 +1,7 @@
 package com.example.scindapsus.data.source.remote.participate;
 
+import android.util.Log;
+
 import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
@@ -45,6 +47,7 @@ public class ParticipateHttpImpl {
     }
 
     public Observable<Play> loadPlay(String token, int id) {
+        Log.i(TAG, "loadPlay");
         return participateHttp.loadPlay(token, id);
     }
 }

@@ -8,13 +8,11 @@ import com.example.scindapsus.model.Play;
 
 import javax.inject.Inject;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by ej on 5/3/2017.
@@ -34,18 +32,17 @@ public class ParticipateServiceImpl implements ParticipateService {
                 .build().inject(this);
     }
     @Override
-    public Observable<Play> loadPlay(String token, int id) {
-        return participateImpl.loadPlay(id);
+    public Maybe<Play> loadPlay(String token, int id) {
+        // Query the local storage if available. If not, query the network.
+        Observable<Play> disk = participateImpl.loadPlay(id);
+        Observable<Play> network = participateHttpImpl.loadPlay(token, id).flatMap(new Function<Play, ObservableSource<Play>>() {
+            @Override
+            public ObservableSource<Play> apply(@NonNull Play play) throws Exception {
+                return participateImpl.savePlay(play);
+            }
+        });
 
-/*
-        return participateHttpImpl.loadPlay(token, id)
-                .flatMap(new Function<Play, ObservableSource<Play>>() {
-                    @Override
-                    public ObservableSource<Play> apply(@NonNull Play play) throws Exception {
-                        return participateImpl.savePlay(play);
-                    }
-                });
-
-*/
+        return Observable.concat(disk, network)
+                .firstElement();
     }
 }
