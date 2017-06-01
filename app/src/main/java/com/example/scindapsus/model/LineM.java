@@ -11,9 +11,10 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class LineM implements LineModel{
     public static final Factory<LineM> FACTORY = new LineModel.Factory<>(new Creator<LineM>() {
+
         @Override
-        public LineM create(long id, @NonNull String text, @Nullable String audiourl, @Nullable Long ordinal, long scene_id) {
-            return new AutoValue_LineM(id, text, audiourl, ordinal, scene_id);
+        public LineM create(long id, @NonNull String text, @Nullable String audiourl, @Nullable String audiourl_local, @Nullable Long ordinal, long scene_id) {
+            return new AutoValue_LineM(id, text, audiourl, audiourl_local, ordinal, scene_id);
         }
     });
 }

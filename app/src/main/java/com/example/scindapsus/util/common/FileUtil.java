@@ -1,5 +1,6 @@
 package com.example.scindapsus.util.common;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.File;
@@ -12,6 +13,9 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
@@ -44,6 +48,39 @@ public class FileUtil {
         });
     }
 
+
+    public static class UploadFileInfo {
+        RequestBody description;
+        MultipartBody.Part body;
+
+        public UploadFileInfo(RequestBody description, MultipartBody.Part body) {
+            this.description = description;
+            this.body = body;
+        }
+    }
+
+    public static Observable<UploadFileInfo> getUploadFileInfo(final Uri fleUri, final String fileType) {
+        return Observable.create(new ObservableOnSubscribe<UploadFileInfo>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<UploadFileInfo> observableEmitter) throws Exception {
+                File file = new File(fleUri.getPath());
+                RequestBody requestFile =
+                        RequestBody.create(
+                                MediaType.parse(fileType),
+                                file
+                        );
+                MultipartBody.Part body =
+                        MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+                String descriptionString = "hello, this is description speaking";
+                RequestBody description =
+                        RequestBody.create(
+                                okhttp3.MultipartBody.FORM, descriptionString);
+                UploadFileInfo uploadFileInfo = new UploadFileInfo(description, body);
+                observableEmitter.onNext(uploadFileInfo);
+                observableEmitter.onComplete();
+            }
+        });
+    }
 
     public static boolean writeResponseBodyToDisk(InputStream inputStream, String path) {
         try {
