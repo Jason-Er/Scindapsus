@@ -14,6 +14,7 @@ import com.example.scindapsus.vp.participate.scene.ScenePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.MaybeObserver;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -72,17 +73,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             mParticipateView.setLoadingIndicator(true);
         }
 
-        Observer observer = new Observer<Play>() {
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.i(TAG, "onError");
-
-            }
+        MaybeObserver observer = new MaybeObserver<Play>() {
 
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
@@ -90,10 +81,18 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             }
 
             @Override
-            public void onNext(Play play) {
-                Log.i(TAG, "onNext");
+            public void onSuccess(@io.reactivex.annotations.NonNull Play play) {
                 scenePresenter.setScene(play.getScenes().get(currentScene));
+            }
 
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable throwable) {
+                Log.i(TAG, "onError");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "onComplete");
             }
         };
 

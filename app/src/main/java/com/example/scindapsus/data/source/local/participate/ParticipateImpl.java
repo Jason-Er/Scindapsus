@@ -2,6 +2,7 @@ package com.example.scindapsus.data.source.local.participate;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.scindapsus.data.source.local.DaggerLocalComponent;
 import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
@@ -15,7 +16,6 @@ import com.example.scindapsus.model.SceneM;
 import com.squareup.sqldelight.SqlDelightStatement;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +30,7 @@ import io.reactivex.annotations.NonNull;
  */
 
 public class ParticipateImpl implements Participate {
+    final static String TAG = ParticipateImpl.class.getName();
 
     @Inject
     DelightfulOpenHelper delightfulOpenHelper;
@@ -42,6 +43,7 @@ public class ParticipateImpl implements Participate {
 
     @Override
     public Observable<Play> loadPlay(final int id) {
+        Log.i(TAG, "loadPlay");
         return Observable.create(new ObservableOnSubscribe<Play>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Play> observableEmitter) throws Exception {
