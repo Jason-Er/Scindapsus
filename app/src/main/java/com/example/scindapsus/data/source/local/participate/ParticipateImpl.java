@@ -74,6 +74,7 @@ public class ParticipateImpl implements Participate {
                         scene.setId(sceneM.id());
                         scene.setName(sceneM.name());
                         scene.setOrdinal(sceneM.ordinal());
+                        scene.setPlayId(sceneM.play_id());
                         sceneList.add(scene);
                     }
                     play.setScenes(sceneList);
@@ -93,6 +94,7 @@ public class ParticipateImpl implements Participate {
                             line.setOrdinal(lineM.ordinal());
                             line.setAudioURL(lineM.audiourl());
                             line.setText(lineM.text());
+                            line.setSceneId(lineM.scene_id());
                             lineList.add(line);
                         }
                         scene.setLines(lineList);
@@ -132,11 +134,11 @@ public class ParticipateImpl implements Participate {
                     cursor = db.rawQuery(query.statement, query.args);
                     if(cursor.moveToFirst()) {
                         SceneM.UpdateOneScene updateOneScene = new SceneM.UpdateOneScene(db);
-                        updateOneScene.bind(scene.getName(), scene.getOrdinal(), play.getId(), scene.getId());
+                        updateOneScene.bind(scene.getName(), scene.getOrdinal(), scene.getPlayId(), scene.getId());
                         updateOneScene.program.executeUpdateDelete();
                     } else {
                         SceneM.InsertOneScene insertOneScene = new SceneM.InsertOneScene(db);
-                        insertOneScene.bind(scene.getId(), scene.getName(), scene.getOrdinal(), play.getId());
+                        insertOneScene.bind(scene.getId(), scene.getName(), scene.getOrdinal(), scene.getPlayId());
                         insertOneScene.program.executeUpdateDelete();
                     }
 
@@ -147,11 +149,11 @@ public class ParticipateImpl implements Participate {
                         cursor = db.rawQuery(query.statement, query.args);
                         if(cursor.moveToFirst()) {
                             LineM.UpdateOneLine updateOneLine = new LineM.UpdateOneLine(db);
-                            updateOneLine.bind(line.getText(), line.getOrdinal(), line.getAudioURL(), scene.getId(), line.getId());
+                            updateOneLine.bind(line.getText(), line.getOrdinal(), line.getAudioURL(), line.getSceneId(), line.getId());
                             updateOneLine.program.executeUpdateDelete();
                         } else {
                             LineM.InsertOneLine insertOneLine = new LineM.InsertOneLine(db);
-                            insertOneLine.bind(line.getId(), line.getText(), line.getOrdinal(), line.getAudioURL(), scene.getId());
+                            insertOneLine.bind(line.getId(), line.getText(), line.getOrdinal(), line.getAudioURL(), line.getSceneId());
                             insertOneLine.program.executeUpdateDelete();
                         }
                     }

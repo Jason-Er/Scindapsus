@@ -22,7 +22,7 @@ import retrofit2.http.Url;
 public interface FileHttp {
     @Streaming
     @GET
-    Observable<Response<ResponseBody>> getFile(@Header("Authorization") String token, @Url String url);
+    Observable<Response<ResponseBody>> downloadFile(@Header("Authorization") String token, @Url String url);
 
     @Multipart
     @POST("upload")

@@ -3,12 +3,7 @@ package com.example.scindapsus.service.scene;
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.UploadAudioUrl;
-import com.example.scindapsus.util.common.LinesAudioDownloader;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,19 +29,12 @@ public class SceneServiceImpl implements SceneService {
 
     @Override
     public Observable<Response<ResponseBody>> loadAudio(String token, String Url) {
-        return fileHttp.getFile(token, Url);
+        return fileHttp.downloadFile(token, Url);
     }
 
     @Override
     public Observable<UploadAudioUrl> uploadAudio(String token, RequestBody description, MultipartBody.Part body) {
         return fileHttp.uploadFile(token, description, body);
-    }
-
-    @Override
-    public List<LineM> loadAudio(String token, List<Line> lines, String path) {
-        LinesAudioDownloader linesAudioDownloader = new LinesAudioDownloader(this, token, lines, path);
-        linesAudioDownloader.startDownload();
-        return null;
     }
 
 }

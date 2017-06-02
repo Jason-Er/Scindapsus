@@ -7,11 +7,7 @@ import com.example.scindapsus.model.UploadAudioUrl;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -36,8 +32,8 @@ public class FileHttpImpl {
         fileHttp = retrofitUtil.createApi(FileHttp.class);
     }
 
-    public Observable<Response<ResponseBody>> getFile(String token, String url) {
-        return fileHttp.getFile(token, url);
+    public Observable<Response<ResponseBody>> downloadFile(String token, String url) {
+        return fileHttp.downloadFile(token, url);
     }
 
     public Observable<UploadAudioUrl> uploadFile(String token, RequestBody description, MultipartBody.Part body) {

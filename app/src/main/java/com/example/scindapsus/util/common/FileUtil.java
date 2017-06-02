@@ -1,18 +1,27 @@
 package com.example.scindapsus.util.common;
 
 import android.net.Uri;
-import android.util.Log;
+
+import com.example.scindapsus.model.Line;
+import com.example.scindapsus.model.LineM;
+import com.example.scindapsus.service.scene.SceneService;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -82,94 +91,47 @@ public class FileUtil {
         });
     }
 
-    public static boolean writeResponseBodyToDisk(InputStream inputStream, String path) {
-        try {
-            File futureStudioIconFile = new File(path + File.separator + "Future Studio Icon.png");
-
-
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                outputStream = new FileOutputStream(futureStudioIconFile);
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
-                    }
-
-                    outputStream.write(fileReader, 0, read);
-
-                }
-
-                outputStream.flush();
-
-                return true;
-            } catch (IOException e) {
-                return false;
-            }  finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
+    public static Single<List<String>> downloadLinesAudio(final @NonNull SceneService sceneService, @NonNull final String token, @NonNull final List<Line> lines, final @NonNull String path) {
+        Flowable flowable = Flowable.fromIterable(lines);
+        return flowable.flatMap(new Function<Line, Observable<Response<ResponseBody>>>() {
+            @Override
+            public Observable<Response<ResponseBody>> apply(@NonNull Line line) throws Exception {
+                return sceneService.loadAudio(token, line.getAudioURL());
             }
-        } catch (IOException e) {
-            return false;
-        }
+        }).flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
+            @Override
+            public Observable<File> apply(@NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
+                return FileUtil.saveToDiskRx(responseBodyResponse, path);
+            }
+        }).map(new Function<File, String>() {
+            @Override
+            public String apply(@NonNull File file) throws Exception {
+                return file.getAbsolutePath();
+            }
+        }).toList();
     }
 
-    public static boolean writeResponseBodyToDisk(ResponseBody body, String path) {
-        try {
-            File futureStudioIconFile = new File(path + File.separator + "Future Studio Icon.png");
-
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
-
-                inputStream = body.byteStream();
-                outputStream = new FileOutputStream(futureStudioIconFile);
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
+    public static Observable<LineM> downloadOneAudio(@NonNull final SceneService sceneService, @NonNull final String token, @NonNull final Line line, @NonNull final String path) {
+        return sceneService
+                .loadAudio(token, line.getAudioURL())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+                .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
+                    @Override
+                    public Observable<File> apply(@NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
+                        return FileUtil.saveToDiskRx(responseBodyResponse, path);
                     }
-
-                    outputStream.write(fileReader, 0, read);
-
-                    fileSizeDownloaded += read;
-
-                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
-                }
-
-                outputStream.flush();
-
-                return true;
-            } catch (IOException e) {
-                return false;
-            }  finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            }
-        } catch (IOException e) {
-            return false;
-        }
+                }).map(new Function<File, String>() {
+                    @Override
+                    public String apply(@NonNull File file) throws Exception {
+                        return file.getAbsolutePath();
+                    }
+                })
+                .flatMap(new Function<String, Observable<LineM>>() {
+                    @Override
+                    public Observable<LineM> apply(@NonNull String s) throws Exception {
+                        return Observable.just(LineM.create(line.getId(), line.getText(), line.getAudioURL(), s, line.getOrdinal(), line.getSceneId()));
+                    }
+                });
     }
 }
