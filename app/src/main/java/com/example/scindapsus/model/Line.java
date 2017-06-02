@@ -6,11 +6,10 @@ package com.example.scindapsus.model;
 
 public class Line {
     private long id;
-
     private String audioURL;
     private String text;
-
     private long ordinal;
+    private long sceneId;
 
     public void setId(long id){
         this.id = id;
@@ -35,5 +34,11 @@ public class Line {
     }
     public long getOrdinal(){
         return this.ordinal;
+    }
+    public long getSceneId() {
+        return sceneId;
+    }
+    public void setSceneId(long sceneId) {
+        this.sceneId = sceneId;
     }
 }
