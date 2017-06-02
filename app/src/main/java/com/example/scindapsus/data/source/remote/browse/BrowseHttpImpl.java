@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -49,7 +50,8 @@ public class BrowseHttpImpl {
                 .subscribeWith(observer);
     }
 
-    public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page) {
-        loadPlaysInfo(token, observer, page, Integer.parseInt(properties.getProperty("DEFAULT_PAGE_SIZE")));
+    public Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(String token, int page) {
+        return browseHttp.loadPlaysInfo(token);
     }
+
 }

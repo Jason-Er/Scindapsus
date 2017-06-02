@@ -21,8 +21,10 @@ import java.util.concurrent.SynchronousQueue;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -131,7 +133,10 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
         };
 
-        browseService.loadPlaysInfo(sharedService.getToken(), observer, 0);
+        browseService.loadPlaysInfo(sharedService.getToken(), 0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 
     private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {
