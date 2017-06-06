@@ -74,7 +74,7 @@ public class FileUtil {
 
     public static Observable<LineM> uploadOneAudio(@NonNull final SceneService sceneService, @NonNull final String token, @NonNull final String playUid, @NonNull final LineM lineM ) {
         File file = new File(lineM.audiourl_local());
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file.getPath());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
         return sceneService.uploadOneAudio(token, requestFile, multipartBody, playUid, lineM)
                 .flatMap(new Function<UploadAudioUrl, Observable<LineM>>() {
