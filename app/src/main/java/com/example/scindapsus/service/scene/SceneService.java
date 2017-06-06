@@ -19,5 +19,5 @@ import retrofit2.Response;
 
 public interface SceneService {
     Observable<Response<ResponseBody>> loadAudio(String token, String Url);
-    Observable<UploadAudioUrl> uploadAudio(String token, RequestBody description, MultipartBody.Part body);
+    Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, LineM lineM);
 }

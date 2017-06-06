@@ -12,6 +12,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
@@ -25,11 +26,22 @@ public interface FileHttp {
     Observable<Response<ResponseBody>> downloadFile(@Header("Authorization") String token, @Url String url);
 
     @Multipart
-    @POST("upload")
+    @POST
     Observable<UploadAudioUrl> uploadFile(
             @Header("Authorization") String token,
             @Part("description") RequestBody description,
-            @Part MultipartBody.Part file
+            @Part MultipartBody.Part file,
+            @Url String url
     );
 
+    @Multipart
+    @POST("v1/file/{play}/{scene}/{line}/audio")
+    Observable<UploadAudioUrl> uploadOneAudio(
+            @Header("Authorization") String token,
+            @Part("description") RequestBody description,
+            @Part MultipartBody.Part file,
+            @Path("play") String play,
+            @Path("scene") String scene,
+            @Path("line") String line
+    );
 }

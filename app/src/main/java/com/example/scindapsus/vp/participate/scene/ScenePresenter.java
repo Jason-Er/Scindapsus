@@ -16,7 +16,7 @@ import com.example.scindapsus.util.common.FileUtil;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,10 +26,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.observers.ConsumerSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 /**
  * Created by ej on 5/4/2017.
@@ -39,11 +36,15 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     final static String TAG = ScenePresenter.class.getName();
 
+    private String playUid;
     private Scene mScene;
     private Context context;
     private final SceneContract.View mSceneView;
 
     private Subscription downloadRequestsSubscription;
+    private Subscription uploadRequestsSubscription;
+    private List<LineM> lineMs = new ArrayList<>();
+
     private final int DOWNLOAD_AUDIO_NUM = 1;
 
     @Inject
@@ -71,6 +72,14 @@ public class ScenePresenter implements SceneContract.Presenter {
         loadLinesAudio(scene.getLines());
     }
 
+    public String getPlayUid() {
+        return playUid;
+    }
+
+    public void setPlayUid(String playUid) {
+        this.playUid = playUid;
+    }
+
     @Override
     public void subscribe() {
 
@@ -94,7 +103,9 @@ public class ScenePresenter implements SceneContract.Presenter {
 
             @Override
             public void onNext(@io.reactivex.annotations.NonNull LineM lineM) {
+                // TODO: 6/5/2017 save lineM local path to disk
                 Log.i(TAG, lineM.toString());
+                lineMs.add(lineM);
                 downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -141,5 +152,71 @@ public class ScenePresenter implements SceneContract.Presenter {
         flowable.subscribe(subscriber);
         downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
 
+    }
+
+    private void uploadLinesAudio(List<LineM> lineMs) {
+        final String token = sharedService.getToken();
+
+        final Observer<LineM> lineMObserver = new Observer<LineM>() {
+            @Override
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull LineM lineM) {
+                // TODO: 6/5/2017 save lineM local path to disk
+                Log.i(TAG, lineM.toString());
+                uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
+            }
+
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable throwable) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        Subscriber subscriber = new Subscriber<LineM>() {
+
+            @Override
+            public void onSubscribe(Subscription s) {
+                Log.i(TAG, "onSubscribe");
+                uploadRequestsSubscription = s;
+            }
+
+            @Override
+            public void onNext(LineM lineM) {
+                Log.i(TAG, "onNext");
+                FileUtil.uploadOneAudio(sceneService, token, playUid, lineM)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(lineMObserver);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.i(TAG, "onError");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "onComplete");
+            }
+        };
+
+        Flowable flowable = Flowable.fromIterable(lineMs);
+        flowable.subscribe(subscriber);
+        uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
+
+    }
+
+    @Override
+    public void uploadToServer() {
+        uploadLinesAudio(lineMs);
     }
 }

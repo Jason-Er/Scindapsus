@@ -12,6 +12,6 @@ import retrofit2.http.Path;
  */
 
 public interface ParticipateHttp {
-    @GET("/v1/model/play/{id}")
+    @GET("v1/model/play/{id}")
     Observable<Play> loadPlay(@Header("Authorization") String token, @Path("id") int id);
 }

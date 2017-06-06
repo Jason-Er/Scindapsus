@@ -3,6 +3,7 @@ package com.example.scindapsus.service.scene;
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.UploadAudioUrl;
 
 import javax.inject.Inject;
@@ -33,8 +34,8 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public Observable<UploadAudioUrl> uploadAudio(String token, RequestBody description, MultipartBody.Part body) {
-        return fileHttp.uploadFile(token, description, body);
+    public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, LineM lineM) {
+        return fileHttp.uploadOneAudio(token, description, body, playUid, String.valueOf(lineM.scene_id()), String.valueOf(lineM.id()));
     }
 
 }

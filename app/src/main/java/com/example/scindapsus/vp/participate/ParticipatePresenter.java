@@ -82,6 +82,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
 
             @Override
             public void onSuccess(@io.reactivex.annotations.NonNull Play play) {
+                scenePresenter.setPlayUid(play.getName()+play.getId());
                 scenePresenter.setScene(play.getScenes().get(currentScene));
             }
 

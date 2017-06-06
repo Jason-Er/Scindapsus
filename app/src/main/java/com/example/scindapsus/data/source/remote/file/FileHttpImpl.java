@@ -36,9 +36,12 @@ public class FileHttpImpl {
         return fileHttp.downloadFile(token, url);
     }
 
-    public Observable<UploadAudioUrl> uploadFile(String token, RequestBody description, MultipartBody.Part body) {
-        return fileHttp.uploadFile(token, description, body);
+    public Observable<UploadAudioUrl> uploadFile(String token, RequestBody description, MultipartBody.Part body, String url) {
+        return fileHttp.uploadFile(token, description, body, url);
     }
 
+    public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String play, String scene, String line) {
+        return fileHttp.uploadOneAudio(token, description, body, play, scene, line);
+    }
 
 }

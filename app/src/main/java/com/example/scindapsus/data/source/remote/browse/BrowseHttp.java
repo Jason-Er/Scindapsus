@@ -16,8 +16,8 @@ import retrofit2.http.Query;
  */
 
 public interface BrowseHttp {
-    @GET("/v1/model/playsInfo")
+    @GET("v1/model/playsInfo")
     Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size);
-    @GET("/v1/model/playsInfo")
+    @GET("v1/model/playsInfo")
     Observable<PageResult<List<PlayInfo>>> loadPlaysInfo(@Header("Authorization") String token);
 }

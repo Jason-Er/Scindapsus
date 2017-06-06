@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 public interface LoginHttp {
 
     @Headers({"Content-Type: application/json"})
-    @POST("/login")
+    @POST("login")
     Observable<Response<Void>> login(@Body Auth auth);
 
 }

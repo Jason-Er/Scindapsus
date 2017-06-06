@@ -4,6 +4,7 @@ import com.example.scindapsus.global.BasePresenter;
 import com.example.scindapsus.global.BaseView;
 import com.example.scindapsus.model.Line;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -17,6 +18,6 @@ public class SceneContract {
     }
 
     interface Presenter extends BasePresenter {
-
+        void uploadToServer();
     }
 }
