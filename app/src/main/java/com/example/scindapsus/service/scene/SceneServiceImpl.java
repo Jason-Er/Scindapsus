@@ -3,15 +3,14 @@ package com.example.scindapsus.service.scene;
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.Line;
-import com.example.scindapsus.util.common.LinesAudioDownloader;
-
-import java.io.InputStream;
-import java.util.List;
+import com.example.scindapsus.model.LineM;
+import com.example.scindapsus.model.UploadAudioUrl;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
+import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -30,20 +29,13 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public void loadAudio(String token, Observer<Response<ResponseBody>> observer, String Url) {
-        fileHttp.getFile(token, observer, Url);
+    public Observable<Response<ResponseBody>> loadAudio(String token, String Url) {
+        return fileHttp.downloadFile(token, Url);
     }
 
     @Override
-    public InputStream loadAudio(String token, String Url) {
-        return null;
-    }
-
-    @Override
-    public List<Line> loadAudio(String token, List<Line> lines, String path) {
-        LinesAudioDownloader linesAudioDownloader = new LinesAudioDownloader(this, token, lines, path);
-        linesAudioDownloader.startDownload();
-        return null;
+    public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, LineM lineM) {
+        return fileHttp.uploadOneAudio(token, description, body, playUid, String.valueOf(lineM.scene_id()), String.valueOf(lineM.id()));
     }
 
 }

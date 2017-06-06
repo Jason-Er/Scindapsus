@@ -8,12 +8,10 @@ import java.util.List;
 
 public class Scene {
     private long id;
-
     private List<Line> lines ;
-
     private String name;
-
     private long ordinal;
+    private long playId;
 
     public void setId(long id){
         this.id = id;
@@ -38,5 +36,11 @@ public class Scene {
     }
     public long getOrdinal(){
         return this.ordinal;
+    }
+    public long getPlayId() {
+        return playId;
+    }
+    public void setPlayId(long playId) {
+        this.playId = playId;
     }
 }

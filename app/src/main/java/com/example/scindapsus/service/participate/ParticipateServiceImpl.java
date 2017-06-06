@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 /**
  * Created by ej on 5/3/2017.
@@ -43,6 +44,11 @@ public class ParticipateServiceImpl implements ParticipateService {
         });
 
         return Observable.concat(disk, network)
-                .firstElement();
+                .filter(new Predicate<Play>() {
+                    @Override
+                    public boolean test(@NonNull Play play) throws Exception {
+                        return play.getId()!=0;
+                    }
+                }).firstElement();
     }
 }

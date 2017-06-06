@@ -1,17 +1,23 @@
 package com.example.scindapsus.util.common;
 
+import android.net.Uri;
 import android.util.Log;
 
+import com.example.scindapsus.model.Line;
+import com.example.scindapsus.model.LineM;
+import com.example.scindapsus.model.UploadAudioUrl;
+import com.example.scindapsus.service.scene.SceneService;
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
@@ -44,95 +50,38 @@ public class FileUtil {
         });
     }
 
-
-    public static boolean writeResponseBodyToDisk(InputStream inputStream, String path) {
-        try {
-            File futureStudioIconFile = new File(path + File.separator + "Future Studio Icon.png");
-
-
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                outputStream = new FileOutputStream(futureStudioIconFile);
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
+    public static Observable<LineM> downloadOneAudio(@NonNull final SceneService sceneService, @NonNull final String token, @NonNull final Line line, @NonNull final String path) {
+        return sceneService
+                .loadAudio(token, line.getAudioURL())
+                .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
+                    @Override
+                    public Observable<File> apply(@NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
+                        return FileUtil.saveToDiskRx(responseBodyResponse, path);
                     }
-
-                    outputStream.write(fileReader, 0, read);
-
-                }
-
-                outputStream.flush();
-
-                return true;
-            } catch (IOException e) {
-                return false;
-            }  finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            }
-        } catch (IOException e) {
-            return false;
-        }
+                }).map(new Function<File, String>() {
+                    @Override
+                    public String apply(@NonNull File file) throws Exception {
+                        return file.getAbsolutePath();
+                    }
+                })
+                .flatMap(new Function<String, Observable<LineM>>() {
+                    @Override
+                    public Observable<LineM> apply(@NonNull String s) throws Exception {
+                        return Observable.just(LineM.create(line.getId(), line.getText(), line.getAudioURL(), s, line.getOrdinal(), line.getSceneId()));
+                    }
+                });
     }
 
-    public static boolean writeResponseBodyToDisk(ResponseBody body, String path) {
-        try {
-            File futureStudioIconFile = new File(path + File.separator + "Future Studio Icon.png");
-
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
-
-                inputStream = body.byteStream();
-                outputStream = new FileOutputStream(futureStudioIconFile);
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
+    public static Observable<LineM> uploadOneAudio(@NonNull final SceneService sceneService, @NonNull final String token, @NonNull final String playUid, @NonNull final LineM lineM ) {
+        File file = new File(lineM.audiourl_local());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+        return sceneService.uploadOneAudio(token, requestFile, multipartBody, playUid, lineM)
+                .flatMap(new Function<UploadAudioUrl, Observable<LineM>>() {
+                    @Override
+                    public Observable<LineM> apply(@NonNull UploadAudioUrl uploadAudioUrl) throws Exception {
+                        return Observable.just(LineM.create(lineM.id(),lineM.text(),uploadAudioUrl.getUrl(),lineM.audiourl_local(),lineM.ordinal(),lineM.scene_id()));
                     }
-
-                    outputStream.write(fileReader, 0, read);
-
-                    fileSizeDownloaded += read;
-
-                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
-                }
-
-                outputStream.flush();
-
-                return true;
-            } catch (IOException e) {
-                return false;
-            }  finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            }
-        } catch (IOException e) {
-            return false;
-        }
+                });
     }
 }

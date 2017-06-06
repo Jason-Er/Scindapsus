@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.ScindapsusApplication;
 import com.example.scindapsus.model.Line;
+import com.example.scindapsus.util.custom.browseComponent.BrowseRVAdapter;
 import com.example.scindapsus.util.custom.sceneComponent.SceneRVAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
 
     private SceneContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
+    private Button mButtonSave;
     private SceneRVAdapter mAdapter;
 
     @Nullable
@@ -34,6 +38,7 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root =  inflater.inflate(R.layout.scene_frag, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.scene_frag_recycler);
+        mButtonSave = (Button) root.findViewById(R.id.scene_frag_save);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -47,6 +52,13 @@ public class SceneFragment extends Fragment implements SceneContract.View {
         mAdapter = new SceneRVAdapter(root.getContext(),  ((ScindapsusApplication)getActivity().getApplication()).getAppComponent(), new ArrayList<Line>());
         mRecyclerView.setAdapter(mAdapter);
 
+        mButtonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.uploadToServer();
+            }
+        });
+
         return root;
     }
 
@@ -59,4 +71,5 @@ public class SceneFragment extends Fragment implements SceneContract.View {
     public void showLines(List<Line> lines) {
         mAdapter.setDataset(lines);
     }
+
 }

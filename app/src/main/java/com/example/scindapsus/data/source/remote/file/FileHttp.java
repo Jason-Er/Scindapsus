@@ -1,10 +1,18 @@
 package com.example.scindapsus.data.source.remote.file;
 
+import com.example.scindapsus.model.UploadAudioUrl;
+
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
@@ -15,5 +23,25 @@ import retrofit2.http.Url;
 public interface FileHttp {
     @Streaming
     @GET
-    Observable<Response<ResponseBody>> getFile(@Header("Authorization") String token, @Url String url);
+    Observable<Response<ResponseBody>> downloadFile(@Header("Authorization") String token, @Url String url);
+
+    @Multipart
+    @POST
+    Observable<UploadAudioUrl> uploadFile(
+            @Header("Authorization") String token,
+            @Part("description") RequestBody description,
+            @Part MultipartBody.Part file,
+            @Url String url
+    );
+
+    @Multipart
+    @POST("v1/file/{play}/{scene}/{line}/audio")
+    Observable<UploadAudioUrl> uploadOneAudio(
+            @Header("Authorization") String token,
+            @Part("description") RequestBody description,
+            @Part MultipartBody.Part file,
+            @Path("play") String play,
+            @Path("scene") String scene,
+            @Path("line") String line
+    );
 }

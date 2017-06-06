@@ -8,13 +8,9 @@ import java.util.List;
 
 public class Play {
     private long id = 0;
-
     private List<Scene> scenes ;
-
     private String name = "";
-
     private String stillUrl = "";
-
     private String extract = "";
 
     public void setId(long id){

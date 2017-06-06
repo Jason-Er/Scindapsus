@@ -2,6 +2,7 @@ CREATE TABLE line (
     id INTEGER NOT NULL  PRIMARY KEY ,
     text TEXT NOT NULL ,
     audiourl TEXT NULL ,
+    audiourl_local TEXT NULL ,
     ordinal INTEGER NULL ,
     scene_id INTEGER NOT NULL ,
     FOREIGN KEY (scene_id) REFERENCES scene (id)

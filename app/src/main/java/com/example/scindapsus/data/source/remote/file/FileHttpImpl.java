@@ -3,12 +3,13 @@ package com.example.scindapsus.data.source.remote.file;
 import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.UploadAudioUrl;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -31,11 +32,16 @@ public class FileHttpImpl {
         fileHttp = retrofitUtil.createApi(FileHttp.class);
     }
 
-    public void getFile(String token, Observer<Response<ResponseBody>> observer, String url) {
-        fileHttp.getFile(token, url)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+    public Observable<Response<ResponseBody>> downloadFile(String token, String url) {
+        return fileHttp.downloadFile(token, url);
+    }
+
+    public Observable<UploadAudioUrl> uploadFile(String token, RequestBody description, MultipartBody.Part body, String url) {
+        return fileHttp.uploadFile(token, description, body, url);
+    }
+
+    public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String play, String scene, String line) {
+        return fileHttp.uploadOneAudio(token, description, body, play, scene, line);
     }
 
 }
