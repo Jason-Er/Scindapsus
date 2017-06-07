@@ -1,12 +1,14 @@
 package com.example.scindapsus.data.source;
 
 import com.example.scindapsus.data.source.local.participate.ParticipateImpl;
+import com.example.scindapsus.data.source.local.scene.SceneImpl;
 import com.example.scindapsus.data.source.remote.browse.BrowseHttpImpl;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.data.source.remote.image.ImageHttpImpl;
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
 import com.example.scindapsus.data.source.remote.participate.ParticipateHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
+import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.util.label.DataSourceScope;
 
 import dagger.Module;
@@ -49,5 +51,10 @@ public class DataSourceModule {
     @Provides
     public ParticipateImpl provideParticipateImpl(ApplicationComponent applicationComponent){
         return new ParticipateImpl(applicationComponent);
+    }
+    @DataSourceScope
+    @Provides
+    public SceneImpl provideSceneImpl(ApplicationComponent applicationComponent){
+        return new SceneImpl(applicationComponent);
     }
 }

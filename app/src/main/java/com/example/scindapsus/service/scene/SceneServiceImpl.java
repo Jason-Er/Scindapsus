@@ -1,9 +1,11 @@
 package com.example.scindapsus.service.scene;
 
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
+import com.example.scindapsus.data.source.local.scene.SceneImpl;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.LineM;
+import com.example.scindapsus.model.Scene;
 import com.example.scindapsus.model.UploadAudioUrl;
 
 import javax.inject.Inject;
@@ -20,8 +22,13 @@ import retrofit2.Response;
  */
 
 public class SceneServiceImpl implements SceneService {
+
+    @Inject
+    SceneImpl sceneImpl;
+
     @Inject
     FileHttpImpl fileHttp;
+
     public SceneServiceImpl(ApplicationComponent applicationComponent) {
         DaggerDataSourceComponent.builder()
                 .applicationComponent(applicationComponent)
@@ -36,6 +43,11 @@ public class SceneServiceImpl implements SceneService {
     @Override
     public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, LineM lineM) {
         return fileHttp.uploadOneAudio(token, description, body, playUid, String.valueOf(lineM.scene_id()), String.valueOf(lineM.id()));
+    }
+
+    @Override
+    public Observable<LineM> saveLineM(LineM lineM) {
+        return sceneImpl.saveLineM(lineM);
     }
 
 }

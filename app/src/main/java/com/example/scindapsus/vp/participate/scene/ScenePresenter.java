@@ -8,6 +8,7 @@ import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
 import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.model.UploadAudioUrl;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
 import com.example.scindapsus.service.shared.SharedService;
@@ -16,6 +17,7 @@ import com.example.scindapsus.util.common.FileUtil;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +25,18 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Created by ej on 5/4/2017.
@@ -102,7 +112,6 @@ public class ScenePresenter implements SceneContract.Presenter {
 
             @Override
             public void onNext(@io.reactivex.annotations.NonNull LineM lineM) {
-                // TODO: 6/5/2017 save lineM local path to disk
                 Log.i(TAG, lineM.toString());
                 lineMs.add(lineM);
                 downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
@@ -130,7 +139,7 @@ public class ScenePresenter implements SceneContract.Presenter {
             @Override
             public void onNext(Line line) {
                 Log.i(TAG, "onNext");
-                FileUtil.downloadOneAudio(sceneService, token, line, path4Save)
+                downloadOneAudio(sceneService, token, line, path4Save)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(lineMObserver);
@@ -164,7 +173,6 @@ public class ScenePresenter implements SceneContract.Presenter {
 
             @Override
             public void onNext(@io.reactivex.annotations.NonNull LineM lineM) {
-                // TODO: 6/5/2017 save lineM local path to disk
                 Log.i(TAG, lineM.toString());
                 uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
@@ -191,7 +199,7 @@ public class ScenePresenter implements SceneContract.Presenter {
             @Override
             public void onNext(LineM lineM) {
                 Log.i(TAG, "onNext");
-                FileUtil.uploadOneAudio(sceneService, token, playUid, lineM)
+                uploadOneAudio(sceneService, token, playUid, lineM)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(lineMObserver);
@@ -217,5 +225,40 @@ public class ScenePresenter implements SceneContract.Presenter {
     @Override
     public void uploadToServer() {
         uploadLinesAudio(lineMs);
+    }
+
+    public static Observable<LineM> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
+        return sceneService
+                .loadAudio(token, line.getAudioURL())
+                .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
+                    @Override
+                    public Observable<File> apply(@io.reactivex.annotations.NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
+                        return FileUtil.saveToDiskRx(responseBodyResponse, path);
+                    }
+                }).map(new Function<File, String>() {
+                    @Override
+                    public String apply(@io.reactivex.annotations.NonNull File file) throws Exception {
+                        return file.getAbsolutePath();
+                    }
+                })
+                .flatMap(new Function<String, Observable<LineM>>() {
+                    @Override
+                    public Observable<LineM> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        return sceneService.saveLineM(LineM.create(line.getId(), line.getText(), line.getAudioURL(), s, line.getOrdinal(), line.getSceneId()));
+                    }
+                });
+    }
+
+    public static Observable<LineM> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final LineM lineM ) {
+        File file = new File(lineM.audiourl_local());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+        return sceneService.uploadOneAudio(token, requestFile, multipartBody, playUid, lineM)
+                .flatMap(new Function<UploadAudioUrl, Observable<LineM>>() {
+                    @Override
+                    public Observable<LineM> apply(@io.reactivex.annotations.NonNull UploadAudioUrl uploadAudioUrl) throws Exception {
+                        return sceneService.saveLineM(LineM.create(lineM.id(),lineM.text(),uploadAudioUrl.getUrl(),lineM.audiourl_local(),lineM.ordinal(),lineM.scene_id()));
+                    }
+                });
     }
 }

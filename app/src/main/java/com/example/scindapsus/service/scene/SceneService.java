@@ -20,4 +20,5 @@ import retrofit2.Response;
 public interface SceneService {
     Observable<Response<ResponseBody>> loadAudio(String token, String Url);
     Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, LineM lineM);
+    Observable<LineM> saveLineM(LineM lineM); // save to local sqlite
 }
