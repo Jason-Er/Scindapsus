@@ -101,7 +101,8 @@ public class ScenePresenter implements SceneContract.Presenter {
     }
 
     private void loadLinesAudio(List<Line> lines) {
-        final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + sharedService.getUserName() + "/" + playUid + "/" + "scene" + mScene.getOrdinal();
+        // final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + sharedService.getUserName() + "/" + playUid + "/" + "scene" + mScene.getOrdinal();
+        final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + playUid + "/" + "scene" + mScene.getOrdinal();
         final String token = sharedService.getToken();
 
         final Observer<LineM> lineMObserver = new Observer<LineM>() {
