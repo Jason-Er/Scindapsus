@@ -20,6 +20,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -149,11 +152,11 @@ public class ParticipateImpl implements Participate {
                         cursor = db.rawQuery(query.statement, query.args);
                         if(cursor.moveToFirst()) {
                             LineM.UpdateOneLine updateOneLine = new LineM.UpdateOneLine(db);
-                            updateOneLine.bind(line.getText(), line.getOrdinal(), line.getAudioURL(), line.getSceneId(), line.getId());
+                            updateOneLine.bind(line.getText(), line.getAudioURL(), "", line.getOrdinal(), line.getSceneId(), line.getId());
                             updateOneLine.program.executeUpdateDelete();
                         } else {
                             LineM.InsertOneLine insertOneLine = new LineM.InsertOneLine(db);
-                            insertOneLine.bind(line.getId(), line.getText(), line.getOrdinal(), line.getAudioURL(), line.getSceneId());
+                            insertOneLine.bind(line.getId(), line.getText(), line.getAudioURL(), "", line.getOrdinal(), line.getSceneId());
                             insertOneLine.program.executeUpdateDelete();
                         }
                     }
@@ -165,5 +168,6 @@ public class ParticipateImpl implements Participate {
                 observableEmitter.onComplete();
             }
         });
+
     }
 }

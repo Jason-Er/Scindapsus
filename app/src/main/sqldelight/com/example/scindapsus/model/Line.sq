@@ -20,10 +20,10 @@ WHERE line.scene_id = ?
 ORDER BY line.ordinal;
 
 insertOneLine:
-INSERT INTO line(id, text, ordinal, audiourl, scene_id)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO line(id, text, audiourl, audiourl_local, ordinal, scene_id)
+VALUES (?, ?, ?, ?, ?, ?);
 
 updateOneLine:
 UPDATE line
-SET text = ?, ordinal = ?, audiourl = ?, scene_id = ?
+SET text = ?, audiourl = ?, audiourl_local = ?, ordinal = ?, scene_id = ?
 WHERE id = ?;

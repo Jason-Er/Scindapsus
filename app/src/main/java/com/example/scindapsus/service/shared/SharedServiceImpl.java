@@ -10,6 +10,7 @@ public class SharedServiceImpl implements SharedService{
 
     private final SharedPreferences sharedPreferences;
     private final String TOKEN_NAME = "token";
+    private final String USER_NAME = "username";
 
     public SharedServiceImpl(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
@@ -25,6 +26,18 @@ public class SharedServiceImpl implements SharedService{
     @Override
     public String getToken() {
         return sharedPreferences.getString(TOKEN_NAME,"");
+    }
+
+    @Override
+    public void saveUserName(String username) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_NAME, username);
+        editor.commit();
+    }
+
+    @Override
+    public String getUserName() {
+        return sharedPreferences.getString(USER_NAME,"");
     }
 
 }

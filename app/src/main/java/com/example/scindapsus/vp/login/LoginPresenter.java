@@ -55,6 +55,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             public void onNext(Token token) {
                 Log.i(TAG, "onNext");
                 sharedService.saveToken(token.token());
+                sharedService.saveUserName(user.getUsername());
                 mLogInView.navigateToBrowse(user);
             }
 
