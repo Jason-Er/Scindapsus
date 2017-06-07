@@ -7,4 +7,6 @@ package com.example.scindapsus.service.shared;
 public interface SharedService {
     void saveToken(String token);
     String getToken();
+    void saveUserName(String username);
+    String getUserName();
 }

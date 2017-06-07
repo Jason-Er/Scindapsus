@@ -37,7 +37,7 @@ public class FileUtil {
                 String header = response.headers().get("Content-Disposition");
                 String filename = header.replace("attachment; filename=", "");
 
-                new File(path).mkdir();
+                new File(path).mkdirs();
                 File destinationFile = new File(path, filename);
 
                 BufferedSink bufferedSink = Okio.buffer(Okio.sink(destinationFile));
