@@ -10,20 +10,14 @@ import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.image.ImageService;
 import com.example.scindapsus.service.shared.SharedService;
-import com.example.scindapsus.util.bus.RxBus;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -39,7 +33,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     private final BrowseContract.View mBrowseView;
     private boolean mFirstLoad = true;
 
-    final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>();
+    private List<PlayInfo> playsInfo = null;
 
     @Inject
     BrowseService browseService;
@@ -68,12 +62,6 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void onStart() {
-        RxBus.getDefault().toFlowable(PlayInfo.class)
-                .subscribe(new Consumer<PlayInfo>() {
-                    @Override
-                    public void accept(@io.reactivex.annotations.NonNull PlayInfo playInfo) throws Exception {
-                        synchronousQueue.put(playInfo);
-                    }});
     }
 
     @Override
@@ -89,17 +77,8 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void recyclerViewItemClick(View view, int position) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mBrowseView.navigateToParticipate(synchronousQueue.take());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
+        Log.i(TAG, "recyclerViewItemClick position: "+position);
+        mBrowseView.navigateToParticipate(playsInfo.get(position));
     }
 
     private void loadPlaysInfo(final boolean forceUpdate, final boolean showLoadingUI) {
@@ -128,7 +107,6 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             public void onNext(PageResult<List<PlayInfo>> pageResult) {
                 Log.i(TAG, "onNext");
                 processPlaysInfo(pageResult);
-
             }
 
         };
@@ -140,7 +118,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     }
 
     private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {
-        List<PlayInfo> playsInfo = pageResult.getContent();
+        playsInfo = pageResult.getContent();
         if (playsInfo.isEmpty()) {
             // Show a message indicating there are no tasks for that filter type.
             processEmptyPlaysInfo();

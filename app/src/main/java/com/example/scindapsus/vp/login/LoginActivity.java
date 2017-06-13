@@ -1,6 +1,10 @@
 package com.example.scindapsus.vp.login;
 
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.view.Gravity;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -12,7 +16,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_act);
-
+        setupWindowAnimations();
         // attach fragment to main layout
         LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.login_frame);
@@ -26,5 +30,11 @@ public class LoginActivity extends BaseActivity {
         // Create the presenter
         new LoginPresenter(loginFragment, ((ScindapsusApplication)getApplication()).getAppComponent());
 
+    }
+
+    private void setupWindowAnimations() {
+        Slide slideToTop = new Slide(Gravity.TOP);
+        slideToTop.setDuration(1000);
+        getWindow().setExitTransition(slideToTop);
     }
 }

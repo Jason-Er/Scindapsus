@@ -3,7 +3,11 @@ package com.example.scindapsus.vp.browse;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.Gravity;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -23,7 +27,7 @@ public class BrowseActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.browse_act);
-
+        setupWindowAnimations();
         // attach fragment to main layout
         BrowseFragment browseFragment = (BrowseFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.browse_frame);
@@ -39,5 +43,14 @@ public class BrowseActivity extends BaseActivity {
 
         User user = (User) getIntent().getParcelableExtra(Navigator.PARA_MACRO);
 
+    }
+
+    private void setupWindowAnimations() {
+        Slide slideToBottom = new Slide(Gravity.BOTTOM);
+        slideToBottom.setDuration(1000);
+        getWindow().setEnterTransition(slideToBottom);
+        Slide slideToTop = new Slide(Gravity.TOP);
+        slideToTop.setDuration(1000);
+        getWindow().setExitTransition(slideToTop);
     }
 }
