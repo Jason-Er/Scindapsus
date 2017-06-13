@@ -1,6 +1,5 @@
 package com.example.scindapsus.vp.browse;
 
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -11,20 +10,14 @@ import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.browse.BrowseService;
 import com.example.scindapsus.service.image.ImageService;
 import com.example.scindapsus.service.shared.SharedService;
-import com.example.scindapsus.util.bus.RxBus;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -41,8 +34,6 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     private boolean mFirstLoad = true;
 
     private List<PlayInfo> playsInfo = null;
-
-    final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>();
 
     @Inject
     BrowseService browseService;
@@ -71,14 +62,6 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void onStart() {
-        /*
-        RxBus.getDefault().toFlowable(PlayInfo.class)
-                .subscribe(new Consumer<PlayInfo>() {
-                    @Override
-                    public void accept(@io.reactivex.annotations.NonNull PlayInfo playInfo) throws Exception {
-                        synchronousQueue.put(playInfo);
-                    }});
-                    */
     }
 
     @Override
@@ -96,21 +79,6 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     public void recyclerViewItemClick(View view, int position) {
         Log.i(TAG, "recyclerViewItemClick position: "+position);
         mBrowseView.navigateToParticipate(playsInfo.get(position));
-        /*
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                try {
-                    mBrowseView.navigateToParticipate(synchronousQueue.take());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Looper.loop();
-
-            }
-        }).start();
-        */
     }
 
     private void loadPlaysInfo(final boolean forceUpdate, final boolean showLoadingUI) {
