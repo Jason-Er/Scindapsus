@@ -1,10 +1,12 @@
 package com.example.scindapsus.global.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import com.example.scindapsus.vp.browse.BrowseActivity;
 import com.example.scindapsus.vp.participate.ParticipateActivity;
@@ -29,7 +31,7 @@ public class Navigator {
         Bundle bundle = new Bundle();
         bundle.putParcelable(PARA_MACRO, parcelable);
         intentToLaunch.putExtras(bundle);
-        context.startActivity(intentToLaunch);
+        context.startActivity(intentToLaunch, ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)context, null).toBundle());
 
     }
 
