@@ -1,8 +1,10 @@
 package com.example.scindapsus.vp.login;
 
 import android.os.Bundle;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.Gravity;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -31,7 +33,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void setupWindowAnimations() {
-        Transition slide = TransitionInflater.from(this).inflateTransition(R.transition.slide_transition);
-        getWindow().setExitTransition(slide);
+        Slide slideToTop = new Slide(Gravity.TOP);
+        slideToTop.setDuration(1000);
+        getWindow().setExitTransition(slideToTop);
     }
 }

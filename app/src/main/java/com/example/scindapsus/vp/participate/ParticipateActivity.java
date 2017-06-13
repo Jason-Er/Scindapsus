@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.Gravity;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -45,7 +47,8 @@ public class ParticipateActivity extends BaseActivity {
     }
 
     private void setupWindowAnimations() {
-        Transition slide = TransitionInflater.from(this).inflateTransition(R.transition.slide_transition);
-        getWindow().setEnterTransition(slide);
+        Slide slideToBottom = new Slide(Gravity.BOTTOM);
+        slideToBottom.setDuration(1000);
+        getWindow().setEnterTransition(slideToBottom);
     }
 }

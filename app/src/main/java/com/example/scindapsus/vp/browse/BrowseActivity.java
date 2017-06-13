@@ -3,9 +3,11 @@ package com.example.scindapsus.vp.browse;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.Gravity;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
@@ -44,8 +46,11 @@ public class BrowseActivity extends BaseActivity {
     }
 
     private void setupWindowAnimations() {
-        Transition slide = TransitionInflater.from(this).inflateTransition(R.transition.slide_transition);
-        getWindow().setEnterTransition(slide);
-        getWindow().setExitTransition(slide);
+        Slide slideToBottom = new Slide(Gravity.BOTTOM);
+        slideToBottom.setDuration(1000);
+        getWindow().setEnterTransition(slideToBottom);
+        Slide slideToTop = new Slide(Gravity.TOP);
+        slideToTop.setDuration(1000);
+        getWindow().setExitTransition(slideToTop);
     }
 }
