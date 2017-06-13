@@ -46,5 +46,6 @@ public class BrowseActivity extends BaseActivity {
     private void setupWindowAnimations() {
         Transition slide = TransitionInflater.from(this).inflateTransition(R.transition.slide_transition);
         getWindow().setEnterTransition(slide);
+        getWindow().setExitTransition(slide);
     }
 }

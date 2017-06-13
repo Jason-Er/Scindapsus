@@ -1,5 +1,6 @@
 package com.example.scindapsus.vp.browse;
 
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,8 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     private final BrowseContract.View mBrowseView;
     private boolean mFirstLoad = true;
 
+    private List<PlayInfo> playsInfo = null;
+
     final SynchronousQueue<PlayInfo> synchronousQueue = new SynchronousQueue<PlayInfo>();
 
     @Inject
@@ -68,12 +71,14 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void onStart() {
+        /*
         RxBus.getDefault().toFlowable(PlayInfo.class)
                 .subscribe(new Consumer<PlayInfo>() {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull PlayInfo playInfo) throws Exception {
                         synchronousQueue.put(playInfo);
                     }});
+                    */
     }
 
     @Override
@@ -89,17 +94,23 @@ public class BrowsePresenter implements BrowseContract.Presenter{
 
     @Override
     public void recyclerViewItemClick(View view, int position) {
+        Log.i(TAG, "recyclerViewItemClick position: "+position);
+        mBrowseView.navigateToParticipate(playsInfo.get(position));
+        /*
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 try {
                     mBrowseView.navigateToParticipate(synchronousQueue.take());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Looper.loop();
 
             }
         }).start();
+        */
     }
 
     private void loadPlaysInfo(final boolean forceUpdate, final boolean showLoadingUI) {
@@ -128,7 +139,6 @@ public class BrowsePresenter implements BrowseContract.Presenter{
             public void onNext(PageResult<List<PlayInfo>> pageResult) {
                 Log.i(TAG, "onNext");
                 processPlaysInfo(pageResult);
-
             }
 
         };
@@ -140,7 +150,7 @@ public class BrowsePresenter implements BrowseContract.Presenter{
     }
 
     private void processPlaysInfo(@NonNull PageResult<List<PlayInfo>> pageResult) {
-        List<PlayInfo> playsInfo = pageResult.getContent();
+        playsInfo = pageResult.getContent();
         if (playsInfo.isEmpty()) {
             // Show a message indicating there are no tasks for that filter type.
             processEmptyPlaysInfo();

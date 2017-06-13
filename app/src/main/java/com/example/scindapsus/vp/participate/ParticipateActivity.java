@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 
 import com.example.scindapsus.R;
@@ -26,7 +28,7 @@ public class ParticipateActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.participate_act);
-
+        setupWindowAnimations();
         // attach fragment to main layout
         ParticipateFragment participateFragment = (ParticipateFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.participate_frame);
@@ -42,4 +44,8 @@ public class ParticipateActivity extends BaseActivity {
 
     }
 
+    private void setupWindowAnimations() {
+        Transition slide = TransitionInflater.from(this).inflateTransition(R.transition.slide_transition);
+        getWindow().setEnterTransition(slide);
+    }
 }

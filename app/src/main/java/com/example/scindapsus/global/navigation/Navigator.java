@@ -41,7 +41,7 @@ public class Navigator {
         Bundle bundle = new Bundle();
         bundle.putParcelable(PARA_MACRO, parcelable);
         intentToLaunch.putExtras(bundle);
-        context.startActivity(intentToLaunch);
+        context.startActivity(intentToLaunch, ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)context, null).toBundle());
 
     }
 }
