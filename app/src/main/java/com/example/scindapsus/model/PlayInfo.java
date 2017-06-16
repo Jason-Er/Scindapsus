@@ -1,81 +1,26 @@
 package com.example.scindapsus.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 /**
  * Created by ej on 4/25/2017.
  */
+@AutoValue
+public abstract class PlayInfo implements Parcelable {
+    public abstract long id();
+    public abstract String name();
+    public abstract String stillUrl();
+    public abstract String extract();
 
-public class PlayInfo implements Parcelable {
-
-    private int id;
-
-    private String name;
-
-    private String stillUrl;
-
-    private String extract;
-
-    public PlayInfo() {
-
+    public static PlayInfo create(long id, String name, String stillUrl, String extract) {
+        return new AutoValue_PlayInfo(id, name, stillUrl, extract);
     }
-
-    protected PlayInfo(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        stillUrl = in.readString();
-        extract = in.readString();
-    }
-
-    public static final Creator<PlayInfo> CREATOR = new Creator<PlayInfo>() {
-        @Override
-        public PlayInfo createFromParcel(Parcel in) {
-            return new PlayInfo(in);
-        }
-
-        @Override
-        public PlayInfo[] newArray(int size) {
-            return new PlayInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(name);
-        parcel.writeString(stillUrl);
-        parcel.writeString(extract);
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
-    public int getId(){
-        return this.id;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
-    public String getName(){
-        return this.name;
-    }
-    public void setStillUrl(String stillUrl){
-        this.stillUrl = stillUrl;
-    }
-    public String getStillUrl(){
-        return this.stillUrl;
-    }
-    public void setExtract(String extract){
-        this.extract = extract;
-    }
-    public String getExtract(){
-        return this.extract;
+    public static TypeAdapter<PlayInfo> typeAdapter(Gson gson) {
+        return new AutoValue_PlayInfo.GsonTypeAdapter(gson);
     }
 
 }

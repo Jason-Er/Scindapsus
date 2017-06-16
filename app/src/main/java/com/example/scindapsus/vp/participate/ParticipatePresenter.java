@@ -54,7 +54,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
 
     @Override
     public void subscribe(PlayInfo playInfo) {
-        loadPlay(false, playInfo.getId());
+        loadPlay(false, (int) playInfo.id());
     }
 
     @Override

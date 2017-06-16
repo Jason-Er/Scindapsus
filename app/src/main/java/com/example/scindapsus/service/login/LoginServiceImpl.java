@@ -9,7 +9,7 @@ import com.example.scindapsus.model.Token;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
+import io.reactivex.Observable;
 
 /**
  * Created by ej on 2/28/2017.
@@ -25,8 +25,9 @@ public class LoginServiceImpl implements LoginService {
                 .build().inject(this);
     }
     @Override
-    public void login(Observer<Token> observer, String name, String password) {
+    public Observable<Token> login(String name, String password) {
         Log.i(TAG, "Invoke LoginServiceImpl login!");
-        loginHttpImpl.login(observer, name, password);
+        return loginHttpImpl.login(name, password);
     }
+
 }

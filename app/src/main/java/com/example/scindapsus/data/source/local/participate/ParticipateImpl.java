@@ -152,11 +152,11 @@ public class ParticipateImpl implements Participate {
                         cursor = db.rawQuery(query.statement, query.args);
                         if(cursor.moveToFirst()) {
                             LineM.UpdateOneLine updateOneLine = new LineM.UpdateOneLine(db);
-                            updateOneLine.bind(line.getText(), line.getAudioURL(), "", line.getOrdinal(), line.getSceneId(), line.getId());
+                            updateOneLine.bind(line.getOrdinal(), line.getText(), line.getAudioURL(), line.getSceneId(), line.getId());
                             updateOneLine.program.executeUpdateDelete();
                         } else {
                             LineM.InsertOneLine insertOneLine = new LineM.InsertOneLine(db);
-                            insertOneLine.bind(line.getId(), line.getText(), line.getAudioURL(), "", line.getOrdinal(), line.getSceneId());
+                            insertOneLine.bind(line.getId(), line.getOrdinal(), line.getText(), line.getAudioURL(), line.getSceneId());
                             insertOneLine.program.executeUpdateDelete();
                         }
                     }

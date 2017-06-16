@@ -2,6 +2,7 @@ package com.example.scindapsus.service.login;
 
 import com.example.scindapsus.model.Token;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 
 /**
@@ -9,5 +10,5 @@ import io.reactivex.Observer;
  */
 
 public interface LoginService {
-    void login(Observer<Token> observer, String name, String password);
+    Observable<Token> login(String name, String password);
 }

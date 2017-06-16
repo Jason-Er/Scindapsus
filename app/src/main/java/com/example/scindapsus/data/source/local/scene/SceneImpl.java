@@ -40,11 +40,11 @@ public class SceneImpl implements Scene{
                 Cursor cursor = db.rawQuery(query.statement, query.args);
                 if(cursor.moveToFirst()) {
                     LineM.UpdateOneLine updateOneLine = new LineM.UpdateOneLine(db);
-                    updateOneLine.bind(lineM.text(), lineM.audiourl(), lineM.audiourl_local(), lineM.ordinal(), lineM.scene_id(), lineM.id());
+                    updateOneLine.bind(lineM.ordinal(), lineM.text(), lineM.audiourl(), lineM.scene_id(), lineM.id());
                     updateOneLine.program.executeUpdateDelete();
                 } else {
                     LineM.InsertOneLine insertOneLine = new LineM.InsertOneLine(db);
-                    insertOneLine.bind(lineM.id(), lineM.text(), lineM.audiourl(), lineM.audiourl_local(), lineM.ordinal(), lineM.scene_id());
+                    insertOneLine.bind(lineM.id(), lineM.ordinal(), lineM.text(), lineM.audiourl(), lineM.scene_id());
                     insertOneLine.program.executeUpdateDelete();
                 }
                 cursor.close();

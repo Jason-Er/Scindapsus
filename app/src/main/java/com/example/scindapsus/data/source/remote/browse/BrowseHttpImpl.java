@@ -4,8 +4,11 @@ import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.PlayInfo;
+import com.example.scindapsus.model.adapter.CustomAdapterFactory;
 import com.example.scindapsus.model.http.PageResult;
 import com.example.scindapsus.service.shared.SharedService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 import java.util.List;
@@ -38,7 +41,8 @@ public class BrowseHttpImpl {
         DaggerHttpComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
-        browseHttp = retrofitUtil.createApi(BrowseHttp.class);
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(CustomAdapterFactory.create()).create();
+        browseHttp = retrofitUtil.createApi(BrowseHttp.class, gson);
     }
 
     public void loadPlaysInfo(String token, Observer<PageResult<List<PlayInfo>>> observer, int page, int size) {

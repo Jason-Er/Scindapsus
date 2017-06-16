@@ -245,12 +245,15 @@ public class ScenePresenter implements SceneContract.Presenter {
                 .flatMap(new Function<String, Observable<LineM>>() {
                     @Override
                     public Observable<LineM> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
-                        return sceneService.saveLineM(LineM.create(line.getId(), line.getText(), line.getAudioURL(), s, line.getOrdinal(), line.getSceneId()));
+                        // TODO: 6/16/2017 need to save to another table
+                        return sceneService.saveLineM(LineM.create(line.getId(), line.getOrdinal(), line.getText(), line.getAudioURL(), line.getSceneId()));
                     }
                 });
     }
 
     public static Observable<LineM> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final LineM lineM ) {
+        // TODO: 6/16/2017 need to save to another table
+        /*
         File file = new File(lineM.audiourl_local());
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
@@ -261,5 +264,7 @@ public class ScenePresenter implements SceneContract.Presenter {
                         return sceneService.saveLineM(LineM.create(lineM.id(),lineM.text(),uploadAudioUrl.getUrl(),lineM.audiourl_local(),lineM.ordinal(),lineM.scene_id()));
                     }
                 });
+        */
+        return null;
     }
 }

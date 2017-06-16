@@ -16,6 +16,7 @@ import java.util.Properties;
 import javax.inject.Inject;
 
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -46,11 +47,9 @@ public class LoginHttpImpl {
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public void login(Observer<Token> observer, String name, String password) {
+    public Observable<Token> login(String name, String password) {
         Log.i(TAG, "Invoke method login");
-
-        loginHttp.login(Auth.newInstance(name, password))
-                .subscribeOn(Schedulers.io())
+        return loginHttp.login(Auth.newInstance(name, password))
                 .map(new Function<Response<Void>, Token>() {
                     @Override
                     public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
@@ -60,8 +59,6 @@ public class LoginHttpImpl {
                         String[] arr = token.split(tokenPrefix + " ");
                         return Token.newInstance(arr[1]);
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(observer);
+                });
     }
 }

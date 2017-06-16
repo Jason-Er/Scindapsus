@@ -86,8 +86,8 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
         }
 
         public void populate(PlayInfo s) {
-            nameView.setText(s.getName());
-            extractView.setText(s.getExtract());
+            nameView.setText(s.name());
+            extractView.setText(s.extract());
         }
     }
 
@@ -129,7 +129,7 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
                 .downloader(new OkHttp3Downloader(client))
                 .build();
 
-        picasso.load(dataset.get(position).getStillUrl()).into(holder.stillView);
+        picasso.load(dataset.get(position).stillUrl()).into(holder.stillView);
     }
 
     @Override

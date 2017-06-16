@@ -15,7 +15,9 @@ import com.example.scindapsus.service.shared.SharedService;
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,7 +46,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login(final User user) {
 
-        Observer subscriber = new Observer<Token>() {
+        Observer observer = new Observer<Token>() {
 
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
@@ -71,11 +73,14 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
         };
 
-        loginService.login(subscriber, user.getUsername(), user.getPassword());
+        loginService.login(user.getUsername(), user.getPassword())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
         mLogInView.setLoadingIndicator(true);
 
-        // TO-DO something
+        // TODO: 6/16/2017 show indicator
 
         mLogInView.setLoadingIndicator(false);
 

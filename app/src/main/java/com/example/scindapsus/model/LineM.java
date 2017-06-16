@@ -12,12 +12,12 @@ import com.google.auto.value.AutoValue;
 public abstract class LineM implements LineModel{
     public static final Factory<LineM> FACTORY = new LineModel.Factory<>(new Creator<LineM>() {
         @Override
-        public LineM create(long id, @NonNull String text, @Nullable String audiourl, @Nullable String audiourl_local, @Nullable Long ordinal, long scene_id) {
-            return new AutoValue_LineM(id, text, audiourl, audiourl_local, ordinal, scene_id);
+        public LineM create(long id, long ordinal, @NonNull String text, @Nullable String audiourl, long scene_id) {
+            return new AutoValue_LineM(id, ordinal, text, audiourl, scene_id);
         }
     });
 
-    public static LineM create(long id, @NonNull String text, @Nullable String audiourl, @Nullable String audiourl_local, @Nullable Long ordinal, long scene_id) {
-        return new AutoValue_LineM(id, text, audiourl, audiourl_local, ordinal, scene_id);
+    public static LineM create(long id, Long ordinal, @NonNull String text, @Nullable String audiourl, long scene_id) {
+        return new AutoValue_LineM(id, ordinal, text, audiourl, scene_id);
     }
 }
