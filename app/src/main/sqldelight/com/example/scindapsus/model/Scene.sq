@@ -1,8 +1,8 @@
 CREATE TABLE scene (
-    id INTEGER NOT NULL  PRIMARY KEY ,
-    name TEXT NULL ,
-    ordinal INTEGER NULL ,
-    play_id INTEGER NOT NULL ,
+    id INTEGER NOT NULL  PRIMARY KEY UNIQUE,
+    name TEXT,
+    ordinal INTEGER,
+    play_id INTEGER NOT NULL UNIQUE,
     FOREIGN KEY (play_id) REFERENCES play (id)
 );
 
