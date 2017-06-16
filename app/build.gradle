@@ -58,7 +58,7 @@ dependencies {
 
     provided "com.ryanharter.auto.value:auto-value-gson:$rootProject.autovaluegsonVersion"
     apt "com.ryanharter.auto.value:auto-value-gson:$rootProject.autovaluegsonVersion"
-
+    compile "com.google.code.gson:gson:$rootProject.gsonVersion"
     compile "com.android.support:appcompat-v7:$rootProject.appcompatv7Version"
     compile "com.android.support.constraint:constraint-layout:$rootProject.constraintlayoutVersion"
     compile "com.android.support:support-v4:$rootProject.supportv4Version"
