@@ -1,44 +1,18 @@
 package com.example.scindapsus.model;
 
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+
 /**
  * Created by ej on 5/3/2017.
  */
-
-public class Line {
-    private long id;
-    private String audioURL;
-    private String text;
-    private long ordinal;
-    private long sceneId;
-
-    public void setId(long id){
-        this.id = id;
+@AutoValue
+public abstract class Line implements LineModel{
+    public static Line create(long id, long ordinal, String text, String audio_url, long role_id, long scene_id) {
+        return new AutoValue_Line(id, ordinal, text, audio_url, role_id, scene_id);
     }
-    public long getId(){
-        return this.id;
-    }
-    public void setAudioURL(String audioURL){
-        this.audioURL = audioURL;
-    }
-    public String getAudioURL(){
-        return this.audioURL;
-    }
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-    public void setOrdinal(long ordinal){
-        this.ordinal = ordinal;
-    }
-    public long getOrdinal(){
-        return this.ordinal;
-    }
-    public long getSceneId() {
-        return sceneId;
-    }
-    public void setSceneId(long sceneId) {
-        this.sceneId = sceneId;
+    public static TypeAdapter<Line> typeAdapter(Gson gson) {
+        return new AutoValue_Line.GsonTypeAdapter(gson);
     }
 }

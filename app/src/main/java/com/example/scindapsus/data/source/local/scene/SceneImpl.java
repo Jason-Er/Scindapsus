@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.scindapsus.data.source.local.DaggerLocalComponent;
 import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.LineM;
+import com.example.scindapsus.model.Line;
 import com.squareup.sqldelight.SqlDelightStatement;
 
 import javax.inject.Inject;
@@ -31,7 +31,8 @@ public class SceneImpl implements Scene{
     }
 
     @Override
-    public Observable<LineM> saveLineM(final LineM lineM) {
+    public Observable<Line> saveLine(final Line line) {
+        /*
         return Observable.create(new ObservableOnSubscribe() {
             @Override
             public void subscribe(@NonNull ObservableEmitter completableEmitter) throws Exception {
@@ -53,5 +54,7 @@ public class SceneImpl implements Scene{
                 completableEmitter.onComplete();
             }
         });
+        */
+        return null;
     }
 }

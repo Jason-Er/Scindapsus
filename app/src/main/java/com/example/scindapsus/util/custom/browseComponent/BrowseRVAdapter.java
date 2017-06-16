@@ -129,7 +129,7 @@ public class BrowseRVAdapter extends RecyclerView.Adapter<BrowseRVAdapter.ViewHo
                 .downloader(new OkHttp3Downloader(client))
                 .build();
 
-        picasso.load(dataset.get(position).stillUrl()).into(holder.stillView);
+        picasso.load(dataset.get(position).still_url()).into(holder.stillView);
     }
 
     @Override

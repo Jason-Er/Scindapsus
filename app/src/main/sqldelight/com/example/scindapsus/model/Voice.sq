@@ -3,7 +3,8 @@ CREATE TABLE voice (
     audiourl_server TEXT,
     audiourl_local TEXT,
     user_id INTEGER NOT NULL UNIQUE,
-    line_id INTEGER NOT NULL UNIQUE
+    line_id INTEGER NOT NULL UNIQUE,
+    FOREIGN KEY (line_id) REFERENCES line (id)
 );
 
 select_by_id:

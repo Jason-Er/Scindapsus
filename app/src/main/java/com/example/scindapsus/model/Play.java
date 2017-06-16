@@ -1,46 +1,32 @@
 package com.example.scindapsus.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+
 import java.util.List;
 
 /**
  * Created by ej on 5/3/2017.
  */
 
-public class Play {
-    private long id = 0;
-    private List<Scene> scenes ;
-    private String name = "";
-    private String stillUrl = "";
-    private String extract = "";
-
-    public void setId(long id){
-        this.id = id;
+@AutoValue
+public abstract class Play implements PlayModel {
+    public abstract List<Scene> scenes();
+    public abstract List<Role> cast();
+    public static Play create(long id, String name, String extract, String still_url, List<Scene> scenes, List<Role> cast) {
+        return new AutoValue_Play(id, name, extract, still_url, scenes, cast);
     }
-    public long getId(){
-        return this.id;
+    public static TypeAdapter<Play> typeAdapter(Gson gson) {
+        return new AutoValue_Play.GsonTypeAdapter(gson);
     }
-    public void setScenes(List<Scene> scenes){
-        this.scenes = scenes;
-    }
-    public List<Scene> getScenes(){
-        return this.scenes;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
-    public String getName(){
-        return this.name;
-    }
-    public void setStillUrl(String stillUrl){
-        this.stillUrl = stillUrl;
-    }
-    public String getStillUrl(){
-        return this.stillUrl;
-    }
-    public void setExtract(String extract){
-        this.extract = extract;
-    }
-    public String getExtract(){
-        return this.extract;
-    }
+    public static final Factory<Play> FACTORY = new Factory<>(new Creator<Play>() {
+        @Override
+        public Play create(long id, @NonNull String name, @Nullable String extract, @Nullable String still_url) {
+            return new AutoValue_Play(id, name, extract, still_url, null, null);
+        }
+    });
 }

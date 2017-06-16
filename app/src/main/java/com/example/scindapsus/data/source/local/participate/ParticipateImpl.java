@@ -8,11 +8,8 @@ import com.example.scindapsus.data.source.local.DaggerLocalComponent;
 import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.Play;
-import com.example.scindapsus.model.PlayM;
 import com.example.scindapsus.model.Scene;
-import com.example.scindapsus.model.SceneM;
 import com.squareup.sqldelight.SqlDelightStatement;
 
 import java.util.ArrayList;
@@ -20,9 +17,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -47,21 +41,19 @@ public class ParticipateImpl implements Participate {
     @Override
     public Observable<Play> loadPlay(final int id) {
         Log.i(TAG, "loadPlay");
+        /*
         return Observable.create(new ObservableOnSubscribe<Play>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Play> observableEmitter) throws Exception {
                 Play play = new Play();
                 SQLiteDatabase db = delightfulOpenHelper.getReadableDatabase();
-                SqlDelightStatement query = PlayM.FACTORY.select_by_id(id);
+                SqlDelightStatement query = Play.FACTORY.select_by_id(id);
                 Cursor cursor = db.rawQuery(query.statement, query.args);
                 if(cursor.moveToFirst()) {
 
-                    PlayM playm = PlayM.FACTORY.select_by_idMapper().map(cursor);
+                    Play playm = Play.FACTORY.select_by_idMapper().map(cursor);
 
-                    play.setName(playm.name());
-                    play.setId(playm.id());
-                    play.setExtract(playm.extract());
-                    play.setStillUrl(playm.still_url());
+
 
                     cursor.close();
                     query = SceneM.FACTORY.select_by_play_id(playm.id());
@@ -110,10 +102,13 @@ public class ParticipateImpl implements Participate {
                 observableEmitter.onComplete();
             }
         });
+        */
+        return null;
     }
 
     @Override
     public Observable<Play> savePlay(final Play play) {
+        /*
         return Observable.create(new ObservableOnSubscribe<Play>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Play> observableEmitter) throws Exception {
@@ -168,6 +163,7 @@ public class ParticipateImpl implements Participate {
                 observableEmitter.onComplete();
             }
         });
-
+        */
+        return null;
     }
 }

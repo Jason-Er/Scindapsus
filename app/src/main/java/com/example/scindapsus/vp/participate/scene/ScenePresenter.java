@@ -6,9 +6,7 @@ import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.Scene;
-import com.example.scindapsus.model.UploadAudioUrl;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
 import com.example.scindapsus.service.shared.SharedService;
@@ -26,15 +24,11 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -53,7 +47,7 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     private Subscription downloadRequestsSubscription;
     private Subscription uploadRequestsSubscription;
-    private List<LineM> lineMs = new ArrayList<>();
+    private List<Line> lines = new ArrayList<>();
 
     private final int DOWNLOAD_AUDIO_NUM = 1;
 
@@ -78,8 +72,8 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     public void setScene(Scene scene) {
         this.mScene = scene;
-        mSceneView.showLines(scene.getLines());
-        loadLinesAudio(scene.getLines());
+        mSceneView.showLines(scene.lines());
+        loadLinesAudio(scene.lines());
     }
 
     public String getPlayUid() {
@@ -102,19 +96,19 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     private void loadLinesAudio(List<Line> lines) {
         // final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + sharedService.getUserName() + "/" + playUid + "/" + "scene" + mScene.getOrdinal();
-        final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + playUid + "/" + "scene" + mScene.getOrdinal();
+        final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + playUid + "/" + "scene" + mScene.ordinal();
         final String token = sharedService.getToken();
 
-        final Observer<LineM> lineMObserver = new Observer<LineM>() {
+        final Observer<Line> lineObserver = new Observer<Line>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
             @Override
-            public void onNext(@io.reactivex.annotations.NonNull LineM lineM) {
-                Log.i(TAG, lineM.toString());
-                lineMs.add(lineM);
+            public void onNext(@io.reactivex.annotations.NonNull Line line) {
+                Log.i(TAG, line.toString());
+                ScenePresenter.this.lines.add(line);
                 downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -143,7 +137,7 @@ public class ScenePresenter implements SceneContract.Presenter {
                 downloadOneAudio(sceneService, token, line, path4Save)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(lineMObserver);
+                        .subscribe(lineObserver);
 
             }
 
@@ -163,18 +157,18 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     }
 
-    private void uploadLinesAudio(List<LineM> lineMs) {
+    private void uploadLinesAudio(List<Line> lines) {
         final String token = sharedService.getToken();
 
-        final Observer<LineM> lineMObserver = new Observer<LineM>() {
+        final Observer<Line> lineMObserver = new Observer<Line>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
             @Override
-            public void onNext(@io.reactivex.annotations.NonNull LineM lineM) {
-                Log.i(TAG, lineM.toString());
+            public void onNext(@io.reactivex.annotations.NonNull Line line) {
+                Log.i(TAG, line.toString());
                 uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -189,7 +183,7 @@ public class ScenePresenter implements SceneContract.Presenter {
             }
         };
 
-        Subscriber subscriber = new Subscriber<LineM>() {
+        Subscriber subscriber = new Subscriber<Line>() {
 
             @Override
             public void onSubscribe(Subscription s) {
@@ -198,9 +192,9 @@ public class ScenePresenter implements SceneContract.Presenter {
             }
 
             @Override
-            public void onNext(LineM lineM) {
+            public void onNext(Line line) {
                 Log.i(TAG, "onNext");
-                uploadOneAudio(sceneService, token, playUid, lineM)
+                uploadOneAudio(sceneService, token, playUid, line)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(lineMObserver);
@@ -217,7 +211,7 @@ public class ScenePresenter implements SceneContract.Presenter {
             }
         };
 
-        Flowable flowable = Flowable.fromIterable(lineMs);
+        Flowable flowable = Flowable.fromIterable(lines);
         flowable.subscribe(subscriber);
         uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
 
@@ -225,12 +219,12 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     @Override
     public void uploadToServer() {
-        uploadLinesAudio(lineMs);
+        uploadLinesAudio(lines);
     }
 
-    public static Observable<LineM> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
+    public static Observable<Line> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
         return sceneService
-                .loadAudio(token, line.getAudioURL())
+                .loadAudio(token, line.audio_url())
                 .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
                     @Override
                     public Observable<File> apply(@io.reactivex.annotations.NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
@@ -242,16 +236,16 @@ public class ScenePresenter implements SceneContract.Presenter {
                         return file.getAbsolutePath();
                     }
                 })
-                .flatMap(new Function<String, Observable<LineM>>() {
+                .flatMap(new Function<String, Observable<Line>>() {
                     @Override
-                    public Observable<LineM> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
+                    public Observable<Line> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
                         // TODO: 6/16/2017 need to save to another table
-                        return sceneService.saveLineM(LineM.create(line.getId(), line.getOrdinal(), line.getText(), line.getAudioURL(), line.getSceneId()));
+                        return sceneService.saveLine(line);
                     }
                 });
     }
 
-    public static Observable<LineM> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final LineM lineM ) {
+    public static Observable<Line> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final Line line ) {
         // TODO: 6/16/2017 need to save to another table
         /*
         File file = new File(lineM.audiourl_local());

@@ -33,7 +33,7 @@ public class ParticipateServiceImpl implements ParticipateService {
                 .build().inject(this);
     }
     @Override
-    public Maybe<Play> loadPlay(String token, int id) {
+    public Observable<Play> loadPlay(String token, int id) {
         // Query the local storage if available. If not, query the network.
         Observable<Play> disk = participateImpl.loadPlay(id);
         Observable<Play> network = participateHttpImpl.loadPlay(token, id).flatMap(new Function<Play, ObservableSource<Play>>() {
@@ -42,13 +42,15 @@ public class ParticipateServiceImpl implements ParticipateService {
                 return participateImpl.savePlay(play);
             }
         });
-
+/*
         return Observable.concat(disk, network)
                 .filter(new Predicate<Play>() {
                     @Override
                     public boolean test(@NonNull Play play) throws Exception {
-                        return play.getId()!=0;
+                        return play.id()!=0;
                     }
                 }).firstElement();
+*/
+        return participateHttpImpl.loadPlay(token, id);
     }
 }

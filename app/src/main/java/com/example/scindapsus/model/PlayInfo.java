@@ -13,11 +13,11 @@ import com.google.gson.TypeAdapter;
 public abstract class PlayInfo implements Parcelable {
     public abstract long id();
     public abstract String name();
-    public abstract String stillUrl();
+    public abstract String still_url();
     public abstract String extract();
 
-    public static PlayInfo create(long id, String name, String stillUrl, String extract) {
-        return new AutoValue_PlayInfo(id, name, stillUrl, extract);
+    public static PlayInfo create(long id, String name, String still_url, String extract) {
+        return new AutoValue_PlayInfo(id, name, still_url, extract);
     }
     public static TypeAdapter<PlayInfo> typeAdapter(Gson gson) {
         return new AutoValue_PlayInfo.GsonTypeAdapter(gson);

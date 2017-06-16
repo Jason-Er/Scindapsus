@@ -73,7 +73,7 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             mParticipateView.setLoadingIndicator(true);
         }
 
-        MaybeObserver observer = new MaybeObserver<Play>() {
+        Observer observer = new Observer<Play>() {
 
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
@@ -81,9 +81,9 @@ public class ParticipatePresenter implements ParticipateContract.Presenter{
             }
 
             @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Play play) {
-                scenePresenter.setPlayUid(play.getName()+play.getId());
-                scenePresenter.setScene(play.getScenes().get(currentScene));
+            public void onNext(@io.reactivex.annotations.NonNull Play play) {
+                scenePresenter.setPlayUid(play.name()+play.id());
+                scenePresenter.setScene(play.scenes().get(currentScene));
             }
 
             @Override

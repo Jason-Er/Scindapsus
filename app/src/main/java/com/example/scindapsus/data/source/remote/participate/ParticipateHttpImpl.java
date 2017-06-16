@@ -43,13 +43,6 @@ public class ParticipateHttpImpl {
         participateHttp = retrofitUtil.createApi(ParticipateHttp.class, gson);
     }
 
-    public void loadPlay(String token, Observer<Play> observer, int id) {
-        participateHttp.loadPlay(token, id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-    }
-
     public Observable<Play> loadPlay(String token, int id) {
         Log.i(TAG, "loadPlay");
         return participateHttp.loadPlay(token, id);

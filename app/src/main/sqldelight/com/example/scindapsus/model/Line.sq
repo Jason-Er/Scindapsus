@@ -2,7 +2,8 @@ CREATE TABLE line (
     id INTEGER NOT NULL  PRIMARY KEY UNIQUE,
     ordinal INTEGER NOT NULL ,
     text TEXT NOT NULL ,
-    audiourl TEXT,
+    audio_url TEXT,
+    role_id INTEGER NOT NULL UNIQUE,
     scene_id INTEGER NOT NULL UNIQUE,
     FOREIGN KEY (scene_id) REFERENCES scene (id)
 );
@@ -19,10 +20,10 @@ WHERE line.scene_id = ?
 ORDER BY line.ordinal;
 
 insertOneLine:
-INSERT INTO line(id, ordinal, text, audiourl,  scene_id)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO line(id, ordinal, text, audio_url, role_id, scene_id)
+VALUES (?, ?, ?, ?, ?, ?);
 
 updateOneLine:
 UPDATE line
-SET ordinal = ?, text = ?, audiourl = ?, scene_id = ?
+SET ordinal = ?, text = ?, audio_url = ?, scene_id = ?
 WHERE id = ?;

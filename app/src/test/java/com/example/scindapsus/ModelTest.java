@@ -1,6 +1,5 @@
 package com.example.scindapsus;
 
-import com.example.scindapsus.model.Status;
 import com.example.scindapsus.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
