@@ -42,15 +42,12 @@ public class ParticipateServiceImpl implements ParticipateService {
                 return participateImpl.savePlay(play);
             }
         });
-/*
         return Observable.concat(disk, network)
                 .filter(new Predicate<Play>() {
                     @Override
                     public boolean test(@NonNull Play play) throws Exception {
-                        return play.id()!=0;
+                        return play.id() > 0;
                     }
-                }).firstElement();
-*/
-        return participateHttpImpl.loadPlay(token, id);
+                }).firstElement().toObservable();
     }
 }

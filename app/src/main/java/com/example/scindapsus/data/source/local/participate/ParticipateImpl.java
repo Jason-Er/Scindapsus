@@ -9,6 +9,7 @@ import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
 import com.example.scindapsus.model.Play;
+import com.example.scindapsus.model.Role;
 import com.example.scindapsus.model.Scene;
 import com.squareup.sqldelight.SqlDelightStatement;
 
@@ -41,117 +42,122 @@ public class ParticipateImpl implements Participate {
     @Override
     public Observable<Play> loadPlay(final int id) {
         Log.i(TAG, "loadPlay");
-        /*
+
         return Observable.create(new ObservableOnSubscribe<Play>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Play> observableEmitter) throws Exception {
-                Play play = new Play();
                 SQLiteDatabase db = delightfulOpenHelper.getReadableDatabase();
                 SqlDelightStatement query = Play.FACTORY.select_by_id(id);
+                Play playQ = Play.create(0,"","","", new ArrayList<Scene>(), new ArrayList<Role>());
+                List<Scene> sceneListQ = null;
                 Cursor cursor = db.rawQuery(query.statement, query.args);
                 if(cursor.moveToFirst()) {
+                    Play play = Play.FACTORY.select_by_idMapper().map(cursor);
 
-                    Play playm = Play.FACTORY.select_by_idMapper().map(cursor);
-
-
-
+                    //query scenes
                     cursor.close();
-                    query = SceneM.FACTORY.select_by_play_id(playm.id());
+                    query = Scene.FACTORY.select_by_play_id(play.id());
                     cursor = db.rawQuery(query.statement, query.args);
-                    List<SceneM> sceneMList = new ArrayList<>(cursor.getCount());
-                    while (cursor.moveToNext()) {
-                        sceneMList.add(SceneM.FACTORY.select_by_idMapper().map(cursor));
-                    }
-
                     List<Scene> sceneList = new ArrayList<>(cursor.getCount());
-                    for(SceneM sceneM: sceneMList) {
-                        Scene scene = new Scene();
-                        scene.setId(sceneM.id());
-                        scene.setName(sceneM.name());
-                        scene.setOrdinal(sceneM.ordinal());
-                        scene.setPlayId(sceneM.play_id());
-                        sceneList.add(scene);
+                    while (cursor.moveToNext()) {
+                        sceneList.add(Scene.FACTORY.select_by_idMapper().map(cursor));
                     }
-                    play.setScenes(sceneList);
 
+                    sceneListQ = new ArrayList<>(cursor.getCount());
                     for(Scene scene: sceneList) {
+                        //query lines
                         cursor.close();
-                        query = LineM.FACTORY.select_by_scene_id(scene.getId());
+                        query = Line.FACTORY.select_by_scene_id(scene.id());
                         cursor = db.rawQuery(query.statement, query.args);
-                        List<LineM> lineMList = new ArrayList<LineM>(cursor.getCount());
+                        List<Line> lineList = new ArrayList<>(cursor.getCount());
                         while (cursor.moveToNext()) {
-                            lineMList.add(LineM.FACTORY.select_by_idMapper().map(cursor));
+                            lineList.add(Line.FACTORY.select_by_idMapper().map(cursor));
                         }
-                        List<Line> lineList = new ArrayList<Line>(cursor.getCount());
-                        for(LineM lineM: lineMList) {
-                            Line line = new Line();
-                            line.setId(lineM.id());
-                            line.setOrdinal(lineM.ordinal());
-                            line.setAudioURL(lineM.audiourl());
-                            line.setText(lineM.text());
-                            line.setSceneId(lineM.scene_id());
-                            lineList.add(line);
-                        }
-                        scene.setLines(lineList);
+                        sceneListQ.add(Scene.create(scene.id(), scene.name(), scene.ordinal(), scene.play_id(), lineList));
                     }
+
+                    //query roles
+                    cursor.close();
+                    query = Role.FACTORY.select_by_id(play.id());
+                    cursor = db.rawQuery(query.statement, query.args);
+                    List<Role> cast = new ArrayList<>(cursor.getCount());
+                    while (cursor.moveToNext()) {
+                        cast.add(Role.FACTORY.select_by_idMapper().map(cursor));
+                    }
+
+                    playQ = Play.create(play.id(), play.name(), play.extract(), play.still_url(), sceneListQ, cast);
                 }
 
                 cursor.close();
                 db.close();
-                observableEmitter.onNext(play);
+                observableEmitter.onNext(playQ);
                 observableEmitter.onComplete();
             }
         });
-        */
-        return null;
+
     }
 
     @Override
     public Observable<Play> savePlay(final Play play) {
-        /*
         return Observable.create(new ObservableOnSubscribe<Play>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Play> observableEmitter) throws Exception {
                 SQLiteDatabase db = delightfulOpenHelper.getWritableDatabase();
-                SqlDelightStatement query = PlayM.FACTORY.select_by_id(play.getId());
+                SqlDelightStatement query = Play.FACTORY.select_by_id(play.id());
                 Cursor cursor = db.rawQuery(query.statement, query.args);
                 if(cursor.moveToFirst()) {
-                    PlayM.UpdateOnePlay updateOnePlay = new PlayM.UpdateOnePlay(db);
-                    updateOnePlay.bind(play.getName(), play.getExtract(), play.getStillUrl(), play.getId());
+                    Play.UpdateOnePlay updateOnePlay = new Play.UpdateOnePlay(db);
+                    updateOnePlay.bind(play.name(), play.extract(), play.still_url(), play.id());
                     updateOnePlay.program.executeUpdateDelete();
                 } else {
-                    PlayM.InsertOnePlay insertOnePlay = new PlayM.InsertOnePlay(db);
-                    insertOnePlay.bind(play.getId(), play.getName(), play.getExtract(), play.getStillUrl());
+                    Play.InsertOnePlay insertOnePlay = new Play.InsertOnePlay(db);
+                    insertOnePlay.bind(play.id(), play.name(), play.extract(), play.still_url());
                     insertOnePlay.program.executeUpdateDelete();
                 }
 
-                // save scene
-                for(Scene scene: play.getScenes()) {
+                // save cast
+                for(Role role: play.cast()) {
                     cursor.close();
-                    query = SceneM.FACTORY.select_by_id(scene.getId());
+                    query = Role.FACTORY.select_by_id(role.id());
                     cursor = db.rawQuery(query.statement, query.args);
                     if(cursor.moveToFirst()) {
-                        SceneM.UpdateOneScene updateOneScene = new SceneM.UpdateOneScene(db);
-                        updateOneScene.bind(scene.getName(), scene.getOrdinal(), scene.getPlayId(), scene.getId());
+                        Role.UpdateOneRole updateOneRole = new Role.UpdateOneRole(db);
+                        updateOneRole.bind(role.name(), role.age(), role.gender(), role.description(), role.user_id(), role.play_id(), role.id());
+                        updateOneRole.program.executeUpdateDelete();
+                    } else {
+                        Role.InsertOneRole insertOneRole = new Role.InsertOneRole(db);
+                        insertOneRole.bind(role.id(), role.name(), role.age(), role.gender(), role.description(), role.user_id(), role.play_id());
+                        insertOneRole.program.executeUpdateDelete();
+                    }
+                }
+
+                // save scene
+                for(Scene scene: play.scenes()) {
+                    cursor.close();
+                    query = Scene.FACTORY.select_by_id(scene.id());
+                    cursor = db.rawQuery(query.statement, query.args);
+                    if(cursor.moveToFirst()) {
+                        Scene.UpdateOneScene updateOneScene = new Scene.UpdateOneScene(db);
+                        updateOneScene.bind(scene.name(), scene.ordinal(), scene.play_id(), scene.id());
                         updateOneScene.program.executeUpdateDelete();
                     } else {
-                        SceneM.InsertOneScene insertOneScene = new SceneM.InsertOneScene(db);
-                        insertOneScene.bind(scene.getId(), scene.getName(), scene.getOrdinal(), scene.getPlayId());
+                        Scene.InsertOneScene insertOneScene = new Scene.InsertOneScene(db);
+                        insertOneScene.bind(scene.id(), scene.name(), scene.ordinal(), scene.play_id());
                         insertOneScene.program.executeUpdateDelete();
                     }
 
                     // save line
-                    for(Line line: scene.getLines()) {
+                    for(Line line: scene.lines()) {
                         cursor.close();
-                        query = LineM.FACTORY.select_by_id(line.getId());
+                        query = Line.FACTORY.select_by_id(line.id());
                         cursor = db.rawQuery(query.statement, query.args);
                         if(cursor.moveToFirst()) {
-                            LineM.UpdateOneLine updateOneLine = new LineM.UpdateOneLine(db);
-                            updateOneLine.bind(line.getOrdinal(), line.getText(), line.getAudioURL(), line.getSceneId(), line.getId());
+                            Line.UpdateOneLine updateOneLine = new Line.UpdateOneLine(db);
+                            updateOneLine.bind(line.ordinal(), line.text(), line.audio_url(), line.role_id(), line.scene_id(), line.id());
                             updateOneLine.program.executeUpdateDelete();
                         } else {
-                            LineM.InsertOneLine insertOneLine = new LineM.InsertOneLine(db);
-                            insertOneLine.bind(line.getId(), line.getOrdinal(), line.getText(), line.getAudioURL(), line.getSceneId());
+                            Line.InsertOneLine insertOneLine = new Line.InsertOneLine(db);
+                            insertOneLine.bind(line.id(), line.ordinal(), line.text(), line.audio_url(), line.role_id(), line.scene_id());
                             insertOneLine.program.executeUpdateDelete();
                         }
                     }
@@ -163,7 +169,5 @@ public class ParticipateImpl implements Participate {
                 observableEmitter.onComplete();
             }
         });
-        */
-        return null;
     }
 }

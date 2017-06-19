@@ -15,7 +15,9 @@ import java.util.List;
 
 @AutoValue
 public abstract class Play implements PlayModel {
+    @Nullable
     public abstract List<Scene> scenes();
+    @Nullable
     public abstract List<Role> cast();
     public static Play create(long id, String name, String extract, String still_url, List<Scene> scenes, List<Role> cast) {
         return new AutoValue_Play(id, name, extract, still_url, scenes, cast);

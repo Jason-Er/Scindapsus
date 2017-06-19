@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.scindapsus.data.populator.UserPopulator;
 import com.example.scindapsus.model.LineModel;
 import com.example.scindapsus.model.PlayModel;
+import com.example.scindapsus.model.RoleModel;
 import com.example.scindapsus.model.SceneModel;
 
 /**
@@ -28,6 +29,7 @@ public class DelightfulOpenHelper extends SQLiteOpenHelper {
         db.execSQL(PlayModel.CREATE_TABLE);
         db.execSQL(SceneModel.CREATE_TABLE);
         db.execSQL(LineModel.CREATE_TABLE);
+        db.execSQL(RoleModel.CREATE_TABLE);
         // populate(db);
     }
 
