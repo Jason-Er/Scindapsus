@@ -3,8 +3,8 @@ CREATE TABLE line (
     ordinal INTEGER NOT NULL ,
     text TEXT NOT NULL ,
     audio_url TEXT,
-    role_id INTEGER NOT NULL UNIQUE,
-    scene_id INTEGER NOT NULL UNIQUE,
+    role_id INTEGER NOT NULL,
+    scene_id INTEGER NOT NULL,
     FOREIGN KEY (scene_id) REFERENCES scene (id)
 );
 
@@ -25,5 +25,5 @@ VALUES (?, ?, ?, ?, ?, ?);
 
 updateOneLine:
 UPDATE line
-SET ordinal = ?, text = ?, audio_url = ?, scene_id = ?
+SET ordinal = ?, text = ?, audio_url = ?, role_id = ?, scene_id = ?
 WHERE id = ?;
