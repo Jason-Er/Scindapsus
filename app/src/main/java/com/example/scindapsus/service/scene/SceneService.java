@@ -1,7 +1,6 @@
 package com.example.scindapsus.service.scene;
 
 import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.LineM;
 import com.example.scindapsus.model.UploadAudioUrl;
 
 import java.util.List;
@@ -19,6 +18,6 @@ import retrofit2.Response;
 
 public interface SceneService {
     Observable<Response<ResponseBody>> loadAudio(String token, String Url);
-    Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, LineM lineM);
-    Observable<LineM> saveLineM(LineM lineM); // save to local sqlite
+    Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, Line line);
+    Observable<Line> saveLine(Line line); // save to local sqlite
 }

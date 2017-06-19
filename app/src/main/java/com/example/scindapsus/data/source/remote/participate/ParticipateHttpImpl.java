@@ -6,6 +6,9 @@ import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Play;
+import com.example.scindapsus.model.adapter.CustomAdapterFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Properties;
 
@@ -36,14 +39,8 @@ public class ParticipateHttpImpl {
         DaggerHttpComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
-        participateHttp = retrofitUtil.createApi(ParticipateHttp.class);
-    }
-
-    public void loadPlay(String token, Observer<Play> observer, int id) {
-        participateHttp.loadPlay(token, id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(CustomAdapterFactory.create()).create();
+        participateHttp = retrofitUtil.createApi(ParticipateHttp.class, gson);
     }
 
     public Observable<Play> loadPlay(String token, int id) {

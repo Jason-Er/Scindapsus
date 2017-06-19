@@ -1,6 +1,6 @@
 package com.example.scindapsus.data.source.local.scene;
 
-import com.example.scindapsus.model.LineM;
+import com.example.scindapsus.model.Line;
 
 import io.reactivex.Observable;
 
@@ -9,5 +9,5 @@ import io.reactivex.Observable;
  */
 
 public interface Scene {
-    Observable<LineM> saveLineM(LineM lineM);
+    Observable<Line> saveLine(Line line);
 }

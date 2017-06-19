@@ -7,8 +7,8 @@ import com.ryanharter.auto.value.gson.GsonTypeAdapterFactory;
  * Created by ej on 3/13/2017.
  */
 @GsonTypeAdapterFactory
-public abstract class AuthAdapterFactory implements TypeAdapterFactory {
+public abstract class CustomAdapterFactory implements TypeAdapterFactory {
     public static TypeAdapterFactory create() {
-        return new AutoValueGson_AuthAdapterFactory();
+        return new AutoValueGson_CustomAdapterFactory();
     }
 }

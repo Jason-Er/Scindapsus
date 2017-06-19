@@ -7,7 +7,7 @@ import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Auth;
 import com.example.scindapsus.model.Token;
-import com.example.scindapsus.model.adapter.AuthAdapterFactory;
+import com.example.scindapsus.model.adapter.CustomAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -16,6 +16,7 @@ import java.util.Properties;
 import javax.inject.Inject;
 
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -42,15 +43,13 @@ public class LoginHttpImpl {
         DaggerHttpComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(AuthAdapterFactory.create()).create();
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(CustomAdapterFactory.create()).create();
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public void login(Observer<Token> observer, String name, String password) {
+    public Observable<Token> login(String name, String password) {
         Log.i(TAG, "Invoke method login");
-
-        loginHttp.login(Auth.newInstance(name, password))
-                .subscribeOn(Schedulers.io())
+        return loginHttp.login(Auth.newInstance(name, password))
                 .map(new Function<Response<Void>, Token>() {
                     @Override
                     public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
@@ -60,48 +59,6 @@ public class LoginHttpImpl {
                         String[] arr = token.split(tokenPrefix + " ");
                         return Token.newInstance(arr[1]);
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(observer);
-
-        /*
-        Subscriber subscriber = new Subscriber<Token>() {
-
-            @Override
-            public void onSubscribe(Subscription s) {
-                Log.i(TAG, "onSubscribe");
-            }
-
-            @Override
-            public void onNext(Token token) {
-                Log.i(TAG, "onNext"+token.token());
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                Log.i(TAG, "onError"+t.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "onComplete");
-            }
-        };
-
-        loginHttp.login(Auth.newInstance(name, password))
-                .map(new Function<Response<Void>, Token>() {
-                    @Override
-                    public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
-                        String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
-                        String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
-                        String token = voidResponse.headers().get(authHeaderKey);
-                        String[] arr = token.split(tokenPrefix + " ");
-                        return Token.newInstance(arr[1]);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(subscriber);
-                */
+                });
     }
 }

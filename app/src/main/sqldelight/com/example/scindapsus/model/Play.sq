@@ -1,8 +1,8 @@
 CREATE TABLE play (
-	id INTEGER NOT NULL  PRIMARY KEY ,
+	id INTEGER NOT NULL  PRIMARY KEY UNIQUE,
 	name TEXT NOT NULL,
-	extract TEXT NULL,
-	still_url TEXT NULL
+	extract TEXT,
+	still_url TEXT
 );
 
 select_by_id:

@@ -1,0 +1,23 @@
+CREATE TABLE role (
+    id INTEGER NOT NULL  PRIMARY KEY UNIQUE,
+    name TEXT NOT NULL,
+    age INTEGER,
+    gender TEXT,
+    description TEXT,
+    user_id INTEGER,
+    play_id INTEGER
+);
+
+select_by_id:
+SELECT *
+FROM role
+WHERE role.id = ?;
+
+insertOneRole:
+INSERT INTO role(id, name, age, gender, description, user_id, play_id)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+updateOneRole:
+UPDATE role
+SET name = ?, age = ?, gender = ?, description = ?, user_id = ?, play_id = ?
+WHERE id = ?;
