@@ -6,7 +6,9 @@ import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
+import com.example.scindapsus.model.Role;
 import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.model.Voice;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
 import com.example.scindapsus.service.shared.SharedService;
@@ -24,9 +26,11 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -99,16 +103,16 @@ public class ScenePresenter implements SceneContract.Presenter {
         final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + playUid + "/" + "scene" + mScene.ordinal();
         final String token = sharedService.getToken();
 
-        final Observer<Line> lineObserver = new Observer<Line>() {
+        final Observer<Voice> lineObserver = new Observer<Voice>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
             @Override
-            public void onNext(@io.reactivex.annotations.NonNull Line line) {
-                Log.i(TAG, line.toString());
-                ScenePresenter.this.lines.add(line);
+            public void onNext(@io.reactivex.annotations.NonNull Voice voice) {
+                Log.i(TAG, voice.toString());
+                // ScenePresenter.this.lines.add(voice);
                 downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -160,15 +164,15 @@ public class ScenePresenter implements SceneContract.Presenter {
     private void uploadLinesAudio(List<Line> lines) {
         final String token = sharedService.getToken();
 
-        final Observer<Line> lineMObserver = new Observer<Line>() {
+        final Observer<Voice> voiceObserver = new Observer<Voice>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
             @Override
-            public void onNext(@io.reactivex.annotations.NonNull Line line) {
-                Log.i(TAG, line.toString());
+            public void onNext(@io.reactivex.annotations.NonNull Voice voice) {
+                Log.i(TAG, voice.toString());
                 uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -197,7 +201,7 @@ public class ScenePresenter implements SceneContract.Presenter {
                 uploadOneAudio(sceneService, token, playUid, line)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(lineMObserver);
+                        .subscribe(voiceObserver);
             }
 
             @Override
@@ -222,30 +226,37 @@ public class ScenePresenter implements SceneContract.Presenter {
         uploadLinesAudio(lines);
     }
 
-    public static Observable<Line> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
-        return sceneService
-                .loadAudio(token, line.audio_url())
-                .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
+    public static Observable<Voice> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
+        return Observable.zip(sceneService
+                        .loadAudio(token, line.audio_url())
+                        .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
+                            @Override
+                            public Observable<File> apply(@io.reactivex.annotations.NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
+                                return FileUtil.saveToDiskRx(responseBodyResponse, path);
+                            }
+                        })
+                        .map(new Function<File, Voice>() {
+                            @Override
+                            public Voice apply(@io.reactivex.annotations.NonNull File file) throws Exception {
+                                return Voice.create(0, line.audio_url(), file.getAbsolutePath(), 0, line.id());
+                            }
+                        }),
+                sceneService.findRoleByRoleId(line.role_id()),
+                new BiFunction<Voice, Role, Voice>() {
                     @Override
-                    public Observable<File> apply(@io.reactivex.annotations.NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
-                        return FileUtil.saveToDiskRx(responseBodyResponse, path);
-                    }
-                }).map(new Function<File, String>() {
-                    @Override
-                    public String apply(@io.reactivex.annotations.NonNull File file) throws Exception {
-                        return file.getAbsolutePath();
+                    public Voice apply(@io.reactivex.annotations.NonNull Voice voice, @io.reactivex.annotations.NonNull Role role) throws Exception {
+                        return Voice.create(voice.id(), voice.audiourl_server(), voice.audiourl_local(), role.user_id(), voice.line_id());
                     }
                 })
-                .flatMap(new Function<String, Observable<Line>>() {
+                .flatMap(new Function<Voice, Observable<Voice>>() {
                     @Override
-                    public Observable<Line> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
-                        // TODO: 6/16/2017 need to save to another table
-                        return sceneService.saveLine(line);
+                    public Observable<Voice> apply(@io.reactivex.annotations.NonNull Voice voice) throws Exception {
+                        return sceneService.saveVoice(voice);
                     }
                 });
     }
 
-    public static Observable<Line> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final Line line ) {
+    public static Observable<Voice> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final Line line ) {
         // TODO: 6/16/2017 need to save to another table
         /*
         File file = new File(lineM.audiourl_local());

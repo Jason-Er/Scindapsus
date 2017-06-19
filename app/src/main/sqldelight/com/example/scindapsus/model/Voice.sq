@@ -12,11 +12,21 @@ SELECT *
 FROM voice
 WHERE voice.id = ?;
 
+select_by_two_id:
+SELECT *
+FROM voice
+WHERE voice.user_id = ? and voice.line_id = ?;
+
 insertOneVoice:
 INSERT INTO voice(audiourl_server, audiourl_local, user_id, line_id)
 VALUES (?, ?, ?, ?);
 
-updateOnePlay:
+updateOneVoice:
 UPDATE voice
 SET audiourl_server = ?, audiourl_local = ?, user_id = ?, line_id = ?
 WHERE id = ?;
+
+updateOneVoiceByTwoId:
+UPDATE voice
+SET audiourl_server = ?, audiourl_local = ?
+WHERE user_id = ? and line_id = ?;

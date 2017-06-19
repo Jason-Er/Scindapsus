@@ -5,8 +5,9 @@ import com.example.scindapsus.data.source.local.scene.SceneImpl;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.model.Role;
 import com.example.scindapsus.model.UploadAudioUrl;
+import com.example.scindapsus.model.Voice;
 
 import javax.inject.Inject;
 
@@ -46,8 +47,13 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public Observable<Line> saveLine(Line line) {
-        return sceneImpl.saveLine(line);
+    public Observable<Voice> saveVoice(Voice voice) {
+        return sceneImpl.saveVoice(voice);
+    }
+
+    @Override
+    public Observable<Role> findRoleByRoleId(Long roleId) {
+        return sceneImpl.findRoleByRoleId(roleId);
     }
 
 }

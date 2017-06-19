@@ -7,6 +7,8 @@ import com.example.scindapsus.data.source.local.DaggerLocalComponent;
 import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
+import com.example.scindapsus.model.Role;
+import com.example.scindapsus.model.Voice;
 import com.squareup.sqldelight.SqlDelightStatement;
 
 import javax.inject.Inject;
@@ -31,30 +33,47 @@ public class SceneImpl implements Scene{
     }
 
     @Override
-    public Observable<Line> saveLine(final Line line) {
-        /*
+    public Observable<Voice> saveVoice(final Voice voice) {
         return Observable.create(new ObservableOnSubscribe() {
             @Override
             public void subscribe(@NonNull ObservableEmitter completableEmitter) throws Exception {
                 SQLiteDatabase db = delightfulOpenHelper.getWritableDatabase();
-                SqlDelightStatement query = LineM.FACTORY.select_by_id(lineM.id());
+                SqlDelightStatement query = Voice.FACTORY.select_by_two_id(voice.user_id(), voice.line_id());
                 Cursor cursor = db.rawQuery(query.statement, query.args);
                 if(cursor.moveToFirst()) {
-                    LineM.UpdateOneLine updateOneLine = new LineM.UpdateOneLine(db);
-                    updateOneLine.bind(lineM.ordinal(), lineM.text(), lineM.audiourl(), lineM.scene_id(), lineM.id());
-                    updateOneLine.program.executeUpdateDelete();
+                    Voice.UpdateOneVoiceByTwoId updateOneVoiceByTwoId = new Voice.UpdateOneVoiceByTwoId(db);
+                    updateOneVoiceByTwoId.bind(voice.audiourl_server(), voice.audiourl_local(), voice.user_id(), voice.line_id());
+                    updateOneVoiceByTwoId.program.executeUpdateDelete();
                 } else {
-                    LineM.InsertOneLine insertOneLine = new LineM.InsertOneLine(db);
-                    insertOneLine.bind(lineM.id(), lineM.ordinal(), lineM.text(), lineM.audiourl(), lineM.scene_id());
-                    insertOneLine.program.executeUpdateDelete();
+                    Voice.InsertOneVoice insertOneVoice = new Voice.InsertOneVoice(db);
+                    insertOneVoice.bind(voice.audiourl_server(), voice.audiourl_local(), voice.user_id(), voice.line_id());
+                    insertOneVoice.program.executeUpdateDelete();
                 }
                 cursor.close();
                 db.close();
-                completableEmitter.onNext(lineM);
+                completableEmitter.onNext(voice);
                 completableEmitter.onComplete();
             }
         });
-        */
-        return null;
+    }
+
+    @Override
+    public Observable<Role> findRoleByRoleId(final Long roleId) {
+        return Observable.create(new ObservableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter observableEmitter) throws Exception {
+                Role role = null;
+                SQLiteDatabase db = delightfulOpenHelper.getWritableDatabase();
+                SqlDelightStatement query = Role.FACTORY.select_by_id(roleId);
+                Cursor cursor = db.rawQuery(query.statement, query.args);
+                if(cursor.moveToFirst()) {
+                    role = Role.FACTORY.select_by_idMapper().map(cursor);
+                }
+                cursor.close();
+                db.close();
+                observableEmitter.onNext(role);
+                observableEmitter.onComplete();
+            }
+        });
     }
 }
