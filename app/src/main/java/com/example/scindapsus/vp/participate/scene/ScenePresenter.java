@@ -169,7 +169,7 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     }
 
-    private void uploadLinesAudio(List<Line> lines) {
+    private void uploadLinesAudio(final List<Line> lines) {
         final String token = sharedService.getToken();
 
         final Observer<Line> voiceObserver = new Observer<Line>() {
@@ -180,8 +180,14 @@ public class ScenePresenter implements SceneContract.Presenter {
 
             @Override
             public void onNext(@io.reactivex.annotations.NonNull Line line) {
-                // TODO: 6/20/2017 replace line with this new line
-                Log.i(TAG, line.toString());
+                //replace line with this new line
+                for(Line line1:scene.lines()) {
+                    if(line.id() == line1.id()) {
+                        int position = scene.lines().indexOf(line1);
+                        scene.lines().set(position, line);
+                        break;
+                    }
+                }
                 uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
