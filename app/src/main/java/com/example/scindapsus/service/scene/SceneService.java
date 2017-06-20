@@ -1,11 +1,8 @@
 package com.example.scindapsus.service.scene;
 
-import com.example.scindapsus.model.Line;
 import com.example.scindapsus.model.Role;
-import com.example.scindapsus.model.UploadAudioUrl;
+import com.example.scindapsus.model.UploadVoiceUrl;
 import com.example.scindapsus.model.Voice;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -20,7 +17,7 @@ import retrofit2.Response;
 
 public interface SceneService {
     Observable<Response<ResponseBody>> loadAudio(String token, String Url);
-    Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, Line line);
+    Observable<UploadVoiceUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, final String playNameId, final String sceneOrdinal, final String lineOrdinal);
     Observable<Voice> saveVoice(Voice voice); // only save to local sqlite
     Observable<Role> findRoleByRoleId(Long roleId);
 }

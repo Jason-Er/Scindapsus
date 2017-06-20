@@ -8,6 +8,7 @@ import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
 import com.example.scindapsus.model.Role;
 import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.model.UploadVoiceUrl;
 import com.example.scindapsus.model.Voice;
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.scene.SceneService;
@@ -32,7 +33,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -44,14 +49,13 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     final static String TAG = ScenePresenter.class.getName();
 
-    private String playUid;
-    private Scene mScene;
+    private String playNameId;
+    private Scene scene;
     private Context context;
     private final SceneContract.View mSceneView;
 
     private Subscription downloadRequestsSubscription;
     private Subscription uploadRequestsSubscription;
-    private List<Line> lines = new ArrayList<>();
 
     private final int DOWNLOAD_AUDIO_NUM = 1;
 
@@ -71,21 +75,21 @@ public class ScenePresenter implements SceneContract.Presenter {
     }
 
     public Scene getScene() {
-        return mScene;
+        return scene;
     }
 
     public void setScene(Scene scene) {
-        this.mScene = scene;
+        this.scene = scene;
         mSceneView.showLines(scene.lines());
         loadLinesAudio(scene.lines());
     }
 
-    public String getPlayUid() {
-        return playUid;
+    public String getPlayNameId() {
+        return playNameId;
     }
 
-    public void setPlayUid(String playUid) {
-        this.playUid = playUid;
+    public void setPlayNameId(String playNameId) {
+        this.playNameId = playNameId;
     }
 
     @Override
@@ -100,7 +104,7 @@ public class ScenePresenter implements SceneContract.Presenter {
 
     private void loadLinesAudio(List<Line> lines) {
         // final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + sharedService.getUserName() + "/" + playUid + "/" + "scene" + mScene.getOrdinal();
-        final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + playUid + "/" + "scene" + mScene.ordinal();
+        final String path4Save = context.getFilesDir().getAbsolutePath() + "/" + playNameId + "/" + "scene" + scene.ordinal();
         final String token = sharedService.getToken();
 
         final Observer<Voice> lineObserver = new Observer<Voice>() {
@@ -112,7 +116,6 @@ public class ScenePresenter implements SceneContract.Presenter {
             @Override
             public void onNext(@io.reactivex.annotations.NonNull Voice voice) {
                 Log.i(TAG, voice.toString());
-                // ScenePresenter.this.lines.add(voice);
                 downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -156,7 +159,12 @@ public class ScenePresenter implements SceneContract.Presenter {
             }
         };
         Flowable flowable = Flowable.fromIterable(lines);
-        flowable.subscribe(subscriber);
+        flowable.filter(new Predicate<Line>(){
+            @Override
+            public boolean test(@io.reactivex.annotations.NonNull Line line) throws Exception {
+                return line.voice() == null;
+            }
+        }).subscribe(subscriber);
         downloadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
 
     }
@@ -164,15 +172,16 @@ public class ScenePresenter implements SceneContract.Presenter {
     private void uploadLinesAudio(List<Line> lines) {
         final String token = sharedService.getToken();
 
-        final Observer<Voice> voiceObserver = new Observer<Voice>() {
+        final Observer<Line> voiceObserver = new Observer<Line>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
 
             }
 
             @Override
-            public void onNext(@io.reactivex.annotations.NonNull Voice voice) {
-                Log.i(TAG, voice.toString());
+            public void onNext(@io.reactivex.annotations.NonNull Line line) {
+                // TODO: 6/20/2017 replace line with this new line
+                Log.i(TAG, line.toString());
                 uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
             }
 
@@ -198,7 +207,7 @@ public class ScenePresenter implements SceneContract.Presenter {
             @Override
             public void onNext(Line line) {
                 Log.i(TAG, "onNext");
-                uploadOneAudio(sceneService, token, playUid, line)
+                uploadOneAudio(sceneService, token, playNameId, line)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(voiceObserver);
@@ -216,17 +225,22 @@ public class ScenePresenter implements SceneContract.Presenter {
         };
 
         Flowable flowable = Flowable.fromIterable(lines);
-        flowable.subscribe(subscriber);
+        flowable.filter(new Predicate<Line>(){
+            @Override
+            public boolean test(@io.reactivex.annotations.NonNull Line line) throws Exception {
+                return line.voice() != null;
+            }
+        }).subscribe(subscriber);
         uploadRequestsSubscription.request(DOWNLOAD_AUDIO_NUM);
 
     }
 
     @Override
     public void uploadToServer() {
-        uploadLinesAudio(lines);
+        uploadLinesAudio(scene.lines());
     }
 
-    public static Observable<Voice> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
+    public Observable<Voice> downloadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final Line line, @io.reactivex.annotations.NonNull final String path) {
         return Observable.zip(sceneService
                         .loadAudio(token, line.audio_url())
                         .flatMap(new Function<Response<ResponseBody>, Observable<File>>() {
@@ -238,14 +252,14 @@ public class ScenePresenter implements SceneContract.Presenter {
                         .map(new Function<File, Voice>() {
                             @Override
                             public Voice apply(@io.reactivex.annotations.NonNull File file) throws Exception {
-                                return Voice.create(0, line.audio_url(), file.getAbsolutePath(), 0, line.id());
+                                return Voice.create(0, file.getAbsolutePath(), 0, line.id());
                             }
                         }),
                 sceneService.findRoleByRoleId(line.role_id()),
                 new BiFunction<Voice, Role, Voice>() {
                     @Override
                     public Voice apply(@io.reactivex.annotations.NonNull Voice voice, @io.reactivex.annotations.NonNull Role role) throws Exception {
-                        return Voice.create(voice.id(), voice.audiourl_server(), voice.audiourl_local(), role.user_id(), voice.line_id());
+                        return Voice.create(voice.id(), voice.audiourl_local(), role.user_id(), voice.line_id());
                     }
                 })
                 .flatMap(new Function<Voice, Observable<Voice>>() {
@@ -256,20 +270,18 @@ public class ScenePresenter implements SceneContract.Presenter {
                 });
     }
 
-    public static Observable<Voice> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playUid, @io.reactivex.annotations.NonNull final Line line ) {
-        // TODO: 6/16/2017 need to save to another table
-        /*
-        File file = new File(lineM.audiourl_local());
+    public Observable<Line> uploadOneAudio(@io.reactivex.annotations.NonNull final SceneService sceneService, @io.reactivex.annotations.NonNull final String token, @io.reactivex.annotations.NonNull final String playNameId, @io.reactivex.annotations.NonNull final Line line ) {
+        File file = new File(line.voice().audiourl_local());
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-        return sceneService.uploadOneAudio(token, requestFile, multipartBody, playUid, lineM)
-                .flatMap(new Function<UploadAudioUrl, Observable<LineM>>() {
+        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        return sceneService.uploadOneAudio(token, requestFile, multipartBody, playNameId, String.valueOf(scene.ordinal()), String.valueOf(line.ordinal()))
+                .map(new Function<UploadVoiceUrl, Line>() {
                     @Override
-                    public Observable<LineM> apply(@io.reactivex.annotations.NonNull UploadAudioUrl uploadAudioUrl) throws Exception {
-                        return sceneService.saveLineM(LineM.create(lineM.id(),lineM.text(),uploadAudioUrl.getUrl(),lineM.audiourl_local(),lineM.ordinal(),lineM.scene_id()));
+                    public Line apply(@io.reactivex.annotations.NonNull UploadVoiceUrl uploadVoiceUrl) throws Exception {
+                        Voice voice = Voice.create(line.voice().id(),  line.voice().audiourl_local(), line.voice().user_id(), line.voice().line_id());
+                        return Line.create(line.id(), line.ordinal(),  line.text(), uploadVoiceUrl.url(), line.role_id(), line.scene_id(), voice);
                     }
                 });
-        */
-        return null;
     }
 }

@@ -7,6 +7,7 @@ import com.example.scindapsus.data.source.local.DaggerLocalComponent;
 import com.example.scindapsus.data.source.local.DelightfulOpenHelper;
 import com.example.scindapsus.global.ApplicationComponent;
 import com.example.scindapsus.model.Line;
+import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.Role;
 import com.example.scindapsus.model.Voice;
 import com.squareup.sqldelight.SqlDelightStatement;
@@ -42,11 +43,11 @@ public class SceneImpl implements Scene{
                 Cursor cursor = db.rawQuery(query.statement, query.args);
                 if(cursor.moveToFirst()) {
                     Voice.UpdateOneVoiceByTwoId updateOneVoiceByTwoId = new Voice.UpdateOneVoiceByTwoId(db);
-                    updateOneVoiceByTwoId.bind(voice.audiourl_server(), voice.audiourl_local(), voice.user_id(), voice.line_id());
+                    updateOneVoiceByTwoId.bind(voice.audiourl_local(), voice.user_id(), voice.line_id());
                     updateOneVoiceByTwoId.program.executeUpdateDelete();
                 } else {
                     Voice.InsertOneVoice insertOneVoice = new Voice.InsertOneVoice(db);
-                    insertOneVoice.bind(voice.audiourl_server(), voice.audiourl_local(), voice.user_id(), voice.line_id());
+                    insertOneVoice.bind(voice.audiourl_local(), voice.user_id(), voice.line_id());
                     insertOneVoice.program.executeUpdateDelete();
                 }
                 cursor.close();
@@ -75,5 +76,25 @@ public class SceneImpl implements Scene{
                 observableEmitter.onComplete();
             }
         });
+    }
+
+    @Override
+    public Observable<Play> findPlayByVoice(Voice voice) {
+        return null;
+    }
+
+    @Override
+    public Observable<Play> findPlayByScene(com.example.scindapsus.model.Scene scene) {
+        return null;
+    }
+
+    @Override
+    public Observable<com.example.scindapsus.model.Scene> findSceneByLine(Line line) {
+        return null;
+    }
+
+    @Override
+    public Observable<Line> findLineByVoice(Voice voice) {
+        return null;
     }
 }

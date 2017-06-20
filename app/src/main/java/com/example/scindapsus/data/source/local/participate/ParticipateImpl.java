@@ -11,6 +11,7 @@ import com.example.scindapsus.model.Line;
 import com.example.scindapsus.model.Play;
 import com.example.scindapsus.model.Role;
 import com.example.scindapsus.model.Scene;
+import com.example.scindapsus.model.Voice;
 import com.squareup.sqldelight.SqlDelightStatement;
 
 import java.util.ArrayList;
@@ -54,6 +55,15 @@ public class ParticipateImpl implements Participate {
                 if(cursor.moveToFirst()) {
                     Play play = Play.FACTORY.select_by_idMapper().map(cursor);
 
+                    //query roles
+                    cursor.close();
+                    query = Role.FACTORY.select_by_id(play.id());
+                    cursor = db.rawQuery(query.statement, query.args);
+                    List<Role> cast = new ArrayList<>(cursor.getCount());
+                    while (cursor.moveToNext()) {
+                        cast.add(Role.FACTORY.select_by_idMapper().map(cursor));
+                    }
+
                     //query scenes
                     cursor.close();
                     query = Scene.FACTORY.select_by_play_id(play.id());
@@ -73,16 +83,21 @@ public class ParticipateImpl implements Participate {
                         while (cursor.moveToNext()) {
                             lineList.add(Line.FACTORY.select_by_idMapper().map(cursor));
                         }
-                        sceneListQ.add(Scene.create(scene.id(), scene.name(), scene.ordinal(), scene.play_id(), lineList));
-                    }
-
-                    //query roles
-                    cursor.close();
-                    query = Role.FACTORY.select_by_id(play.id());
-                    cursor = db.rawQuery(query.statement, query.args);
-                    List<Role> cast = new ArrayList<>(cursor.getCount());
-                    while (cursor.moveToNext()) {
-                        cast.add(Role.FACTORY.select_by_idMapper().map(cursor));
+                        //query voices
+                        List<Line> lineListWithVoice = new ArrayList<>();
+                        for(Line line: lineList) {
+                            cursor.close();
+                            // TODO: 6/20/2017 userId may change according to the user login
+                            query = Voice.FACTORY.select_by_two_id(findUserIdByRoleId(cast, line.role_id()), line.id());
+                            cursor = db.rawQuery(query.statement, query.args);
+                            if(cursor.moveToFirst()) {
+                                Voice voice = Voice.FACTORY.select_by_idMapper().map(cursor);
+                                lineListWithVoice.add(Line.create(line.id(), line.ordinal(), line.text(), line.audio_url(), line.role_id(), line.scene_id(), voice));
+                            } else {
+                                lineListWithVoice.add(Line.create(line.id(), line.ordinal(), line.text(), line.audio_url(), line.role_id(), line.scene_id(), null));
+                            }
+                        }
+                        sceneListQ.add(Scene.create(scene.id(), scene.name(), scene.ordinal(), scene.play_id(), lineListWithVoice));
                     }
 
                     playQ = Play.create(play.id(), play.name(), play.extract(), play.still_url(), sceneListQ, cast);
@@ -169,5 +184,16 @@ public class ParticipateImpl implements Participate {
                 observableEmitter.onComplete();
             }
         });
+    }
+
+    private Long findUserIdByRoleId(List<Role> roles, Long roleId) {
+        Long userId = 0L;
+        for(Role role: roles) {
+            if(role.id() == roleId) {
+                userId = role.user_id();
+                break;
+            }
+        }
+        return userId;
     }
 }

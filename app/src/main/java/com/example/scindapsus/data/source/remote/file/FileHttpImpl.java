@@ -3,7 +3,10 @@ package com.example.scindapsus.data.source.remote.file;
 import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.UploadAudioUrl;
+import com.example.scindapsus.model.UploadVoiceUrl;
+import com.example.scindapsus.model.adapter.CustomAdapterFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Inject;
 
@@ -29,18 +32,19 @@ public class FileHttpImpl {
         DaggerHttpComponent.builder()
                 .applicationComponent(applicationComponent)
                 .build().inject(this);
-        fileHttp = retrofitUtil.createApi(FileHttp.class);
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(CustomAdapterFactory.create()).create();
+        fileHttp = retrofitUtil.createApi(FileHttp.class, gson);
     }
 
     public Observable<Response<ResponseBody>> downloadFile(String token, String url) {
         return fileHttp.downloadFile(token, url);
     }
 
-    public Observable<UploadAudioUrl> uploadFile(String token, RequestBody description, MultipartBody.Part body, String url) {
+    public Observable<String> uploadFile(String token, RequestBody description, MultipartBody.Part body, String url) {
         return fileHttp.uploadFile(token, description, body, url);
     }
 
-    public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String play, String scene, String line) {
+    public Observable<UploadVoiceUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String play, String scene, String line) {
         return fileHttp.uploadOneAudio(token, description, body, play, scene, line);
     }
 

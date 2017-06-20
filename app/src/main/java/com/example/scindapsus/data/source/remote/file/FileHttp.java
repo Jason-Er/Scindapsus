@@ -1,6 +1,6 @@
 package com.example.scindapsus.data.source.remote.file;
 
-import com.example.scindapsus.model.UploadAudioUrl;
+import com.example.scindapsus.model.UploadVoiceUrl;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -27,7 +27,7 @@ public interface FileHttp {
 
     @Multipart
     @POST
-    Observable<UploadAudioUrl> uploadFile(
+    Observable<String> uploadFile(
             @Header("Authorization") String token,
             @Part("description") RequestBody description,
             @Part MultipartBody.Part file,
@@ -36,7 +36,7 @@ public interface FileHttp {
 
     @Multipart
     @POST("v1/file/{play}/{scene}/{line}/audio")
-    Observable<UploadAudioUrl> uploadOneAudio(
+    Observable<UploadVoiceUrl> uploadOneAudio(
             @Header("Authorization") String token,
             @Part("description") RequestBody description,
             @Part MultipartBody.Part file,

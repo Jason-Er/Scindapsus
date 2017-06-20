@@ -1,22 +1,11 @@
 package com.example.scindapsus.util.common;
 
-import android.net.Uri;
-import android.util.Log;
-
-import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.UploadAudioUrl;
-import com.example.scindapsus.service.scene.SceneService;
-
 import java.io.File;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
