@@ -1,6 +1,5 @@
 CREATE TABLE voice (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    audiourl_server TEXT,
     audiourl_local TEXT,
     user_id INTEGER NOT NULL,
     line_id INTEGER NOT NULL,
@@ -12,11 +11,21 @@ SELECT *
 FROM voice
 WHERE voice.id = ?;
 
-insertOneVoice:
-INSERT INTO voice(audiourl_server, audiourl_local, user_id, line_id)
-VALUES (?, ?, ?, ?);
+select_by_two_id:
+SELECT *
+FROM voice
+WHERE voice.user_id = ? and voice.line_id = ?;
 
-updateOnePlay:
+insertOneVoice:
+INSERT INTO voice(audiourl_local, user_id, line_id)
+VALUES (?, ?, ?);
+
+updateOneVoice:
 UPDATE voice
-SET audiourl_server = ?, audiourl_local = ?, user_id = ?, line_id = ?
+SET audiourl_local = ?, user_id = ?, line_id = ?
 WHERE id = ?;
+
+updateOneVoiceByTwoId:
+UPDATE voice
+SET audiourl_local = ?
+WHERE user_id = ? and line_id = ?;

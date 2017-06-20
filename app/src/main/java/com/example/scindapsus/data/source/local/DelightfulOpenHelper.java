@@ -9,6 +9,7 @@ import com.example.scindapsus.model.LineModel;
 import com.example.scindapsus.model.PlayModel;
 import com.example.scindapsus.model.RoleModel;
 import com.example.scindapsus.model.SceneModel;
+import com.example.scindapsus.model.VoiceModel;
 
 /**
  * Created by ej on 2/22/2017.
@@ -30,6 +31,7 @@ public class DelightfulOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SceneModel.CREATE_TABLE);
         db.execSQL(LineModel.CREATE_TABLE);
         db.execSQL(RoleModel.CREATE_TABLE);
+        db.execSQL(VoiceModel.CREATE_TABLE);
         // populate(db);
     }
 

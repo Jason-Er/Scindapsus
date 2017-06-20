@@ -4,9 +4,9 @@ import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.local.scene.SceneImpl;
 import com.example.scindapsus.data.source.remote.file.FileHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.Line;
-import com.example.scindapsus.model.Scene;
-import com.example.scindapsus.model.UploadAudioUrl;
+import com.example.scindapsus.model.Role;
+import com.example.scindapsus.model.UploadVoiceUrl;
+import com.example.scindapsus.model.Voice;
 
 import javax.inject.Inject;
 
@@ -41,13 +41,18 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public Observable<UploadAudioUrl> uploadOneAudio(String token, RequestBody description, MultipartBody.Part body, String playUid, Line line) {
-        return fileHttp.uploadOneAudio(token, description, body, playUid, String.valueOf(line.scene_id()), String.valueOf(line.id()));
+    public Observable<UploadVoiceUrl> uploadOneAudio(final String token, final RequestBody description, final MultipartBody.Part body, final String playNameId, final String sceneOrdinal, final String lineOrdinal) {
+        return fileHttp.uploadOneAudio(token, description, body, playNameId, sceneOrdinal, lineOrdinal);
     }
 
     @Override
-    public Observable<Line> saveLine(Line line) {
-        return sceneImpl.saveLine(line);
+    public Observable<Voice> saveVoice(Voice voice) {
+        return sceneImpl.saveVoice(voice);
+    }
+
+    @Override
+    public Observable<Role> findRoleByRoleId(Long roleId) {
+        return sceneImpl.findRoleByRoleId(roleId);
     }
 
 }
