@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.scindapsus.data.source.DaggerDataSourceComponent;
 import com.example.scindapsus.data.source.remote.login.LoginHttpImpl;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.Token;
+import com.example.scindapsus.model.LoginRTN;
 
 import javax.inject.Inject;
 
@@ -25,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
                 .build().inject(this);
     }
     @Override
-    public Observable<Token> login(String name, String password) {
+    public Observable<LoginRTN> login(String name, String password) {
         Log.i(TAG, "Invoke LoginServiceImpl login!");
         return loginHttpImpl.login(name, password);
     }
