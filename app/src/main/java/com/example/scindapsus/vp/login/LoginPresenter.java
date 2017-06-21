@@ -5,9 +5,8 @@ import android.util.Log;
 
 import com.example.scindapsus.global.ApplicationComponent;
 
-import com.example.scindapsus.model.Token;
+import com.example.scindapsus.model.LoginRTN;
 import com.example.scindapsus.model.User;
-
 import com.example.scindapsus.service.DaggerServiceComponent;
 import com.example.scindapsus.service.login.LoginService;
 import com.example.scindapsus.service.shared.SharedService;
@@ -46,7 +45,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login(final User user) {
 
-        Observer observer = new Observer<Token>() {
+        Observer observer = new Observer<LoginRTN>() {
 
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable disposable) {
@@ -54,10 +53,10 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
 
             @Override
-            public void onNext(Token token) {
+            public void onNext(LoginRTN rtn) {
                 Log.i(TAG, "onNext");
-                sharedService.saveToken(token.token());
-                sharedService.saveUserName(user.getUsername());
+                sharedService.saveToken(rtn.token());
+                sharedService.saveUserName(user.username());
                 mLogInView.navigateToBrowse(user);
             }
 
@@ -73,7 +72,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
         };
 
-        loginService.login(user.getUsername(), user.getPassword())
+        loginService.login(user.username(), user.password())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);

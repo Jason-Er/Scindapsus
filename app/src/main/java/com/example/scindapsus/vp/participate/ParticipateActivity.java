@@ -5,18 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.Gravity;
 
 import com.example.scindapsus.R;
 import com.example.scindapsus.global.BaseActivity;
 import com.example.scindapsus.global.ScindapsusApplication;
-import com.example.scindapsus.global.navigation.Navigator;
-import com.example.scindapsus.model.PlayInfo;
-import com.example.scindapsus.model.User;
-import com.example.scindapsus.util.bus.RxBus;
 
 public class ParticipateActivity extends BaseActivity {
 

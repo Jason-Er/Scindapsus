@@ -1,6 +1,6 @@
 package com.example.scindapsus.data.source.remote.login;
 
-import com.example.scindapsus.model.Auth;
+import com.example.scindapsus.model.User;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -16,6 +16,6 @@ public interface LoginHttp {
 
     @Headers({"Content-Type: application/json"})
     @POST("login")
-    Observable<Response<Void>> login(@Body Auth auth);
+    Observable<Response<User>> login(@Body User user);
 
 }

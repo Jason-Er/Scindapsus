@@ -1,9 +1,5 @@
 package com.example.scindapsus.service.local;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import com.example.scindapsus.model.User;
-
 /**
  * Created by ej on 2/24/2017.
  */

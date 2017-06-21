@@ -5,8 +5,8 @@ import android.util.Log;
 import com.example.scindapsus.data.source.remote.DaggerHttpComponent;
 import com.example.scindapsus.data.source.remote.RetrofitUtil;
 import com.example.scindapsus.global.ApplicationComponent;
-import com.example.scindapsus.model.Auth;
-import com.example.scindapsus.model.Token;
+import com.example.scindapsus.model.LoginRTN;
+import com.example.scindapsus.model.User;
 import com.example.scindapsus.model.adapter.CustomAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,17 +47,18 @@ public class LoginHttpImpl {
         loginHttp = retrofitUtil.createApi(LoginHttp.class, gson);
     }
 
-    public Observable<Token> login(String name, String password) {
+    public Observable<LoginRTN> login(String name, String password) {
         Log.i(TAG, "Invoke method login");
-        return loginHttp.login(Auth.newInstance(name, password))
-                .map(new Function<Response<Void>, Token>() {
+        return loginHttp.login(User.create(null, name, password))
+                .map(new Function<Response<User>, LoginRTN>() {
                     @Override
-                    public Token apply(@NonNull Response<Void> voidResponse) throws Exception {
+                    public LoginRTN apply(@NonNull Response<User> response) throws Exception {
                         String tokenPrefix = properties.getProperty("TOKEN_PREFIX");
                         String authHeaderKey = properties.getProperty("AUTH_HEADER_KEY");
-                        String token = voidResponse.headers().get(authHeaderKey);
+                        String token = response.headers().get(authHeaderKey);
+                        User user = response.body();
                         String[] arr = token.split(tokenPrefix + " ");
-                        return Token.newInstance(arr[1]);
+                        return LoginRTN.create(arr[1], user);
                     }
                 });
     }
